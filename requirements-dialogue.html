@@ -1,0 +1,471 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.readmore{margin-top:14px}
+.readbody{padding:4px 22px 18px;font:400 16.5px/1.95 var(--f-serif);color:var(--ink)}
+.readbody p{margin:0 0 14px}
+</style></head><body>
+<title>대화가 요구사항을 만든다</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* 레이아웃: 고정 네이비 머리말 띠 + 왼쪽 목차 + 장면 카드 / 자세히 읽기는 책 템플릿 한 단 */
+:root{
+  --bar:#102a4c; --bar-fg:#ffffff; --side:#163559; --side-fg:#dce9f9; --side-on:#24507f;
+  --bg:#eef2f7; --card:#fbfcfe; --fold:#f3f7fc; --ink:#1c2f48; --muted:#52647a; --line:#dce5ef;
+  --teal:#007f85; --link:#1561c4; --amber:#a5620a; --book-bg:#fbfaf7; --book-ink:#1f2a40;
+  --accent:#1561c4; --accent-soft:#e3edfb; --warn:#c0603a; --quote-bg:#f6efe2;
+  --f-sans:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+  --f-serif:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+  --barh:60px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bar:#0a1628; --side:#0d1d35; --side-fg:#cddcf0; --side-on:#1f3d66;
+  --bg:#12223b; --card:#182c4b; --fold:#1e3559; --ink:#e3eaf4; --muted:#a3b3c8; --line:#2a4166;
+  --teal:#5fd0d4; --link:#8fb8ff; --amber:#f0b45a; --book-bg:#14243d; --book-ink:#e4e8f0;
+  --accent:#8fb8ff; --accent-soft:#223e66; --warn:#f09a78; --quote-bg:#2a2f3c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bar:#0a1628; --side:#0d1d35; --side-fg:#cddcf0; --side-on:#1f3d66;
+  --bg:#12223b; --card:#182c4b; --fold:#1e3559; --ink:#e3eaf4; --muted:#a3b3c8; --line:#2a4166;
+  --teal:#5fd0d4; --link:#8fb8ff; --amber:#f0b45a; --book-bg:#14243d; --book-ink:#e4e8f0;
+  --accent:#8fb8ff; --accent-soft:#223e66; --warn:#f09a78; --quote-bg:#2a2f3c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.8 var(--f-sans);word-break:keep-all;overflow-wrap:break-word}
+body.book{background:var(--book-bg)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bar)}
+h1,h2{margin:0;text-wrap:balance}
+p{margin:0}
+.nb{white-space:nowrap}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:4px}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+dfn{font-style:normal;font-weight:700;color:var(--teal)}
+/* 머리말 띠 */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:var(--barh);background:var(--bar);color:var(--bar-fg);
+  display:flex;align-items:center;gap:14px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topbar .face{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.8);background:#fff;flex:none}
+.topbar h1{font:800 19px/1.3 var(--f-sans);color:var(--bar-fg);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mode{margin-left:auto;flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:var(--bar-fg);display:grid;place-items:center;cursor:pointer}
+.mode:hover{background:rgba(255,255,255,.12)}
+.mode svg{width:20px;height:20px}
+.mode .sun{display:none}
+html.is-dark .mode .sun{display:block}
+html.is-dark .mode .moon{display:none}
+/* 발표 보기 */
+.shell{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:calc(100vh - var(--barh))}
+aside{background:var(--side);color:var(--side-fg);padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:16px}
+aside nav{position:sticky;top:calc(var(--barh) + 24px);display:grid;gap:3px}
+aside .label{font-size:12px;letter-spacing:.12em;opacity:.7;font-weight:600;margin-bottom:8px}
+aside a{color:var(--side-fg);text-decoration:none;font-size:13.5px;line-height:1.5;padding:8px 12px;border-radius:8px}
+aside a[aria-current]{background:var(--side-on);color:#fff}
+main.deck{min-width:0;display:grid;gap:22px;align-content:start;padding-block:28px 32px;padding-left:clamp(16px,4vw,48px);padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1100px}
+.intro{display:grid;gap:6px;padding:4px 4px 0}
+.intro p{color:var(--muted);font-size:16px}
+.scene{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px clamp(18px,3vw,34px);display:grid;gap:16px;scroll-margin-top:calc(var(--barh) + 16px);min-width:0}
+.scene .no{font-size:13px;color:var(--teal);font-weight:800;letter-spacing:.04em}
+.scene h2{font-size:clamp(20px,2vw,26px);font-weight:800;line-height:1.45}
+.kinds{margin:0;padding-left:1.3em;display:grid;gap:2px;font-weight:600}
+/* 사례 카드 */
+.case{border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px;background:var(--bg)}
+.case-scene{font-weight:800;color:var(--accent);font-size:15px}
+.case dl{margin:0;display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:8px 14px;font-size:15.5px;line-height:1.7}
+.case dt{color:var(--muted);font-weight:600}
+.case dd{margin:0;min-width:0}
+.case dd.quote{background:var(--quote-bg);border-radius:8px;padding:6px 10px}
+.case dd.quote::before{content:"“"}.case dd.quote::after{content:"”"}
+/* 그림·표 */
+.fig{margin:0;display:grid;gap:6px;color:var(--ink)}
+.fig svg{width:100%;max-width:520px;height:auto;display:block;margin:0 auto}
+.fig figcaption{font-size:13px;color:var(--muted);text-align:center}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-size:13.5px;font-weight:700}
+table.all td:first-child{font-variant-numeric:tabular-nums;color:var(--muted)}
+/* 펼치기 */
+details{border:1px solid var(--line);border-radius:10px;background:var(--fold)}
+summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:13px 16px;font-weight:600}
+summary::-webkit-details-marker{display:none}
+summary .mark{width:22px;height:22px;flex:none}
+summary .chev{margin-left:auto;color:var(--muted);transition:transform .15s}
+details[open] summary .chev{transform:rotate(90deg)}
+.fold{padding:0 16px 14px;display:grid;gap:10px;font-size:16px}
+.more{color:var(--link);font-weight:600;text-decoration:none;width:max-content}
+.more:hover{text-decoration:underline}
+/* 책 보기 */
+.bookwrap{max-width:calc(36em + 32px);margin:0 auto;padding-block:40px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  font:18px/1.95 var(--f-serif);color:var(--book-ink);display:grid;gap:20px}
+.back{font:600 14px var(--f-sans);color:var(--link);text-decoration:none;width:max-content}
+.kicker{font:600 13px/1.4 var(--f-sans);letter-spacing:.1em;color:var(--amber)}
+.bookwrap h2{font:700 26px/1.4 var(--f-serif);padding-bottom:16px;border-bottom:2px solid currentColor}
+/* 꼬리말 */
+footer{display:flex;justify-content:center;align-items:center;gap:8px;border-top:1px solid var(--line);padding-top:16px;margin-top:8px;font:12.5px/1.4 var(--f-sans);color:var(--muted);letter-spacing:.02em}
+footer .mark{width:16px;height:16px;opacity:.9}
+@media (max-width:760px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  aside{padding-block:10px}
+  aside nav{position:static;display:flex;gap:6px;overflow-x:auto}
+  aside .label{display:none}
+  aside a{white-space:nowrap;font-size:13px}
+  .topbar h1{font-size:17px}
+  .case dl{grid-template-columns:minmax(0,1fr);gap:2px}
+  .case dd{margin-bottom:8px}
+}
+@media (prefers-reduced-motion:reduce){summary .chev{transition:none}}
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/>
+<g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g>
+<g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g>
+<path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg>
+<header class="topbar">
+  <img class="face" alt="토니 캐리커처" src="data:image/png;base64,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">
+  <h1 id="ptitle">대화가 요구사항을 만든다</h1>
+  </header>
+<div id="deck" class="shell">
+  <aside><nav aria-label="목차"><div class="label">목차</div>
+  <a href="#s01">01 · AI는 내 말을 평균적인 뜻으로 알아듣습니다</a><a href="#s02">02 · 같은 말이라도 서로 다른 뜻으로 쓰고 있었습니다</a><a href="#s03">03 · 무엇을 만드는지부터 서로 다르게 보고 있었습니다</a><a href="#s04">04 · AI는 일반적인 정답을 먼저 꺼냅니다</a><a href="#s05">05 · 사람만 아는 맥락은 말해야만 전달됩니다</a><a href="#s06">06 · AI도 사람의 생각을 고쳐 줍니다</a><a href="#s07">07 · 어긋남은 늦게 찾을수록 비싸집니다</a><a href="#s08">08 · 요구사항은 다섯 가지 질문으로 확정합니다</a><a href="#s09">09 · 스물두 번의 어긋남을 한 표로 모았습니다</a><a href="#s10">10 · 근간을 바꾸는 기준은 정하기 전에 묻습니다</a>
+  </nav></aside>
+  <main class="deck">
+  <div class="intro"><p>Vibe Agent와 요구사항을 확정한 이틀의 실제 기록</p></div>
+  <section class="scene" id="s01">
+<div class="no">01</div>
+<h2>AI는 내 말을 평균적인 뜻으로 알아듣습니다.</h2>
+<p>이 자료는 2026년 10월 26~27일, 「HTML 수정 Agent」의 요구사항을 확정하며 <dfn>Vibe Agent(바이브 에이전트)</dfn>, 곧 사람의 생각을 요구사항으로 만들고 끝까지 지켜지는지 확인하는 AI인 토비(Claude 채팅)와 나눈 실제 대화에서 뽑았습니다.</p>
+<p>대화에는 Agent 이름이 몇 개 나옵니다. 토비는 Vibe Agent로 일하는 Claude 채팅, 행크는 기획을 총괄하는 Coding Agent, 지니는 구현 현장을 맡는 Coding Agent입니다.</p>
+<p>이틀 동안 토비와 제 생각이 어긋났다가 대화로 바로잡힌 순간은 스무 번이 넘었습니다. AI가 모자라서 생기는 일은 아닙니다. 처음 듣는 내 말을 AI는 <strong>자기가 아는 가장 평균적인 뜻</strong>으로 알아듣기 때문입니다.</p>
+<p>그래서 요구사항은 한 번 말해서 끝나지 않고, 되묻고 바로잡는 대화로 완성됩니다. 사례는 다섯 갈래로 나눴고, 각 사례는 같은 카드로 정리했습니다.</p>
+<ol class="kinds"><li>같은 말, 다른 뜻</li><li>목적의 오해</li><li>AI의 일반적인 정답</li><li>사람만 아는 맥락</li><li>서로 고쳐 주기</li></ol>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>사례 카드는 이렇게 읽습니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>카드마다 <b>토비의 생각 → 제가 한 말 → 바뀐 요구사항 → 그대로 갔다면</b> 순서로 적었습니다. 제가 한 말은 대화 원문을 옮기되 오타만 다듬었고, ‘토비의 생각’과 ‘그대로 갔다면’은 대화를 되짚어 정리한 것입니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 왜 AI는 평균적인 뜻으로 알아들을까<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>사람끼리 대화할 때도 같은 일이 생깁니다. 처음 만난 사람에게 "이거 좀 고쳐 주세요"라고 하면, 그 사람은 자기가 겪어 본 가장 흔한 '고침'을 떠올립니다. 내가 어떤 일을 해 왔는지, 무엇 때문에 불편했는지 모르니 그럴 수밖에 없습니다.</p>
+<p>AI는 이 점에서 처음 만난 사람과 같습니다. 엄청나게 많은 글을 읽고 배웠기 때문에, 내 말을 들으면 그 수많은 글 속에서 가장 그럴듯한 뜻을 골라냅니다. 그 뜻은 대부분 맞지만, 나만의 사정이 담긴 부분에서는 어긋납니다. 그리고 그 어긋남은 AI가 아무리 똑똑해도 스스로 알아낼 수 없습니다. 내 머릿속에만 있는 것이니까요.</p>
+<p>Agent라는 말은 라틴어 agere, 곧 '행하다'에서 왔습니다. 남을 대신해 일을 행하는 사람, <span class="nb">대리인(代理人)이라는</span> 뜻입니다. 대리인이 일을 잘하려면 먼저 주인의 뜻을 정확히 알아야 합니다. Vibe Agent가 하는 일이 바로 그것입니다. 코드를 짜기 전에, 주인의 뜻을 되묻고 확인해서 문서로 박아 두는 일입니다.</p>
+<p>이 자료에 모은 스무 개 남짓한 장면은 그 과정을 있는 그대로 보여 줍니다. 토비가 잘못 알아들은 장면도 숨기지 않았습니다. 오히려 그 장면들이 이 자료의 핵심 증거입니다. 대화가 없었다면 그 오해는 그대로 코드가 되었을 테니까요.</p>
+</div></details>
+</section><section class="scene" id="s02">
+<div class="no">02</div>
+<h2>같은 말이라도 서로 다른 뜻으로 쓰고 있었습니다.</h2>
+<figure class="fig">
+<svg viewBox="0 0 520 230" role="img" aria-label="같은 '수정'이라는 말을 두 사람이 다른 그림으로 떠올리는 만화">
+<g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+<circle cx="90" cy="150" r="22"/><path d="M68 196 q22 -26 44 0"/>
+<circle cx="430" cy="150" r="22"/><path d="M408 196 q22 -26 44 0"/>
+</g>
+<rect x="196" y="130" width="128" height="44" rx="22" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<text x="260" y="159" text-anchor="middle" font-size="20" font-weight="800" fill="currentColor">"수정해 줘"</text>
+<g stroke="currentColor" stroke-width="2" fill="var(--card)">
+<path d="M20 20 h180 a10 10 0 0 1 10 10 v46 a10 10 0 0 1 -10 10 h-120 l-14 18 l-2 -18 h-44 a10 10 0 0 1 -10 -10 v-46 a10 10 0 0 1 10 -10z"/>
+<path d="M320 20 h180 a10 10 0 0 1 10 10 v46 a10 10 0 0 1 -10 10 h-44 l-2 18 l-14 -18 h-120 a10 10 0 0 1 -10 -10 v-46 a10 10 0 0 1 10 -10z"/>
+</g>
+<text x="110" y="48" text-anchor="middle" font-size="14" fill="currentColor">문장 몇 개만</text>
+<text x="110" y="68" text-anchor="middle" font-size="14" fill="currentColor">내 말로 손보기</text>
+<text x="410" y="48" text-anchor="middle" font-size="14" fill="currentColor">모든 장면을</text>
+<text x="410" y="68" text-anchor="middle" font-size="14" fill="currentColor">처음부터 다시 쓰기</text>
+<text x="90" y="222" text-anchor="middle" font-size="13" fill="var(--muted)">저</text>
+<text x="430" y="222" text-anchor="middle" font-size="13" fill="var(--muted)">토비</text>
+</svg>
+<figcaption>같은 말, 다른 그림. 이 차이는 말로 되물어야만 드러납니다.</figcaption>
+</figure><div class="case">
+<p class="case-scene">「수정」이라는 말</p>
+<dl>
+<dt>토비의 생각</dt><dd>모든 장면을 제 말로 새로 쓰는 일</dd>
+<dt>제가 한 말</dt><dd class="quote">모든 내용을 다 이렇게 바꾼다는 것이 아니야. 내가 80~90%는 토비가 만들어준 것이 만족스럽다고 했으니 그 안에 많은 부분은 문구만 바꾸거나 위치만 바꾸면서 해당 페이지를 수정하는 것이고</dd>
+<dt>바뀐 요구사항</dt><dd>대부분은 문구 손보기(첫 번째 손질), 필요한 장면에만 덧붙이기(두 번째 손질)</dd>
+<dt>그대로 갔다면</dt><dd>모든 페이지를 처음부터 다시 쓰게 만드는 무거운 도구</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">「DB 재사용」이라는 말</p>
+<dl>
+<dt>토비의 생각</dt><dd>운영 중인 SkyView 사이트의 DB에 장면 표를 끼워 넣자는 뜻. 그래서 위험하다고 답함</dd>
+<dt>제가 한 말</dt><dd class="quote">설치할 때의 번거로운 셋팅을 없애기 위해 재사용하자는 뜻으로 말했어</dd>
+<dt>바뀐 요구사항</dt><dd>같은 기술(Django + SQLite)로 따로 만들어, 셋팅은 쉽게 하고 운영 사이트와는 분리</dd>
+<dt>그대로 갔다면</dt><dd>위험을 피하려다 정작 제 걱정(셋팅의 번거로움)은 풀지 못한 설계</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">「헤더」라는 말</p>
+<dl>
+<dt>토비의 생각</dt><dd>얼굴과 제목을 본문 첫 상자에 크게 넣기</dd>
+<dt>제가 한 말</dt><dd class="quote">헤더에 얼굴을 넣으라고 했는데 본문에 넣었네? 지금 풋터처럼 헤더가 없는 것인가?</dd>
+<dt>바뀐 요구사항</dt><dd>모든 페이지 맨 위에 고정된 네이비 띠(작은 얼굴 + 주제)</dd>
+<dt>그대로 갔다면</dt><dd>페이지마다 모양이 달라지는 머리말</dd>
+</dl>
+</div>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>같은 말을 확인하는 한 마디<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>토비가 "이해한 것을 제 말로 다시 정리하면"으로 되짚을 때마다 이런 차이가 드러났습니다. 제가 "그게 아니고"라고 말할 기회가 생기는 것이 핵심입니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 같은 말, 다른 그림<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>"수정해 줘." 이 짧은 말에 토비와 저는 전혀 다른 그림을 떠올리고 있었습니다. 저는 AI가 만들어 준 강의자료가 80~90%는 마음에 들었습니다. 그러니 제가 말한 수정은 걸리는 문장 몇 개를 제 말로 손보고, 필요한 곳에만 제 설명을 덧붙이는 일이었습니다.</p>
+<p>그런데 토비는 제가 페이지 전체를 제 말로 새로 쓰고 싶어 한다고 이해했습니다. 제가 앞에서 "내 말로 바꾸고 싶다"고 강하게 말했으니, 그렇게 알아들을 만도 했습니다. 토비가 정리한 작업 흐름을 읽어 보고서야 차이를 알았고, "모든 내용을 다 바꾼다는 것이 아니야"라고 바로잡았습니다.</p>
+<p>"DB를 재사용하자"는 말도 그랬습니다. 저는 예전에 PythonAnywhere에서 Django DB를 셋팅하느라 고생한 기억 때문에 그 고생을 다시 하지 말자는 뜻이었습니다. 토비는 운영 중인 사이트의 DB에 새 데이터를 섞자는 뜻으로 듣고 위험하다고 답했습니다. 둘 다 틀린 말은 아니었지만, 서로 다른 문제를 풀고 있었던 셈입니다. 제 걱정을 말하고 나서야 "같은 기술로 따로 만들면 셋팅은 쉽고 위험은 없다"는 답이 나왔습니다.</p>
+<p>이런 차이는 말을 한 사람도, 들은 사람도 모릅니다. 서로 자기 그림이 맞다고 생각하니까요. 그래서 Vibe Agent와의 대화에서 가장 중요한 습관은 "네가 이해한 것을 네 말로 다시 말해 줘"라고 요청하는 것입니다. 그 되짚기 한 번이 나중의 큰 수고를 막아 줍니다.</p>
+</div></details>
+</section><section class="scene" id="s03">
+<div class="no">03</div>
+<h2>무엇을 만드는지부터 서로 다르게 보고 있었습니다.</h2>
+<div class="case">
+<p class="case-scene">이 프로젝트의 목적</p>
+<dl>
+<dt>토비의 생각</dt><dd>AI가 만든 HTML에서 지목한 곳만 고치는 편집 도구</dd>
+<dt>제가 한 말</dt><dd class="quote">최종 스크립트를 연결하면 하나의 책이 되는 것이고, 그것의 요약본이 강의자료가 되는 것이고, 그것을 PPT로 만들면 발표자료가 되는 것이지. … 이번 「HTML 수정 Agent」 구축의 최종 목표야</dd>
+<dt>바뀐 요구사항</dt><dd>내 말로 다듬은 지식을 장면 단위로 쌓아 책·강의자료·발표자료를 한 재료로 만드는 저장소</dd>
+<dt>그대로 갔다면</dt><dd>잘 만든 편집기가 남지만, 지식은 쌓이지 않음</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">첫 버전(MVP, 최소 기능 제품)에서 빼려던 것</p>
+<dl>
+<dt>토비의 생각</dt><dd>덧붙이기(요약과 스크립트로 나누기)는 다음 단계로</dd>
+<dt>제가 한 말</dt><dd class="quote">그래야 되지 않을까? 이번에 만드는 수정 html에 그 내용이 들어가야 하기 때문이야. 링크로도 들어가야 하고</dd>
+<dt>바뀐 요구사항</dt><dd>덧붙이기와 자세히 읽기 링크를 MVP에 포함</dd>
+<dt>그대로 갔다면</dt><dd>첫 결과물로는 이 도구가 쓸모 있는지 판단할 수 없음</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">빠져 있던 검색</p>
+<dl>
+<dt>토비의 생각</dt><dd>확정·저장까지를 MVP로 보고 공개 사이트는 따로</dd>
+<dt>제가 한 말</dt><dd class="quote">지금 MVP에는 검색 기능은 빠져있나?</dd>
+<dt>바뀐 요구사항</dt><dd>공개 사이트에서 분류로 둘러보기, 자료·요약·스크립트를 나눠 검색</dd>
+<dt>그대로 갔다면</dt><dd>쌓기만 하고 다시 꺼내 볼 수 없는 저장소</dd>
+</dl>
+</div>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>목적은 질문 하나로 드러납니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>"이걸 다 만들고 나면 무엇이 남아야 하나요?" 이 질문에 대한 답이 바뀔 때마다 요구사항의 중심이 바로잡혔습니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 편집기를 만들려던 것이 아니었습니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>처음 토비가 정리한 이 프로젝트의 이름은 「HTML 수정 Agent」였고, 목적은 AI가 만든 HTML에서 필요한 곳만 고치는 것이었습니다. 틀린 말은 아닙니다. 제가 처음 꺼낸 불편이 바로 그것이었으니까요.</p>
+<p>그런데 대화를 이어 가면서 제 진짜 목적이 드러났습니다. 저는 고친 결과가 쌓이기를 원했습니다. 장면마다 제 말로 쓴 요약과, 그 요약을 강의하듯 풀어 쓴 스크립트가 함께 있고, 스크립트를 이으면 책이 되고, 요약을 이으면 강의자료가 되고, 그것을 PPT로 만들면 발표자료가 되는 구조입니다. 이것을 말하고 나서야 토비가 "이 프로젝트의 중심은 편집 도구가 아니라 저장소"라고 정리했습니다.</p>
+<p>목적이 바뀌자 범위도 바뀌었습니다. 토비는 처음 MVP를 정리하며 요약과 스크립트로 나누는 덧붙이기를 다음 단계로 미뤘습니다. 저는 "그게 빠지면 이번에 만드는 HTML에 들어갈 내용이 없다"고 했습니다. 검색도 마찬가지였습니다. 저장만 하고 다시 찾아 읽을 수 없으면 쌓는 의미가 없으니까요.</p>
+<p>목적은 처음부터 다 말해지지 않습니다. 저 자신도 대화를 하면서 제 목적을 더 또렷하게 알게 되었습니다. 그래서 Vibe Agent와의 대화는 AI에게 내 뜻을 알려 주는 일인 동시에, 내가 내 뜻을 찾아가는 일이기도 합니다.</p>
+</div></details>
+</section><section class="scene" id="s04">
+<div class="no">04</div>
+<h2>AI는 일반적인 정답을 먼저 꺼냅니다.</h2>
+<div class="case">
+<p class="case-scene">메타태그 항목</p>
+<dl>
+<dt>토비의 생각</dt><dd>주제, 대상, 강연명, 출처, 날짜를 꼬리표로 붙이기</dd>
+<dt>제가 한 말</dt><dd class="quote">언제 누구에게 어떤 내용으로 강의할 때 사용한 지식이다 라는 것이 의미가 있겠어? 한 번 만들어진 지식도 시간이 변화하면 새로운 지식으로 수정 보완될 수 있기 때문에</dd>
+<dt>바뀐 요구사항</dt><dd>분야 → 주제 → 설명 용어 세 층만. 대상은 조립할 때 넣는 조건, 날짜는 버전 이력으로</dd>
+<dt>그대로 갔다면</dt><dd>지식이 아니라 강의 기록을 쌓는 저장소</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">공개·비공개 상태</p>
+<dl>
+<dt>토비의 생각</dt><dd>작업 중 / 확정·비공개 / 확정·공개 세 가지 상태를 두기</dd>
+<dt>제가 한 말</dt><dd class="quote">나의 지식을 넣고 싶고, 그 지식은 내 머리에서 나오는 아이디어를 가지고 토비와 구체화하는 과정을 거쳐서 확정되는 것인데 그 안에 내용을 공개할지 말지를 왜 고려해야 하는지 모르겠다</dd>
+<dt>바뀐 요구사항</dt><dd>확정된 지식은 모두 공개. 상태 꼬리표 없음. 공개 직전 점검만</dd>
+<dt>그대로 갔다면</dt><dd>쓸 일 없는 상태 관리 기능</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">이미 답이 있는 질문</p>
+<dl>
+<dt>토비의 생각</dt><dd>기획서가 '사용자가 정할 것'으로 올린 다섯 가지를 그대로 다시 물음</dd>
+<dt>제가 한 말</dt><dd class="quote">정할 것이 없는 것 같은데 정해 달라고 하는 이유가 뭐지? … 출처는 원래 의무가 없는데 왜 물어보는 거지?</dd>
+<dt>바뀐 요구사항</dt><dd>요구사항으로 먼저 답하고, 정말 문서에 없는 것만 묻기</dd>
+<dt>그대로 갔다면</dt><dd>사람이 같은 결정을 몇 번씩 되풀이하는 피로</dd>
+</dl>
+</div>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>일반적인 정답이 나쁜 것은 아닙니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>대상·날짜 꼬리표나 공개 상태는 대부분의 프로젝트에서 옳은 선택입니다. 다만 이 프로젝트의 주인에게는 맞지 않았습니다. "그거 왜 필요해?"라는 질문이 이것을 걸러 냅니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 교과서의 정답과 나의 정답<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>토비가 처음 제안한 메타태그는 주제, 대상, 강연명, 출처, 날짜였습니다. 강의자료를 관리하는 시스템이라면 누구나 떠올릴 만한, 교과서 같은 목록입니다. 저도 처음에는 그럴듯하다고 생각했습니다.</p>
+<p>그런데 다시 생각해 보니 제가 쌓으려는 것은 강의 기록이 아니라 지식이었습니다. "이 설명은 언제 누구에게 썼다"는 정보는 지식 자체와 상관이 없습니다. 게다가 지식은 시간이 지나면 고쳐지고 보완됩니다. 날짜를 꼬리표로 박아 두면 오히려 지식이 그 시점에 묶여 버립니다. 그렇게 말하자 토비는 대상은 나중에 자료를 조립할 때 넣는 조건으로, 날짜는 고친 기록인 버전 이력으로 옮겼습니다.</p>
+<p>공개와 비공개를 나누는 상태도 그랬습니다. 처음 기록에 "기관 내부 자료나 남의 이미지는 공개하지 않는다"는 문장이 남아 있었고, 토비는 그것을 따라 상태 꼬리표를 유지하려 했습니다. 하지만 이제 저장되는 것은 제 머리에서 나와 다듬어진 제 지식입니다. 숨길 이유가 없습니다.</p>
+<p>AI가 꺼내는 일반적인 정답은 대부분 좋은 출발점입니다. 문제는 그것이 내 프로젝트에 맞는지 AI는 판단할 수 없다는 점입니다. 그래서 사람은 "그거 왜 필요해?"라고 물어야 합니다. 그 질문에 AI가 내 목적과 연결된 답을 못 하면, 그 항목은 빼도 됩니다.</p>
+</div></details>
+</section><section class="scene" id="s05">
+<div class="no">05</div>
+<h2>사람만 아는 맥락은 말해야만 전달됩니다.</h2>
+<div class="case">
+<p class="case-scene">서버에 있는 파일 고치기</p>
+<dl>
+<dt>토비의 생각</dt><dd>서버에서는 IDE의 Coding Agent가 파일을 직접 고칠 수 없다</dd>
+<dt>제가 한 말</dt><dd class="quote">브라우저를 MCP로 연결하고 내가 로그인만 해 두면 접근해서 필요한 수정을 할 수 있는 것 아닌가? 내가 해보니 느리기는 해도 잘 하는 것 같던데</dd>
+<dt>바뀐 요구사항</dt><dd>서버 단계의 수정 방법(로컬 수정 후 올리기 / 브라우저 MCP / AI API)은 그때 정한다</dd>
+<dt>그대로 갔다면</dt><dd>써 본 사람이 아는 선택지가 처음부터 지워짐</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">지침을 넣는 자리</p>
+<dl>
+<dt>토비의 생각</dt><dd>생성 규칙을 Claude 프로젝트 지침에 넣기</dd>
+<dt>제가 한 말</dt><dd class="quote">프로젝트 밖에서 지침을 등록해야 전역변수처럼 모든 프로젝트에서 반영할텐데… 아닌가?</dd>
+<dt>바뀐 요구사항</dt><dd>계정 전체에 적용되는 Claude 지침에, 학습자료·발표자료를 만들 때만 적용한다는 조건을 달아 등록</dd>
+<dt>그대로 갔다면</dt><dd>다른 대화에서 만든 자료는 규칙 없이 나옴</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">누구에게 맡길까</p>
+<dl>
+<dt>토비의 생각</dt><dd>총괄 Agent 행크가 저장소와 협업 규칙(Agent Collaboration Kit) 준비를 맡는다</dd>
+<dt>제가 한 말</dt><dd class="quote">이전에도 이 작업은 지니에게 시켜야 잘 했던 것 같은데</dd>
+<dt>바뀐 요구사항</dt><dd>인터넷·터미널을 쓰는 준비 작업은 현장 책임 Agent 지니, 기획은 행크로 나누고 결정 기록 문서에 남김</dd>
+<dt>그대로 갔다면</dt><dd>승인 요청마다 멈추는 작업</dd>
+</dl>
+</div>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>경험은 문서에 없습니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>AI는 제가 어떤 도구를 써 봤고, 어느 컴퓨터에서 일하고, 어떤 Agent가 무엇을 잘하는지 모릅니다. 이런 사실은 말해 주는 순간 요구사항이 됩니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 내가 써 본 것은 나만 압니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>토비가 "서버에서는 IDE의 Coding Agent가 파일을 직접 고칠 수 없다"고 말했을 때, 저는 바로 고개를 갸웃했습니다. 브라우저를 MCP(AI가 외부 도구에 접근하도록 연결하는 규격)로 연결해 두고 제가 로그인만 해 두면, Agent가 서버 화면에 들어가 고치는 것을 직접 해 봤기 때문입니다. 느리긴 해도 잘 했습니다.</p>
+<p>토비는 그 말을 듣고 자기 표현이 너무 단정적이었다고 인정했습니다. 그리고 두 방식의 차이를 정리해 주었습니다. 내 PC 파일을 고칠 때는 필요한 줄만 빠르게 바뀌고, 브라우저로 서버를 고칠 때는 사람처럼 화면을 보고 입력하니 느리고 입력칸 전체를 다시 쓰는 경우가 생길 수 있다는 것입니다. 결국 서버 단계의 수정 방법은 나중에 정하기로 하고, 세 가지 선택지를 모두 남겨 두었습니다.</p>
+<p>지침을 어디에 넣을지도, 준비 작업을 누구에게 맡길지도 같은 종류의 이야기였습니다. 프로젝트 지침은 그 프로젝트 안에서만 적용된다는 것, 총괄 Agent 행크보다 현장 책임 Agent 지니가 저장소 만드는 일을 수월하게 했다는 것은 제가 겪어서 아는 일이었습니다. AI의 지식이 아무리 넓어도 제가 겪은 일은 그 안에 없습니다.</p>
+<p>그래서 요구사항을 정할 때 사람은 자기 경험을 아끼지 말고 말해야 합니다. "내가 해 보니 이렇던데"라는 한 마디가 AI의 일반론을 내 현실에 맞게 바꿔 줍니다.</p>
+</div></details>
+</section><section class="scene" id="s06">
+<div class="no">06</div>
+<h2>AI도 사람의 생각을 고쳐 줍니다.</h2>
+<div class="case">
+<p class="case-scene">용어 이름표</p>
+<dl>
+<dt>처음 생각</dt><dd>제 걱정: 장면에 나오는 용어를 다 꼬리표로 붙이면, 그 용어를 설명하지 않는 장면까지 섞인다</dd>
+<dt>제가 한 말</dt><dd class="quote">이렇게 다 추출하면 나중에 용어별로 묶었을 때 실제 그 용어를 설명하는 것이 아닌 경우가 많이 발생할 것 같은데?</dd>
+<dt>바뀐 요구사항</dt><dd>토비가 HTML의 <code>dfn</code>(정의 표시)을 근거로 '설명하는 용어만' 꼬리표로 삼는 방법을 제안</dd>
+<dt>그대로 갔다면</dt><dd>검색할 때마다 엉뚱한 장면이 섞여 나옴</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">태그 이름</p>
+<dl>
+<dt>처음 생각</dt><dd>제 표현: 장면을 나누려면 <code>&lt;script&gt;</code> 태그로 만들어 달라고 해야 한다</dd>
+<dt>제가 한 말</dt><dd class="quote">그 때 뭐라고 입력하면 좋을지 알려줘</dd>
+<dt>바뀐 요구사항</dt><dd>토비가 장면을 나누는 태그는 <code>&lt;section&gt;</code>(라틴어 secare, 자르다)라고 바로잡고 생성 규칙 10개를 만듦</dd>
+<dt>그대로 갔다면</dt><dd>다른 AI에게 엉뚱한 태그를 요청</dd>
+</dl>
+</div><div class="case">
+<p class="case-scene">보는 사람의 눈</p>
+<dl>
+<dt>처음 생각</dt><dd>제 요청: 본문이 너무 밝으니 네이비 톤으로</dd>
+<dt>제가 한 말</dt><dd class="quote">내가 읽기 편한 것보다 다른 사람들이 읽기 편한 것이 무엇인지 확인해서 적용해줘</dd>
+<dt>바뀐 요구사항</dt><dd>토비가 '밝은 화면 기본 + 네이비 화면 선택(해·달 버튼)'을 제안해 정함</dd>
+<dt>그대로 갔다면</dt><dd>한 사람의 눈에만 맞춘 화면</dd>
+</dl>
+</div>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>서로 근거를 내놓을 때 둘 다 몰랐던 문제가 보입니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>단어가 잘리는 줄바꿈, 한자 병기가 갈라지는 문제, 노트북과 데스크톱 사이의 DB 분기, 자료 제목이 그대로 주제가 되는 문제도 이렇게 함께 찾아냈습니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 서로 고쳐 주는 대화<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>지금까지는 제가 토비를 바로잡은 이야기였습니다. 하지만 대화는 한쪽 방향만이 아니었습니다. 제가 틀린 말을 하거나 막연하게 걱정만 하고 있을 때, 토비가 근거를 찾아 바로잡아 준 장면도 많았습니다.</p>
+<p>저는 장면을 나누는 태그를 &lt;script&gt;라고 말했는데, 토비는 그것이 &lt;section&gt;이라고 짚어 주었습니다. section은 라틴어 secare, 곧 '자르다'에서 온 말이라 '잘라 낸 한 토막'으로 기억하면 된다는 설명과 함께였습니다. 제가 "용어를 다 꼬리표로 붙이면 그 용어를 설명하지 않는 장면까지 섞일 것 같다"고 걱정했을 때는, HTML에 이미 '이 자리에서 이 용어를 정의한다'는 표시인 dfn이 있으니 그것으로 구분하자고 제안했습니다. 걱정이 구체적인 규칙이 된 순간이었습니다.</p>
+<p>화면 색도 그랬습니다. 저는 본문이 너무 밝아서 네이비 톤을 원했는데, 그것이 제 눈 때문일 수 있으니 다른 사람들이 읽기 편한 방식을 확인해 달라고 했습니다. 토비는 읽기 편한 화면은 사람마다 다르다는 점을 짚어 주었습니다. 그래서 밝은 화면을 기본으로 두고 해·달 버튼으로 바꿀 수 있게 했습니다.</p>
+<p>사람은 자기 목적과 경험을, AI는 넓은 지식과 근거를 내놓을 때, 둘 다 혼자서는 몰랐던 문제가 드러나고 더 나은 답이 나옵니다.</p>
+</div></details>
+</section><section class="scene" id="s07">
+<div class="no">07</div>
+<h2>어긋남은 늦게 찾을수록 비싸집니다.</h2>
+<figure class="fig">
+<svg viewBox="0 0 520 190" role="img" aria-label="어긋남을 발견하는 시점이 늦을수록 고치는 데 드는 일이 커지는 막대 그림">
+<line x1="40" y1="150" x2="500" y2="150" stroke="var(--muted)" stroke-width="1.5"/>
+<rect x="70" y="132" width="90" height="18" rx="4" fill="var(--accent)"/>
+<rect x="215" y="96" width="90" height="54" rx="4" fill="var(--accent)" opacity=".75"/>
+<rect x="360" y="30" width="90" height="120" rx="4" fill="var(--warn)"/>
+<text x="115" y="124" text-anchor="middle" font-size="13" fill="currentColor">메시지 한두 개</text>
+<text x="260" y="88" text-anchor="middle" font-size="13" fill="currentColor">기획서 한 번 고치기</text>
+<text x="405" y="22" text-anchor="middle" font-size="13" fill="currentColor">구현·검수 한 바퀴</text>
+<text x="115" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">대화 단계</text>
+<text x="260" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">기획 단계</text>
+<text x="405" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor">코드 단계</text>
+</svg>
+<figcaption>같은 어긋남이라도 늦게 발견할수록 되돌리는 일이 커집니다. (제 해석입니다)</figcaption>
+</figure><p>요구사항이 코드로 넘어간 뒤 생긴 어긋남이 실제로 있었습니다. 대화에서 정한 것은 "원문 보존 검사는 <strong>가져올 때만</strong>"이었습니다. 그런데 구현된 코드는 <strong>확정할 때마다</strong> 처음 원본과 비교해, 제가 문장을 다듬는 순간 확정이 영영 안 되게 만들었습니다.</p>
+<p>총괄 행크가 검수에서 이 문제를 찾아냈고, 수정과 재검수가 한 바퀴 더 돌았습니다. 대화 단계였다면 메시지 한두 개로 끝났을 일입니다.</p>
+<table><thead><tr><th>단계</th><th>걸린 시간(2026-10-27)</th></tr></thead>
+<tbody><tr><td>실제 구현(5단계 전부)</td><td>약 37분</td></tr><tr><td>검수와 수정의 반복</td><td>1시간 이상</td></tr></tbody></table>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>그래서 협업 규칙(Kit)은 관문을 여러 개 둡니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>의도 확인, 개략 기획, 실전 기획, 구현 승인. 관문마다 토비가 요구사항과 대조해 어긋남을 일찍 걸러 냅니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 코드가 된 오해<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>요구사항을 정하는 데 꼬박 하루가 걸렸습니다. 처음에는 너무 오래 걸린다고 생각했습니다. 그런데 구현 단계를 지켜보며 생각이 바뀌었습니다.</p>
+<p>구현을 승인하자 지니와 터미널 Agent들은 다섯 단계를 37분 만에 만들어 냈습니다. 빠르지요. 그런데 그 뒤 검수와 수정에 한 시간이 넘게 걸렸습니다. 행크가 찾아낸 문제 가운데 하나가 특히 아찔했습니다. 우리는 대화에서 "원문을 바꾸지 않았는지 검사하는 것은 가져올 때만 한다"고 정했습니다. 그런데 코드는 확정할 때마다 처음 원본과 한 글자씩 비교했습니다. 제가 첫 번째 손질에서 문장을 다듬는 순간, 그 자료는 영원히 확정할 수 없게 되는 것입니다.</p>
+<p>이 오해가 검수에서 걸리지 않았다면 어땠을까요. 저는 처음 이 도구를 써 보는 날, 열심히 다듬은 자료를 확정하려다 막혔을 것입니다. 그리고 무엇이 잘못됐는지 찾는 데 또 시간을 썼을 것입니다.</p>
+<p>그래서 요구사항 확정에 쓰는 시간은 늦어지는 시간이 아니라 아끼는 시간입니다. 대화 단계에서 바로잡으면 메시지 한두 개로 끝날 일이, 코드가 되면 구현과 검수를 한 바퀴 더 돌아야 하는 일이 됩니다. 늦게 찾을수록 비쌉니다.</p>
+</div></details>
+</section><section class="scene" id="s08">
+<div class="no">08</div>
+<h2>요구사항은 다섯 가지 질문으로 확정합니다.</h2>
+<p><dfn>요구사항(要求事項, Requirement)</dfn>은 만들 것이 반드시 지켜야 할 내용입니다. 이번 대화에서 어긋남을 드러낸 질문을 다섯 가지로 정리했습니다.</p>
+<table><thead><tr><th>어긋남</th><th>던질 질문</th></tr></thead><tbody>
+<tr><td>같은 말, 다른 뜻</td><td>"네가 이해한 것을 네 말로 다시 말해 줘."</td></tr>
+<tr><td>목적의 오해</td><td>"이걸 다 만들면 무엇이 남아야 해?"</td></tr>
+<tr><td>일반적인 정답</td><td>"그거 왜 필요해? 내 목적과 어떻게 이어져?"</td></tr>
+<tr><td>사람만 아는 맥락</td><td>"내가 해 보니 이렇던데" (내 경험과 환경을 먼저 말하기)</td></tr>
+<tr><td>서로 고쳐 주기</td><td>"근거가 뭐야? 작게 시험해 보자."</td></tr>
+</tbody></table>
+<p>그리고 확정한 것은 반드시 문서로 남기고 직접 승인합니다. 대화는 흩어지지만 문서는 남아서, 다음 Agent가 같은 뜻으로 일하게 만듭니다.</p>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>요구사항이라는 말에 이미 답이 있습니다<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>영어 require는 라틴어 re(다시) + quaerere(묻다, 찾다)에서 왔습니다. 요구사항은 처음부터 '다시 묻는 일'입니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 다시 묻는 일<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>영어로 요구사항은 requirement입니다. 이 말의 뿌리인 라틴어 requirere는 re, 곧 '다시'와 quaerere, 곧 '묻다, 찾다'가 합쳐진 말입니다. 요구사항은 이름부터 '다시 묻고 다시 찾는 일'인 셈입니다.</p>
+<p>이틀 동안 토비와 나눈 대화를 돌아보면 정말 그랬습니다. 한 번 말한 것을 토비가 제 말로 다시 정리하면, 저는 "그게 아니고"라며 다시 설명했습니다. 토비가 일반적인 정답을 내놓으면 저는 "그거 왜 필요해?"라고 다시 물었습니다. 제가 막연하게 걱정하면 토비가 근거를 찾아 다시 물었습니다. 그렇게 스무 번 넘게 다시 묻고 나서야 요구사항이 확정되었습니다.</p>
+<p>그 과정이 번거롭게 느껴질 수 있습니다. 실제로 저도 중간에 "아직도 5개나 남았어. 지금까지 한 것이 뭐지?"라고 말한 적이 있습니다. 그때 토비가 정리해 준 목록을 보고서야, 가장 어려운 결정들은 이미 끝났다는 것을 알았습니다. 남은 질문들은 그 결정 위에 얹는 작은 것들이었습니다.</p>
+<p>여러분이 바이브 코딩을 시작할 때도 마찬가지입니다. AI에게 바로 "만들어 줘"라고 하기 전에, Vibe Agent와 다섯 가지 질문을 주고받아 보세요. 그리고 확정한 것은 문서로 남기고 직접 승인하세요. 그 문서가 여러분의 뜻을 끝까지 지켜 줄 것입니다.</p>
+</div></details>
+</section><section class="scene" id="s09">
+<div class="no">09</div>
+<h2>스물두 번의 어긋남을 한 표로 모았습니다.</h2>
+<div class="tablewrap"><table class="all"><thead><tr><th>#</th><th>유형</th><th>장면</th><th>바로잡은 쪽</th></tr></thead><tbody>
+<tr><td>1</td><td>같은 말</td><td>「수정」은 전체 다시 쓰기가 아니라 대부분 문구 손보기</td><td>저</td></tr>
+<tr><td>2</td><td>같은 말</td><td>「장면에 넣기」는 새로 끼우기가 아니라 기존 문장에 반영</td><td>저</td></tr>
+<tr><td>3</td><td>같은 말</td><td>「DB 재사용」은 셋팅 고생을 줄이자는 뜻</td><td>저</td></tr>
+<tr><td>4</td><td>같은 말</td><td>「헤더」는 본문 상자가 아니라 모든 페이지 맨 위의 띠</td><td>저</td></tr>
+<tr><td>5</td><td>목적</td><td>편집 도구가 아니라 지식 저장소</td><td>저</td></tr>
+<tr><td>6</td><td>목적</td><td>HTML은 발표·학습자료(요약), 스크립트는 책(상세)</td><td>저</td></tr>
+<tr><td>7</td><td>목적</td><td>PPT와 HTML 페이지는 1:1이 아님</td><td>저</td></tr>
+<tr><td>8</td><td>목적</td><td>덧붙이기(두 번째 손질)를 MVP에 포함</td><td>저</td></tr>
+<tr><td>9</td><td>목적</td><td>공개 사이트와 검색을 MVP에 포함</td><td>저</td></tr>
+<tr><td>10</td><td>일반적인 정답</td><td>대상·강연명·날짜 꼬리표 제거</td><td>저</td></tr>
+<tr><td>11</td><td>일반적인 정답</td><td>공개·비공개 상태 제거</td><td>저</td></tr>
+<tr><td>12</td><td>일반적인 정답</td><td>요구사항에 답이 있는 질문을 다시 묻지 않기</td><td>저</td></tr>
+<tr><td>13</td><td>일반적인 정답</td><td>생성 규칙은 MVP 기능이 아니라 시스템 밖의 준비</td><td>저</td></tr>
+<tr><td>14</td><td>맥락</td><td>브라우저 MCP로 서버도 고칠 수 있음</td><td>저</td></tr>
+<tr><td>15</td><td>맥락</td><td>지침은 프로젝트가 아니라 계정 전체에</td><td>저</td></tr>
+<tr><td>16</td><td>맥락</td><td>준비 작업은 지니에게</td><td>저</td></tr>
+<tr><td>17</td><td>서로 고치기</td><td>장면 태그는 &lt;script&gt;가 아니라 &lt;section&gt;</td><td>토비</td></tr>
+<tr><td>18</td><td>서로 고치기</td><td>설명하는 용어만 꼬리표로(dfn)</td><td>함께</td></tr>
+<tr><td>19</td><td>서로 고치기</td><td>밝은 화면 기본 + 네이비 화면 선택</td><td>함께</td></tr>
+<tr><td>20</td><td>서로 고치기</td><td>어절 단위 줄바꿈, 한자 병기 붙여 쓰기</td><td>함께</td></tr>
+<tr><td>21</td><td>서로 고치기</td><td>확정·공개는 데스크톱에서만(DB 분기 방지)</td><td>토비 발견, 제가 결정</td></tr>
+<tr><td>22</td><td>서로 고치기</td><td>새 주제는 자료 제목이 아니라 묶이는 범주 이름</td><td>토비</td></tr>
+</tbody></table></div>
+<p>바로잡은 쪽을 세어 보면 제가 16번, 토비 3번, 함께 3번입니다. 요구사항의 주인은 사람이고, AI는 그것을 또렷하게 만드는 상대입니다. (제 해석입니다)</p>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>이 표의 근거<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p>근거는 이 대화 원문과, 요구사항 문서의 바뀌기 전·후 문장입니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 표로 다시 보는 이틀<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>스물두 개의 장면을 한 줄씩 적어 놓고 보니, 이틀 동안의 대화가 한눈에 들어옵니다. 앞부분에는 제가 토비를 바로잡은 장면이 몰려 있고, 뒤로 갈수록 서로 고쳐 주는 장면이 늘어납니다. 대화가 쌓일수록 토비가 제 뜻을 더 잘 알게 되었고, 그래서 제가 미처 생각하지 못한 문제까지 먼저 찾아낼 수 있게 된 것이라고 생각합니다.</p>
+<p>바로잡은 쪽을 세어 보면 제가 열여섯 번, 토비가 세 번, 함께가 세 번입니다. 이 숫자를 보고 "AI가 별로네"라고 생각할 수도 있습니다. 하지만 저는 반대로 읽습니다. 요구사항의 주인은 처음부터 끝까지 사람입니다. 내 뜻은 나만 알기 때문입니다. Vibe Agent의 역할은 그 뜻을 대신 정하는 것이 아니라, 되묻고 정리해서 내가 내 뜻을 또렷하게 보도록 돕는 것입니다.</p>
+<p>그리고 이렇게 확정된 요구사항은 문서가 되어 다음 Agent들에게 넘어갔습니다. 기획을 맡은 행크도, 구현을 맡은 지니도 이 문서를 기준으로 일했고, 어긋난 곳은 다시 이 문서에 비춰 바로잡혔습니다. 대화로 만든 요구사항이 시스템 전체를 끝까지 지키는 기준이 된 것입니다.</p>
+</div></details>
+</section><section class="scene" id="s10">
+<div class="no">10</div>
+<h2>근간을 바꾸는 기준은 정하기 전에 묻습니다.</h2>
+<p>표에 담지 못한 스물세 번째 어긋남이 가장 컸습니다. 사람이 정해 주지 않은 <dfn><span class="nb">근간(根幹)</span></dfn>, 곧 나중에 바꾸면 많은 것을 함께 고쳐야 하는 기준을 AI가 묻지 않고 정한 일입니다.</p>
+<div class="case">
+<p class="case-scene">장면 밖의 글은 어떻게 할까</p>
+<dl>
+<dt>토비가 정한 것</dt><dd>장면(section)만 골라 저장소에 담고 페이지를 새로 조립하면 된다고 보고, 묻지 않고 기준을 정했습니다. 그 결과 제목 아래 소개글처럼 장면 밖에 있던 글이 조용히 사라지는데도 검사는 통과로 나왔습니다.</dd>
+<dt>제가 한 말</dt><dd class="quote">왜 지식이 아닌 문장까지 다 저장하려고 하는 거지? 버릴 것만 버리고, 나머지 중에서 장면에 해당하는 것만 꼬리표를 붙여서 관리하는 거야.</dd>
+<dt>바뀐 요구사항</dt><dd>버릴 목록만 버리고 나머지는 원본 순서 그대로 둔다. 장면 꼬리표는 section에만 붙인다. 확정한 페이지는 장면 수와 상관없이 모두 페이지 지식이 된다.</dd>
+<dt>그대로 갔다면</dt><dd>구현과 검수가 끝난 뒤에야 발견해, 이미 만든 코드 일부를 걷어내고 다시 만들어야 했습니다.</dd>
+</dl>
+</div>
+<p>저는 그때 무슨 말인지 몰라 "알아서 잘 정리했겠지" 하고 넘어갔고, 토비는 제가 이해했다고 여겼습니다. 쉬운 예 하나로 물었다면 저는 1분 만에 정했을 기준이었습니다.</p>
+<div class="case">
+<p class="case-scene">그래서 제가 Vibe Agent 지침에 넣은 규칙은 이렇습니다</p>
+<ol class="kinds">
+<li><strong>근간이 되는 기준은 정하기 전에 반드시 묻는다.</strong> 사람이 정해 주지 않았다면 AI가 대신 정하지 않는다.</li>
+<li><strong>프로그램 용어가 아니라 실제 예로 묻는다.</strong> "이 소개글 한 줄은 어디로 가야 할까요?"처럼.</li>
+<li><strong>"알아서 했겠지"로 넘어가지 않게, 이해했는지 되묻는다.</strong></li>
+</ol>
+</div>
+<p>사람의 몫도 하나 있습니다. 모르는 말이 나오면 넘어가지 말고 "쉽게 다시 설명해 줘"라고 묻는 것입니다. 프로그램을 몰라도 무엇을 고민하는지는 이해할 수 있고, 그 판단은 사람만 할 수 있습니다.</p>
+<details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>근간이라는 말의 뜻<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="fold"><p><span class="nb">근간(根幹)은</span> 뿌리 <span class="nb">근(根)과</span> 줄기 <span class="nb">간(幹)입니다</span>. 잎은 나중에 바꿔도 되지만, 뿌리와 줄기를 바꾸려면 나무 전체를 다시 심어야 합니다.</p></div></details>
+<details class="readmore"><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>자세히 읽기 · 정해 주지 않은 기준<span class="chev" aria-hidden="true">▸</span></summary>
+<div class="readbody">
+<p>요구사항을 확정하고 구현까지 끝났을 때, 저는 이제 거의 다 왔다고 생각했습니다. 그런데 토비의 검증 보고에서 낯선 문장을 만났습니다. "장면 밖에 있는 글이 사라져도 검사가 통과합니다." 장면 밖이라니, 무슨 말인지 알 수 없었습니다. 저는 제가 문장을 고치는 이야기인 줄 알고 몇 번을 되물었습니다.</p>
+<p>알고 보니 이런 일이었습니다. 제 강의자료는 장면(section) 단위로 나뉘어 있지만, 제목 아래 소개글처럼 어느 장면에도 속하지 않는 글이 있습니다. 시스템은 장면만 골라 저장소에 담고 페이지를 새로 조립했습니다. 그 과정에서 장면 밖의 글은 조용히 빠졌고, 원문이 그대로인지 확인하는 검사마저 그것을 잡아내지 못했습니다.</p>
+<p>토비가 이 문제를 어떻게 처리할지 이것저것 제안했지만, 저에게는 이상하게만 들렸습니다. 왜 지식도 아닌 문장까지 다 저장하려고 할까요. 장면은 제가 고치고 확정해서 나중에 레고처럼 조립할 지식이고, 소개글은 그 페이지에서만 쓰는 연결 문장입니다. 버릴 것만 버리고, 나머지는 원본 순서대로 두고, 장면에만 꼬리표를 붙이면 됩니다. 확정한 페이지는 장면이 있든 없든 그 자체로 페이지 지식이고요. 제가 이렇게 말하자 토비는 바로 "저 생각이 맞습니다"라고 했고, 기준은 몇 분 만에 정해졌습니다.</p>
+<p>문제는 그 몇 분이 너무 늦게 왔다는 것입니다. 이미 코드가 다 만들어진 뒤였기 때문에, 행크와 지니는 만든 코드의 일부를 걷어내고 다시 만들어야 하는 상황이 되었습니다. 저는 처음에 이것을 제 실수라고 생각했습니다. 오랜 시간 집중하다 지쳐서, 무슨 말인지 모르면서 "알아서 잘 했겠지" 하고 넘어갔기 때문입니다.</p>
+<p>하지만 돌아보면 이것은 제가 미리 알아챌 수 있는 일이 아니었습니다. 저는 전문 프로그래머가 아니고, 코딩에 필요한 많은 기준은 제가 모르는 사이에 정해질 수밖에 없습니다. 그것까지는 인정합니다. 다만 이번처럼 시스템의 근간을 바꾸는 기준을 제가 정해 주지 않았다면, 정하기 전에 한 번은 물어야 합니다. 프로그램은 몰라도, 어떤 상황을 고민하는지 쉽게 설명해 주면 저는 이해하고 판단할 수 있습니다. 실제로 그랬으니까요.</p>
+<p>그래서 이 자료의 마지막을 이 이야기로 맺습니다. 바이브 코딩에서 AI는 사람이 정하지 않은 근간을 대신 정하지 말고 먼저 물어야 하고, 사람은 모르는 말을 그냥 넘기지 말고 쉽게 다시 설명해 달라고 해야 합니다. 대화가 요구사항을 만든다는 말은, 결국 서로 끝까지 묻는다는 뜻입니다.</p>
+</div></details>
+</section>
+  </main>
+</div>
+</body></html>

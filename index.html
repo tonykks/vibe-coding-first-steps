@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="바이브코딩의 첫걸음: 나만의 코딩 Agent 만들기 강연의 목적, 구성, 사례와 기대 효과를 설명하는 검토용 안내 페이지">
-  <title>바이브코딩의 첫걸음 | 강연안</title>
+  <meta name="description" content="바이브코딩의 첫걸음: 나만의 코딩 Agent 만들기 강연의 보충자료. 강연의 흐름, 역할 구조, 사례, 업무 적용과 보안을 정리했습니다.">
+  <title>바이브코딩의 첫걸음 | 보충자료</title>
   <style>
     :root {
       color-scheme: dark;
@@ -937,7 +937,7 @@
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
 
-  <aside class="sidebar" aria-label="강연안 목차">
+  <aside class="sidebar" aria-label="목차">
     <div class="brand">
       <strong>Vibe Coding</strong>
     </div>
@@ -947,6 +947,7 @@
         <li><a href="#question">강연이 답할 질문</a></li>
         <li><a href="#services">세 회사 서비스</a></li>
         <li><a href="#ladder">일이 커지는 길</a></li>
+        <li><a href="#limits">웹의 벽</a></li>
         <li><a href="#model">전체 역할 구조</a></li>
         <li><a href="#vibe">Vibe Agent</a></li>
         <li><a href="#owner">Owner 50·40·10</a></li>
@@ -998,14 +999,16 @@
     <section id="services">
       <p class="section-kicker">Three Services</p>
       <h2>세 회사 모두 같은 길을 갖고 있습니다</h2>
-      <p class="section-intro">OpenAI, Google, Anthropic의 서비스 가운데 바이브코딩에 쓰이는 것만 모았습니다. 이름은 달라도 대화로 시작해, 일이 커지면 내 PC에서 작업하는 환경으로 옮겨 가는 흐름은 같습니다. 각 서비스의 개념도와 사용설명서는 링크로 열어 볼 수 있습니다.</p>
+      <p class="section-intro">OpenAI, Google, Anthropic의 서비스 가운데 바이브코딩에 쓰이는 것만 모았습니다. 이름은 달라도 대화로 시작해, 일이 커지면 내 PC에서 작업하는 환경으로 옮겨 가는 흐름은 같습니다. 각 서비스의 사용설명서는 링크로 열어 볼 수 있습니다.</p>
       <div class="grid-3">
         <article class="card">
           <span class="number">OpenAI</span>
           <h3>ChatGPT Plus</h3>
           <p>대화로 시작해, 파일·사이트를 완성하고, 코드까지 맡기는 세 가지 작업 방식입니다.</p>
           <ul><li><b>Chat</b>: 대화로 아이디어와 요구사항을 정리합니다.</li><li><b>Work</b>: 파일·사이트 같은 완성된 결과물을 만듭니다.</li><li><b>Codex</b>: 저장소와 폴더의 코드를 고치고 테스트합니다. Cloud와 Local 모두 가능합니다.</li></ul>
+          <!-- 개념도 링크 임시 숨김(이미지 속 가격·모델명 확인 후 복구)
           <a class="demo-link" href="concept-openai.jpg" target="_blank" rel="noopener noreferrer">서비스 개념도 보기 <span aria-hidden="true">↗</span></a>
+          -->
           <a class="demo-link" href="guide-openai.html" target="_blank" rel="noopener noreferrer">사용설명서 보기 <span aria-hidden="true">↗</span></a>
         </article>
         <article class="card">
@@ -1013,7 +1016,9 @@
           <h3>Google 생태계</h3>
           <p>기획에서 시작해 웹 빌더, 로컬 IDE, 서비스 운영까지 이어집니다.</p>
           <ul><li><b>Gemini</b>: 대화로 문제와 요구사항을 정리합니다.</li><li><b>AI Studio</b>: Playground로 실험하고 Build Mode로 앱을 만듭니다.</li><li><b>Antigravity IDE</b>: 내 PC 폴더에서 정밀하게 고칩니다. Firebase·Cloud Run으로 서비스를 공개합니다.</li></ul>
+          <!-- 개념도 링크 임시 숨김(이미지 속 가격·모델명 확인 후 복구)
           <a class="demo-link" href="concept-google.jpg" target="_blank" rel="noopener noreferrer">서비스 개념도 보기 <span aria-hidden="true">↗</span></a>
+          -->
           <a class="demo-link" href="guide-google.html" target="_blank" rel="noopener noreferrer">사용설명서 보기 <span aria-hidden="true">↗</span></a>
         </article>
         <article class="card">
@@ -1084,7 +1089,7 @@
             <p>Claude와 Codex는 각각 데스크톱에 설치하는 앱에서 코딩 Agent를 쓸 수 있습니다. 작업이 복잡해질수록 웹 브라우저보다 이 방식이 유리합니다. 제가 직접 겪은 장면을 소개합니다.</p>
             <p>Claude Code에게 한 번 승인을 했더니 Firebase의 로그인(Authentication)과 데이터베이스(Firestore) 설정을 숨 돌릴 틈 없이 처리했습니다. Firebase는 구글이 제공하는 앱 백엔드 서비스입니다. 웹페이지를 띄워 확인하는 일도 앱 안의 브라우저 하나만 승인하면 눈 깜짝할 사이에 끝냈습니다. 그 능력은 정말 상상을 뛰어넘었습니다.</p>
             <details class="memo">
-              <summary>메모 · 이런 문제의식도 있습니다</summary>
+              <summary>덧붙임 · 이런 문제의식도 있습니다</summary>
               <div class="memo-body">
                 <p>AI가 알아서 다 해 주는 편리함에 문제의식을 제기하는 분들도 있습니다. 과학철학자 장하석 교수는 최재천 교수와의 대담(「최재천의 아마존」, 2026년 10월)에서, 계산기를 쓰더라도 계산의 원리는 알아야 하듯 AI를 쓰더라도 사람이 직접 경험해야 할 최소한이 있다고 했습니다.</p>
                 <p>결과를 받아 쓰는 일과, 그 결과가 왜 그렇게 나왔는지 아는 일은 서로 다릅니다. AI가 다 해 준다는 말은 편리하지만, 사람이 꼭 알아야 할 경험의 기회를 가져갈 수도 있습니다.</p>
@@ -1140,6 +1145,110 @@
             <div class="takeaway">AI에게 완벽을 요구하면 비용이 폭증합니다. 기준은 정하고, 마지막 오류는 사람이 고치는 편이 효율적입니다.</div>
           </div>
         </article>
+      <div class="answer-band">다음 구역에서는 웹에서 만나는 벽을 하나씩 자세히 보겠습니다.</div>
+    </section>
+
+    <section id="limits">
+      <p class="section-kicker">Web Limits</p>
+      <h2>웹에서 끝까지 가 보면 만나는 벽</h2>
+      <p class="section-intro">웹에서 하는 바이브코딩은 정말 잘 됩니다. 다만 요구사항이 늘고 실제 사용자에게 배포하는 단계까지 가 보면, 프롬프트를 얼마나 잘 쓰느냐와 상관없이 비슷한 벽을 만나게 됩니다. 이 구역은 제가 한글 타자 연습 앱을 AI Studio Build Mode로 만들어 GitHub Pages와 Firebase로 배포하며 겪은 일을 바탕으로 정리했습니다. 다른 웹 기반 도구도 구조가 비슷하다면 같은 벽을 만날 수 있습니다.</p>
+        <article class="card scene">
+          <span class="number">1</span>
+          <div class="scene-body">
+            <h3>웹은 가능성을 열어 주고, 로컬 IDE는 통제권을 줍니다</h3>
+            <p>저는 처음부터 IDE를 배우라고 권하지 않습니다. 웹 브라우저에서는 클릭 몇 번이면 그럴듯한 앱이 만들어지고, 그 가능성은 그 자체로 소중합니다. 다만 그 앱을 고장 없이 키우고 내 자산으로 갖고 싶어지는 때가 옵니다. 그때 필요한 것이 통제권입니다.</p>
+            <p>아래 다섯 가지 벽은 사람의 프롬프트 실력이 부족해서가 아니라, 웹 브라우저라는 환경의 구조에서 생기는 일입니다.</p>
+            <div class="takeaway">웹 빌더는 가능성을 열어 주고, 로컬 IDE는 통제권을 줍니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">2</span>
+          <div class="scene-body">
+            <h3>한 줄만 고쳐도 AI가 파일 전체를 다시 쓸 수 있습니다</h3>
+            <p>웹 빌더는 고칠 곳이 몇 줄뿐이어도 수백 줄짜리 파일 전체를 새로 써서 덮어쓰는 경우가 많았습니다. 대화가 길어질수록 AI가 앞의 내용을 놓치기 쉬워져, 잘 되던 로그인이나 입력 검사 같은 기능이 슬쩍 빠지기도 합니다. 고친 곳이 아니라 멀쩡하던 곳이 다시 고장 나는 오류를 Regression Bug(퇴행 오류, 退行誤謬)라고 합니다.</p>
+            <p>제 경우에도 음악 재생 버튼 하나를 고쳐 달라고 했더니 화면 배치가 틀어지거나 랭킹 계산이 멈춘 적이 있습니다. 그래서 “기존 기능은 건드리지 마”라는 당부를 매번 덧붙이게 되었습니다.</p>
+            <div class="grid-2">
+              <article class="card"><h3>웹 빌더</h3><p>500줄 파일에서 2줄만 고쳐 달라고 해도 파일 전체를 새로 써서 덮어쓰는 경우가 많습니다. 다시 쓰는 중에 이전에 만든 조건이 빠질 수 있습니다.</p></article>
+              <article class="card"><h3>로컬 IDE</h3><p>문제가 된 몇 줄만 찾아 그 부분만 바꾸는 방식으로 일하는 경우가 많습니다. 이 방식을 Diff Patch(차분 패치, 差分 패치)라고 하며, 바뀐 부분(差)만 골라 교체하는 수정 방식입니다. 나머지 줄은 건드리지 않고, 바뀐 줄은 삭제는 빨강, 추가는 초록으로 바로 비교해 볼 수 있습니다.</p></article>
+            </div>
+            <p>거실 전구 하나가 나갔을 때, 집을 허물고 다시 지으며 전구를 끼우는 것과 전구만 갈아 끼우는 것의 차이와 같습니다. 집이 커질수록 어느 쪽이 편할지는 분명합니다.</p>
+            <div class="takeaway">고칠 곳만 고치는 방식이어야 이미 만든 기능이 지켜집니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">3</span>
+          <div class="scene-body">
+            <h3>웹 브라우저는 내 컴퓨터의 파일에 닿지 못합니다</h3>
+            <p>웹 브라우저는 안전을 위해 내 컴퓨터와 울타리로 분리된 공간에서 돌아갑니다. 이런 격리 공간을 Sandbox(샌드박스, 모래상자)라고 합니다. 어린이 놀이터의 모래상자처럼 밖으로 나가지 못하게 울타리를 친 곳입니다.</p>
+            <p>그래서 바탕화면에 있는 MP3 파일 스무 개를 앱에 쓰려면 하나씩 올려야 하고, 용량이나 개수 제한에 걸리기도 합니다. AI가 못해서가 아니라 울타리 때문입니다. IDE에서는 탐색기 폴더에 파일을 넣어 두고 “방금 넣은 음악 파일들을 재생기에 연결해 줘”라고 말하면 됩니다. 업로드 창이 낯선 분일수록 평소 쓰던 폴더가 더 편합니다.</p>
+            <div class="takeaway">내 폴더에 있는 파일을 그대로 쓸 수 있다는 것이 로컬의 큰 장점입니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">4</span>
+          <div class="scene-body">
+            <h3>미리보기에서 되던 앱이 배포하면 멈추기도 합니다</h3>
+            <p>웹 빌더의 미리보기 화면은 맨 위 주소(<code>/</code>)에서 돌아가는 임시 서버입니다. 그런데 GitHub Pages처럼 <code>내계정.github.io/저장소이름/</code>과 같은 하위 폴더 주소에 배포하면 파일 경로가 어긋나는 일이 생깁니다.</p>
+            <p>제 앱에서도 미리보기에서는 잘 나던 반주 음악이 배포한 사이트에서는 나오지 않았습니다. 음악 파일 주소를 맨 위 기준으로 적어 두었는데, 배포된 사이트에서는 브라우저가 엉뚱한 곳을 찾다가 404 Not Found 오류를 낸 것입니다. 주소가 한 칸 어긋난 셈입니다. 음원 파일을 지정된 폴더(<code>public/</code>)에 두어야 배포 결과물에 포함된다는 점도 원인 가운데 하나였습니다.</p>
+            <p>IDE에서는 에이전트가 내 컴퓨터에서 직접 빌드하고 실행해 보며 오류 메시지를 읽고 고칠 수 있습니다.</p>
+            <div class="takeaway">미리보기는 온실입니다. 실제 주소로 내보내 봐야 드러나는 문제가 있습니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">5</span>
+          <div class="scene-body">
+            <h3>코드 바깥의 설정은 웹에 갇힌 AI가 만지기 어렵습니다</h3>
+            <p>서비스는 코드 파일만으로 돌아가지 않습니다. 로그인을 허용할 주소의 등록, 데이터베이스 보안 규칙, 저장소의 배포 권한 같은 설정이 코드 바깥에 있습니다. 웹 빌더의 AI는 이런 관리자 화면에 들어가지 못하므로, 시켜도 코드만 고치다 끝나기 쉽습니다. 제가 겪은 두 가지입니다.</p>
+            <ol>
+              <li>Build Mode의 Push to GitHub로 저장소에 올렸더니, GitHub Actions(저장소에 올린 코드를 자동으로 빌드하고 배포해 주는 기능)에서 build는 성공하고 deploy 단계에서 빨간 X가 떴습니다. 코드 문제가 아니라 저장소 Settings의 Workflow permissions에서 Read and write permissions가 꺼져 있었기 때문입니다.</li>
+              <li>배포에 성공하고 구글 로그인 버튼을 눌렀더니 팝업이 열렸다가 바로 닫혔습니다. Firebase Authentication(구글이 제공하는 로그인 관리 서비스)은 허가된 주소에서 온 요청만 받는데, 새로 배포한 주소가 Firebase 콘솔의 승인된 도메인(Authorized domains)에 없었습니다. 채팅창에 몇 번을 말해도 풀리지 않지만, 원인을 알고 나면 등록 한 번으로 끝납니다.</li>
+            </ol>
+            <p>로컬에서는 에이전트가 CLI(Command Line Interface, 명령줄 인터페이스: 글자 명령으로 프로그램을 조종하는 방식)로 이런 설정까지 다룰 수 있습니다. 다만 앞 구역의 「IDE에서는 막히는 곳을 직접 해 보게 됩니다」 장면처럼, IDE에서도 사람이 직접 해야 하는 단계가 남을 수 있습니다.</p>
+            <div class="takeaway">코드의 문제가 아니라 코드 바깥의 문제일 때, 웹 안의 AI는 손이 닿지 않습니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">6</span>
+          <div class="scene-body">
+            <h3>만든 부품은 쌓이지 않고, 사용량만 늘어납니다</h3>
+            <p>웹 빌더에서는 프로젝트마다 대화방이 따로여서, 첫 앱에서 공들여 만든 로그인, 랭킹, 음악 재생기를 다음 앱으로 가져가기 어렵습니다. 빈 채팅창에서 다시 설명하면 AI는 매번 조금씩 다른 코드를 만들어 줍니다. 또 수정할 때마다 긴 대화와 전체 코드를 다시 보내게 되어, 토큰 사용량이 빨리 늘고 사용량 한도에 일찍 닿습니다.</p>
+            <p>로컬에서는 검증된 부품을 폴더로 모아 두고 다음 앱에서 꺼내 쓸 수 있습니다. 예를 들면 이런 모습입니다.</p>
+            <ul class="compact-list">
+              <li>공통 부품함: 구글 로그인, 음악 재생기, 랭킹 보드, 언어 전환</li>
+              <li>01 한글 타자 연습: Build Mode에서 시작해 IDE에서 완성한 첫 앱</li>
+              <li>02 한국어 단어 퀴즈(예시): “공통 부품함의 로그인과 랭킹을 가져와서 퀴즈만 붙여 줘”라고 말해서 시작</li>
+            </ul>
+            <p>한 번 고생해서 푼 해법이 내 하드디스크에 파일로 남으니, 다음 앱에서는 같은 시행착오를 덜 겪습니다. 음악 재생기를 별도 파일로 나눠 두면 화면 디자인을 크게 바꿔도 음악 쪽은 건드리지 않게 됩니다. 그리고 Git(깃: 파일의 변경 이력을 저장하는 도구)을 쓰면 AI가 작업할 때마다 저장 지점(Commit, 커밋)을 남기게 할 수 있어, 엉뚱하게 고쳐졌을 때 이전 상태로 되돌릴 수 있습니다.</p>
+            <div class="takeaway">웹에서는 결과물만 남고, 로컬에서는 부품과 경험이 파일로 쌓입니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">7</span>
+          <div class="scene-body">
+            <h3>IDE에서도 코드를 직접 칠 필요는 없습니다</h3>
+            <p>“저는 비전공자라 IDE 화면만 봐도 어지러운데, 그냥 웹에서 채팅으로만 하면 안 되나요?”라는 질문이 나올 수 있습니다. 걱정하지 않으셔도 됩니다. IDE에서도 코드를 직접 짜거나 명령어를 외울 필요가 없습니다. 지금처럼 에이전트 채팅창에 우리말로 시키면 됩니다. 달라지는 것은 에이전트가 일하는 곳이 웹 브라우저에서 내 컴퓨터의 폴더 안으로 옮겨진다는 점 하나입니다.</p>
+            <div class="takeaway">IDE로 옮겨도 말로 시키는 방식은 그대로입니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">8</span>
+          <div class="scene-body">
+            <h3>어디서 시작할지는 지금의 상황이 정합니다</h3>
+            <p>요즘 Build Mode에는 Export to Antigravity, Push to GitHub, Download as .zip file 세 가지 반출 경로가 있어서 내 컴퓨터로 가져오는 일 자체는 쉬워졌습니다. 어려운 것은 가져온 뒤에 고치고 키우는 일이고, 그때 위의 벽들이 다시 나타납니다.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>나의 상황</th><th>추천</th><th>이유</th></tr></thead>
+                <tbody>
+                  <tr><td>오늘 당장 수업이나 회의에서 보여 줄 한 화면짜리 계산기나 안내 페이지가 필요합니다.</td><td>AI Studio Playground</td><td>설정 없이 HTML 한 장으로 바로 결과를 얻을 수 있습니다.</td></tr>
+                  <tr><td>설치가 안 된 컴퓨터에서 30분 안에 웹앱을 만들어 링크를 보내고 싶습니다.</td><td>AI Studio Build Mode</td><td>브라우저에서 여러 파일로 된 앱을 만들고, Publish로 주소까지 만들 수 있습니다.</td></tr>
+                  <tr><td>Build Mode로 초안을 만들었고, 이제 내 컴퓨터의 MP3·이미지를 넣어 안전하게 고치고 싶습니다.</td><td>Build Mode에서 Antigravity IDE로</td><td>Export로 가져와 로컬에서 필요한 부분만 고칩니다.</td></tr>
+                  <tr><td>기능을 고칠 때마다 되던 기능이 깨지고, 앞으로 2탄, 3탄도 계속 만들 예정입니다.</td><td>Antigravity IDE</td><td>고칠 곳만 고치고, 공통 부품을 폴더에 쌓아 다시 씁니다.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="takeaway">Playground에서 가볍게 실험하고, Build Mode에서 골격을 빠르게 만든 뒤, Antigravity IDE로 내려받아 완성하고 내 자산으로 쌓아 갑니다.</div>
+          </div>
+        </article>
       <div class="answer-band">이 결과를 가지고, 역할을 나누는 협업 구조로 갑니다.</div>
     </section>
 
@@ -1153,7 +1262,7 @@
           <article class="role vibe">
             <span class="role-tag">생각 → 요구사항</span>
             <h3>Vibe Agent</h3>
-            <p>ChatGPT와의 대화를 통해 “무엇을, 왜, 어느 수준까지 만들 것인지”를 정리합니다.</p>
+            <p>ChatGPT나 Claude 같은 대화형 AI와의 대화를 통해 “무엇을, 왜, 어느 수준까지 만들 것인지”를 정리합니다.</p>
             <ul>
               <li>문제와 목표의 구체화</li>
               <li>요구사항과 완료조건 정리</li>
@@ -1233,7 +1342,7 @@
               <p>캔버스는 가로 1055 px × 세로 1491 px로 만든다. 가로와 세로의 비율을 유지한다.</p>
               <p>“바이브코딩”은 White·Cyan, “의 첫걸음”은 White·연한 Purple로 표현한다.</p>
               <p>문구를 임의로 추가·삭제하지 않는다. 별도의 날짜·작성자·워터마크를 넣지 않는다.</p>
-              <p>잘리지 않게 할 대상: 오른쪽 위 로봇과 손글씨, 6번 카드, 최종 메시지의 마지막 글자, 맨 아래 목표 문장의 느낌표와 외곽 테두리.</p>
+              <p>그림의 일부가 잘리지 않도록, 지켜야 할 대상을 하나씩 짚어 둡니다.</p>
             </div>
           </details>
           <div class="table-wrap">
@@ -1247,6 +1356,28 @@
             </table>
           </div>
           <div class="takeaway">AI가 알아서 만들어 주는 것이 아닙니다. 이만큼 구체적인 요구가 있어야 이만큼 구체적인 결과가 나오고, 그 요구를 정하는 사람이 주도자입니다.</div>
+        </div>
+      </article>
+      <article class="card scene" style="margin-top:18px">
+        <span class="number">예</span>
+        <div class="scene-body">
+          <h3>요구사항은 대화로 만들어집니다</h3>
+          <p>「HTML 수정 Agent」의 요구사항을 확정하느라 Vibe Agent와 이틀 동안 대화했습니다. 그 사이 서로의 생각이 어긋났다가 바로잡힌 장면이 스물두 번 있었습니다. 제가 바로잡은 것이 16번, Vibe Agent가 바로잡은 것이 3번, 함께 바로잡은 것이 3번입니다. AI가 모자라서가 아니라, 처음 듣는 내 말을 AI는 가장 평균적인 뜻으로 알아듣기 때문입니다.</p>
+          <a class="demo-link" href="requirements-dialogue.html" target="_blank" rel="noopener noreferrer">스물두 번의 대화 기록 보기 <span aria-hidden="true">↗</span></a>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>어긋남</th><th>던질 질문</th></tr></thead>
+              <tbody>
+                <tr><td>같은 말, 다른 뜻</td><td>“네가 이해한 것을 네 말로 다시 말해 줘.”</td></tr>
+                <tr><td>목적의 오해</td><td>“이걸 다 만들면 무엇이 남아야 해?”</td></tr>
+                <tr><td>AI의 일반적인 정답</td><td>“그거 왜 필요해? 내 목적과 어떻게 이어져?”</td></tr>
+                <tr><td>사람만 아는 맥락</td><td>“내가 해 보니 이렇던데” (내 경험과 환경을 먼저 말하기)</td></tr>
+                <tr><td>서로 고쳐 주기</td><td>“근거가 뭐야? 작게 시험해 보자.”</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>가장 컸던 어긋남은 대화에 없던 스물세 번째였습니다. 사람이 정해 주지 않은 근간, 곧 나중에 바꾸면 많은 것을 함께 고쳐야 하는 기준을 AI가 묻지 않고 정한 일입니다. 구현과 검수가 끝난 뒤에야 알게 되어 코드 일부를 다시 만들어야 했습니다.</p>
+          <div class="takeaway">근간이 되는 기준은 정하기 전에 묻습니다. 사람이 정해 주지 않았다면 AI가 대신 정하지 않습니다. 사람은 모르는 말이 나오면 “쉽게 다시 설명해 줘”라고 묻습니다.</div>
         </div>
       </article>
     </section>
@@ -1349,7 +1480,7 @@
       <h2>업무에 쓰기 전에 Data의 길을 구분합니다</h2>
       <div class="security-note">
         <p>회사 내부 자료나 개인정보를 코딩 Agent가 직접 읽게 하면, 사용하는 제품과 계약, 설정에 따라 Data가 외부 AI Server로 전송될 수 있습니다. 그래서 업무 적용은 오늘의 중심 사례에서 뺐습니다. 활용 가치가 낮아서가 아니라, 정보 보호와 책임이 중요하기 때문입니다.</p>
-        <p>업무에 적용하기 전에 두 가지를 구분하십시오. 가상 Data로 Program을 개발하는 방법, 그리고 완성된 로컬 Program만 실제 Data를 처리하는 경우와 AI가 실제 Data를 읽는 경우의 차이입니다.</p>
+        <p>업무에 적용하기 전에 두 가지를 구분하십시오. 첫째, 가상 Data로 Program을 개발하는 방법입니다. 둘째, 완성된 Program만 실제 Data를 처리하는 경우와 AI가 실제 Data를 읽는 경우의 차이입니다.</p>
       </div>
       <div class="answer-band">실제 Data는 Program이 처리하게 하고, AI는 가상 Data로 개발하게 하는 길이 안전합니다.</div>
       <article class="card scene">
