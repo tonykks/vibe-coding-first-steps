@@ -9,6 +9,7 @@
 - `agent-collaboration.html` : 두 PC와 Claude 탭·Code 탭이 노션 게시판 하나로 협업한 기록 (그림은 `agent-collaboration.png`)
 - `chat-to-ide.html` : 채팅에서 IDE로 옮길 때를 알리는 네 가지 신호와 사례
 - `agent-collab-kit.html` : Agent 여러 개의 협업을 위한 Harness Kit 안내
+- `harness-real-example.html` : Tony's Library를 만들 때 Agent들이 파일로 주고받은 실제 인계 문서 발췌
 - `context-continuity.html` : 새 대화에서도 맥락이 이어지게 하는 방법 (화면 속 기관명은 가려 두었습니다)
 - `guide-vibe-agent-claude.html`, `guide-vibe-agent-chatgpt.html` : Claude·ChatGPT를 Vibe Agent로 설정하는 가이드
 - `saving-claude-usage.html`, `saving-chatgpt-usage.html` : 사용량 한도와 절약 습관 가이드
