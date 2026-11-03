@@ -1,0 +1,170 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>파일로 주고받은 실제 협업</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#1c2f48;--muted:#52647a;--line:#dce5ef;--bar:#102a4c;--amber:#a5620a;--soft:#e3edfb;--pre:#f3f7fc}
+@media (prefers-color-scheme:dark){:root{--bg:#12223b;--card:#182c4b;--ink:#e3eaf4;--muted:#a3b3c8;--line:#2a4166;--bar:#0a1628;--amber:#f0b45a;--soft:#223e66;--pre:#0f1d33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.8 "Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}
+header{background:var(--bar);color:#fff;padding:22px 20px}header h1{margin:0;font-size:22px}header p{margin:6px 0 0;color:#cddcf0;font-size:15px}
+.wrap{max-width:900px;margin:0 auto;padding:18px 16px 60px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}nav a{color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;text-decoration:none}nav b{color:var(--amber);margin-right:6px}
+.intro,.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 16px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin-top:10px}.flow span{background:var(--soft);border-radius:8px;padding:3px 10px}
+.head{display:flex;gap:12px;align-items:flex-start}.no{flex:none;width:34px;height:34px;border-radius:50%;background:var(--bar);color:#fff;display:grid;place-items:center;font-weight:800}
+h2{margin:0;font-size:20px;line-height:1.4}.who{margin:2px 0 8px;color:var(--muted);font-size:14px}code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--soft);padding:1px 5px;border-radius:4px;word-break:break-all}
+summary{cursor:pointer;color:var(--amber);font-weight:700;font-size:15px;margin:8px 0}pre{white-space:pre-wrap;word-break:break-word;background:var(--pre);border:1px solid var(--line);border-radius:10px;padding:14px;font:14px/1.7 ui-monospace,Consolas,"Malgun Gothic",monospace;margin:8px 0}
+.note{border-left:4px solid var(--amber);background:var(--soft);padding:8px 14px;border-radius:0 8px 8px 0;font-size:15px;margin-top:8px}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+</style></head><body>
+<header><h1>파일로 주고받은 실제 협업</h1><p>Tony’s Library를 만든 하루(2026-10-27)의 인계 파일에서 고른 장면</p></header>
+<div class="wrap">
+<div class="intro"><p>Agent들은 서로 직접 대화하지 않습니다. 한 Agent가 파일을 남기면 Owner가 다음 Agent에게 “읽어 줘”라는 짧은 신호만 전하고, 다음 Agent가 그 파일을 읽고 이어서 일합니다. 아래는 가상의 예시가 아니라 실제 프로젝트 폴더의 <code>handoffs/</code>에 남은 파일입니다. 같은 날 약 60개의 파일이 오갔고, 그중 한 바퀴를 순서대로 골랐습니다.</p>
+<div class="flow"><span>Toby</span>→<span>Hank</span>→<span>Geni</span>→<span>Ani·Todi·Jerry</span>→<span>Geni</span>→<span>Hank</span>→<span>Toby</span>→<span>Owner</span></div>
+<p style="font-size:14px;color:var(--muted);margin-top:10px">파일 내용은 원문 그대로이며, 길어서 줄인 곳은 “…”로 표시했습니다. 공개 자료이므로 Owner를 부르는 호칭 한 가지만 “Owner”로 바꿨습니다.</p></div>
+<nav aria-label="장면 목차"><a href="#s1"><b>1</b>개략 기획서에 대한 검토</a>
+<a href="#s2"><b>2</b>작업지시서</a>
+<a href="#s3"><b>3</b>CLI 작업 완료 보고</a>
+<a href="#s4"><b>4</b>검수 결과: 고쳐야 할 점</a>
+<a href="#s5"><b>5</b>원래 의도에 비춘 독립 검토</a>
+<a href="#s6"><b>6</b>STATE.md: 지금 어디까지 왔고, 다음은 누구인가</a>
+</nav>
+<section class="step" id="s1"><div class="head"><span class="no">1</span><div><h2>개략 기획서에 대한 검토</h2><p class="who">Toby → Hank · <code>handoffs/2026-10-27_toby-review_system-overview.md</code></p></div></div>
+<p>Owner가 확정한 의도와 Hank의 개략 기획서를 맞대어 본 결과입니다. PASS를 주되, 의도와 어긋난 곳 1건을 짚어 반영을 요청합니다. 이 PASS가 이후 개발 전 과정을 위임하는 신호가 됩니다.</p>
+<details open><summary>실제 파일 내용 (일부)</summary><pre># Toby 검토: 개략 시스템 기획서
+
+- **작업 ID:** SYSTEM-OVERVIEW
+- **작성자 → 수신자:** Toby → Hank
+- **대상:** `SYSTEM_OVERVIEW.md` (commit 502e251)
+- **기준:** `PROJECT_INTENT.md` (Toby PASS, Owner YES)
+- **판정:** PASS — 실전 기획서로 진행해 주세요. 아래 확정 사항과 반영 요청 1건을 함께 담아 주시면 됩니다.
+
+## 반영 요청 (1건)
+
+- **주제 자동 추출은 자동 확정으로 해 주세요.** 기획서 5장은 &quot;완전 자동 확정은 하지 않고 Owner가 최종 분류를 확인&quot;으로 되어 있는데, Owner 요구사항은 주제와 설명 용어를 **자동 추출**하는 것이에요. 새 **분야**만 Owner가 승인하고, 주제는 기존 이름 우선으로 자동 확정해 주세요. 잘못 붙은 주제는 Owner가 나중에 대화로 고칩니다.
+
+…
+
+## 다음 행동
+
+- Hank: 위 내용을 반영해 실전 시스템 기획서를 작성하고, Toby 검증 대기로 멈춤. 구현 승인은 계속 PENDING.</pre></details>
+<div class="note">판정(PASS)·근거·고칠 점·다음 행동이 한 장에 있어, 이 파일만 읽어도 다음 담당이 무엇을 할지 압니다.</div></section>
+<section class="step" id="s2"><div class="head"><span class="no">2</span><div><h2>작업지시서</h2><p class="who">Hank → Geni · <code>handoffs/2026-10-27_hank-to-geni_implementation.md</code></p></div></div>
+<p>총괄 Hank가 실행 책임자 Geni에게 건네는 지시서입니다. 무엇을 만들지는 정하지만, 누구에게 어떤 모델로 맡길지는 Geni가 정하도록 남겨 둡니다.</p>
+<details open><summary>실제 파일 내용 (일부)</summary><pre># Tony&#x27;s Library MVP 구현 작업지시서
+
+- **작업 ID:** MVP-IMPLEMENTATION
+- **작성자 → 수신자:** Hank → Geni
+- **기준일:** 2026-10-27
+- **Owner 구현 승인:** YES (Toby 실전 기획서 재검증 PASS 후)
+- **기준 문서:** `PROJECT_INTENT.md`, `SYSTEM_DESIGN.md`, `SYSTEM_OVERVIEW.md`
+- **검증 근거:** `handoffs/2026-10-27_toby-review_system-design.md`
+
+## 1. 부탁드리는 결과
+
+## 1. 부탁드리는 결과
+
+Geni께서는 승인된 `SYSTEM_DESIGN.md`를 기준으로 Tony&#x27;s Library MVP를 완성해 주세요. 이 제품의 중심은 단순한 HTML 수정기가 아니라, **Owner가 자신의 말로 다듬고 덧붙인 지식을 장면 단위로 쌓고, 확정본만 분류·검색 가능한 공개 사이트로 내보내는 것**입니다.
+
+구현 순서, 담당 CLI(Ani/Todi/Jerry), 각 작업의 model/effort와 검증 방법은 작업 난이도·위험·도구 가용성을 보고 Geni가 구현 계획서에서 정해 주세요. 한 번에 한 작업씩 순차로 진행하고, 각 CLI 완료 보고를 읽어 수정·통과 여부를 판단한 뒤 다음 작업으로 넘어가 주세요.
+
+## 2. 지금 먼저 할 일: 구현 계획서
+
+이 인계를 받은 첫 단계에서는 코드를 구현하지 말고 다음을 포함한 **구현 계획서**를 `handoffs/`에 작성해 주세요.
+
+- 승인된 설계를 실제 작업 단위로 나눈 순서와 각 단위의 완료 조건
+- 각 작업의 담당 CLI와 선택 model/effort, 선택 이유
+- 요청 model/effort와 실제 확인 가능 값의 기록 방식(`MATCH/MISMATCH/UNKNOWN`, 지정 없으면 `NOT_APPLICABLE`)
+- 작업별 focused test와 단계 Gate, 마지막 전체 MVP 시나리오 검증
+- migration·fixture·브라우저 검증·Private/Public 경계 검증 순서
+- 각 CLI가 남길 완료 보고 경로와 Geni가 통합할 Evidence
+- 실패·재작업 루프, 기존 변경과 충돌할 때의 보존 방법
+
+계획서를 작성한 뒤 `STATE.md`의 다음 담당을 **“행크: 구현 계획서 검토”**로 바꾸고 멈춰 주세요. Hank 검토 통과 전에는 구현을 시작하지 말아 주세요.</pre></details>
+<div class="note">지시하는 말투가 아니라 “해 주세요”로 씁니다. 코딩 담당·모델 선택은 Geni의 몫이라고 문서에 적혀 있습니다.</div></section>
+<section class="step" id="s3"><div class="head"><span class="no">3</span><div><h2>CLI 작업 완료 보고</h2><p class="who">Ani · Todi → Geni · <code>handoffs/2026-10-27_ani_task-1-1.md</code></p></div></div>
+<p>Geni가 작업을 나눠 맡긴 CLI Agent들이 작업마다 남긴 보고입니다. 하나만 보여 드립니다. 요청한 모델과 실제 확인된 모델을 나란히 적어, 지시와 실행이 같았는지 기록합니다.</p>
+<details open><summary>실제 파일 내용 (일부)</summary><pre># 완료 보고: TASK-1.1 환경 설정 및 의존성 구성
+
+- **작업 ID:** TASK-1.1
+- **담당:** Ani (통합 실행: Geni)
+- **요청 모델 / Effort:** provider-default / High
+- **실제 확인 모델 / Effort:** Gemini 3.8 Flash (High)
+- **판정:** MATCH
+- **기준일:** 2026-10-27
+
+## 1. 수행 내용
+- `pyproject.toml` 작성: Django 5+ 의존성, pytest 및 pytest-django 설정
+- Django 프로젝트 및 앱 골격 구축: `manage.py`, `config/` (settings, urls, wsgi), `library/`
+- 보안 및 경계 설정:
+  - `ALLOWED_HOSTS = [&#x27;127.0.0.1&#x27;, &#x27;localhost&#x27;]`
+  - `.local/` (SQLite DB 위치), `publish-staging/`, `tonys-library-backups/`, `.env` 등을 `.gitignore`에 등록
+  - `workspace/originals/`, `workspace/drafts/` 폴더 생성 및 `.gitkeep` 추가
+- `manage.py check` 및 Focused Unit Test 4건 PASS
+
+## 2. 검증 결과
+- `tests/test_task_1_1_environment.py`: 4 passed (0.10s)
+  - `test_allowed_hosts_restricted_to_local`: PASS
+  - `test_database_in_local_dir`: PASS
+  - `test_gitignore_contains_required_exclusions`: PASS
+  - `test_core_directories_exist`: PASS</pre></details>
+<div class="note">“MATCH”는 요청한 모델과 실제 모델이 같다는 뜻입니다. 확인할 수 없으면 UNKNOWN으로 적고 추정하지 않습니다.</div></section>
+<section class="step" id="s4"><div class="head"><span class="no">4</span><div><h2>검수 결과: 고쳐야 할 점</h2><p class="who">Hank → Geni · <code>handoffs/2026-10-27_hank-rereview_geni-completion.md</code></p></div></div>
+<p>Geni의 완료 보고를 받은 Hank가 코드와 시험 근거를 직접 확인하고, 아직 통과시킬 수 없다고 판정한 문서입니다. 문서에 “다 됐다”고 적혀 있어도 실제 동작을 확인합니다.</p>
+<details open><summary>실제 파일 내용 (일부)</summary><pre># Hank 재검수 — Geni BLOCKING 1~5 보완 결과
+
+- 작업 ID: `MVP-IMPLEMENTATION`
+- 작성/수신: Hank → Geni
+- 검수 대상: commit `b5023f4`, `handoffs/2026-10-27_geni_completion-report.md`
+- 판정: **NEEDS_FIX**
+
+## BLOCKING 1 — confirm 보존 Gate가 정상적인 본문 다듬기를 차단함
+
+`ConfirmService.confirm_document()`는 매 confirm마다 현재 `draft/page.html`을 최초 `originals/.../source.html`과 직접 비교하고, 조금이라도 달라지면 `PRESERVATION_CHECK_FAILED`로 중단한다. 그러나 승인된 흐름은 import 직후 원문 보존을 확인한 뒤 1바퀴에서 본문을 Owner의 말로 다듬고, 2바퀴에서 장면별 요약·스크립트를 보강한 후 확정하는 것이다. 따라서 현재 Gate는 핵심 사용자 흐름과 충돌한다. 기존 테스트는 본문을 변경하지 않고 memo/script만 바꾸므로 이 회귀를 잡지 못한다.
+
+### 필요한 수정·검증
+
+- import 시점의 자동 변환 보존 검증과, 이후 Owner 편집의 허용·검토 기준을 분리한다.
+- confirm은 import 기준선 자체의 무단 변경/미해결 보존 실패는 막되, 승인된 1바퀴 본문 편집은 확정할 수 있어야 한다.
+- 실제로 `page.html` 본문을 다듬은 뒤 confirm이 성공하는 회귀 테스트와, 원본/기준선 변조 또는 미해결 import 실패는 차단되는 테스트를 함께 추가한다.
+
+…
+
+## 다음 행동
+
+Geni는 위 4건을 수정하고 focused regression 및 지원 LTS 환경 전체 테스트를 수행한 뒤, 수정 완료 보고서와 `STATE.md`를 갱신한다. 실제 강의자료 E2E와 실제 Public Pages push는 Owner 입력·승인 전 실행하지 않는다.</pre></details>
+<div class="note">고칠 점마다 “무슨 문제인지 → 어떻게 고치고 무엇으로 확인할지”가 짝으로 적혀 있어, 받는 쪽이 되묻지 않고 바로 일할 수 있습니다.</div></section>
+<section class="step" id="s5"><div class="head"><span class="no">5</span><div><h2>원래 의도에 비춘 독립 검토</h2><p class="who">Toby → Hank · <code>handoffs/2026-10-27_toby-verification_integration.md</code></p></div></div>
+<p>Hank의 통합 완료 보고(PASS)를 받은 Toby가 별도의 깨끗한 환경에서 시험하고, Owner의 원래 의도에 비춰 다시 판정합니다. 총괄이 통과시킨 결과도 한 번 더 확인합니다.</p>
+<details open><summary>실제 파일 내용 (일부)</summary><pre># Toby 독립 검증: 통합 구현 완료 보고
+
+- **작업 ID:** MVP-IMPLEMENTATION
+- **작성자 → 수신자:** Toby → Hank
+- **대상:** `handoffs/2026-10-27_hank-integration-completion.md`, commit `33564c6`(구현 `08620a6`)
+- **판정:** **NEEDS_FIX** — BLOCKING 3건
+- **수정 지시:** `handoffs/2026-10-27_toby-to-hank_fix-instructions.md`가 이 문서의 &quot;필요한 수정·시험&quot;과 &quot;추가: Owner 결정&quot;을 대체해요. 특히 BLOCKING 1의 수정 방향(장면 밖 글 처리)은 Owner 확정 원칙으로 바뀌었어요.
+- **검증 환경:** 토비 쪽 격리 작업공간(Linux, Python 3.13.17, `requirements-dev.txt` 고정 설치, Django 5.2.18). 저장소 복사본에서 실행했고 저장소·Owner PC·외부 GitHub는 변경하지 않았음.</pre></details>
+<div class="note">총괄의 PASS와 Toby의 판정은 다릅니다. 앞의 것은 “기획대로 만들었나”, 뒤의 것은 “원래 원한 것인가”를 봅니다.</div></section>
+<section class="step" id="s6"><div class="head"><span class="no">6</span><div><h2>STATE.md: 지금 어디까지 왔고, 다음은 누구인가</h2><p class="who">Geni → Owner · <code>STATE.md</code></p></div></div>
+<p>대화가 끊겨도 이어갈 수 있게 해 주는 한 장입니다. 일지가 아니라 지금의 최신 상태만 담습니다. Owner는 여기서 다음 행동만 읽고 해당 Agent에게 짧은 신호를 전합니다.</p>
+<details open><summary>실제 파일 내용 (일부)</summary><pre>## 현재
+
+- **WORK_ID:** MVP-IMPLEMENTATION / REAL-DATA-E2E
+- **목표 참조:** PROJECT_INTENT.md / EDITING_GUIDE.md
+- **현재 단계:** 실제 강의자료 가져오기(import) 완료 및 로컬 서버(127.0.0.1:8000) 구동 중 (Owner 확인 대기)
+- **현재 담당:** Owner (미리보기 및 확인 목록 검토)
+- **다음 담당 / 다음 행동:** Owner: 미리보기/확인 목록 확인 후 1바퀴(다듬기) 지목 또는 분야 확정 지시
+- **수정 구현 진행 근거:** 
+  - `requirements-by-dialogue_source_1.html` 무손실 import 완료 (`doc_대화가-요구사항을-만든다`, serial `T0005`, 10개 장면, 보존 판정 PASS).
+  - 로컬 개발 서버 `127.0.0.1:8000` 정상 구동 중 (미리보기/확인목록 200 OK 응답 확인).
+- **Blocker:** 없음
+- **LAST_UPDATED_BY:** Geni
+- **관련 인계/근거:** 
+  - 원본: `workspace/originals/doc_대화가-요구사항을-만든다/source.html`
+  - 작업본: `workspace/drafts/doc_대화가-요구사항을-만든다/page.html`
+  - 리포트: `workspace/drafts/doc_대화가-요구사항을-만든다/reports/import.json`, `content-preservation.json`
+
+## 다음 인계
+
+- **From → To:** Geni → Owner
+- **요청:** 브라우저에서 `http://127.0.0.1:8000/draft/doc_대화가-요구사항을-만든다/` 및 `http://127.0.0.1:8000/draft/doc_대화가-요구사항을-만든다/checks/`를 확인하시고, 수정할 문장이나 분야를 말씀해 주세요.</pre></details>
+<div class="note">“현재 담당”과 “다음 행동”이 적혀 있어, 새 대화창의 Agent도 이 한 장으로 이어서 일합니다.</div></section>
+
+</div></body></html>
