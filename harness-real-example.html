@@ -143,7 +143,7 @@ Geni는 위 4건을 수정하고 focused regression 및 지원 LTS 환경 전체
 - **검증 환경:** 토비 쪽 격리 작업공간(Linux, Python 3.13.17, `requirements-dev.txt` 고정 설치, Django 5.2.18). 저장소 복사본에서 실행했고 저장소·Owner PC·외부 GitHub는 변경하지 않았음.</pre></details>
 <div class="note">총괄의 PASS와 Toby의 판정은 다릅니다. 앞의 것은 “기획대로 만들었나”, 뒤의 것은 “원래 원한 것인가”를 봅니다.</div></section>
 <section class="step" id="s6"><div class="head"><span class="no">6</span><div><h2>STATE.md: 지금 어디까지 왔고, 다음은 누구인가</h2><p class="who">Geni → Owner · <code>STATE.md</code></p></div></div>
-<p>대화가 끊겨도 이어갈 수 있게 해 주는 한 장입니다. 일지가 아니라 지금의 최신 상태만 담습니다. Owner는 여기서 다음 행동만 읽고 해당 Agent에게 짧은 신호를 전합니다.</p>
+<p>대화가 끊겨도 이어갈 수 있게 해 주는 한 장입니다. 일지가 아니라 지금의 최신 상태만 담습니다. 이 파일을 읽는 것은 Agent입니다. Owner는 내용을 읽거나 판단하지 않습니다. 앞 Agent가 “끝났습니다”라고 채팅창에 알리면, 잠들어 있던 다음 담당 Agent를 깨워 “앞 작업이 끝났으니 확인해 봐”라고 짧게 전하는 것이 Owner의 역할입니다.</p>
 <details open><summary>실제 파일 내용 (일부)</summary><pre>## 현재
 
 - **WORK_ID:** MVP-IMPLEMENTATION / REAL-DATA-E2E
@@ -165,6 +165,6 @@ Geni는 위 4건을 수정하고 focused regression 및 지원 LTS 환경 전체
 
 - **From → To:** Geni → Owner
 - **요청:** 브라우저에서 `http://127.0.0.1:8000/draft/doc_대화가-요구사항을-만든다/` 및 `http://127.0.0.1:8000/draft/doc_대화가-요구사항을-만든다/checks/`를 확인하시고, 수정할 문장이나 분야를 말씀해 주세요.</pre></details>
-<div class="note">“현재 담당”과 “다음 행동”이 적혀 있어, 새 대화창의 Agent도 이 한 장으로 이어서 일합니다.</div></section>
+<div class="note">“현재 담당”과 “다음 행동”이 적혀 있어, 새 대화창에서 깨어난 Agent도 이 한 장과 연결된 파일을 읽고 이어서 일합니다. Owner는 중간 내용을 읽지 않습니다.</div></section>
 
 </div></body></html>
