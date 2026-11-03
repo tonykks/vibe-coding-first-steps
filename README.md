@@ -10,6 +10,8 @@
 - `chat-to-ide.html` : 채팅에서 IDE로 옮길 때를 알리는 네 가지 신호와 사례
 - `agent-collab-kit.html` : Agent 여러 개의 협업을 위한 Harness Kit 안내
 - `context-continuity.html` : 새 대화에서도 맥락이 이어지게 하는 방법 (화면 속 기관명은 가려 두었습니다)
+- `guide-vibe-agent-claude.html`, `guide-vibe-agent-chatgpt.html` : Claude·ChatGPT를 Vibe Agent로 설정하는 가이드
+- `saving-claude-usage.html`, `saving-chatgpt-usage.html` : 사용량 한도와 절약 습관 가이드
 - `guide-openai.html`, `guide-google.html`, `guide-claude.html` : 세 회사 바이브코딩 사용설명서
 - `concept-openai.jpg`, `concept-google.jpg`, `concept-claude.jpg` : 세 회사 서비스 개념도
 

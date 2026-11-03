@@ -1,0 +1,313 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Claude 사용량 절약 가이드</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: 왼쪽 목차 + 오른쪽 본문. 구조 → 사례 → 많이 쓰는 순서 → 절약법 → 확인 → 자주 묻는 것 → 영상 */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --sunk:#eceef2; --line:#d6dae2;
+  --ink:#16213a; --muted:#56607a; --navy:#1f3a6b; --amber:#b86e08; --amber-soft:#fbefd9;
+  --good:#1d6b4f; --good-soft:#e2f2ea; --bad:#a3342c; --bad-soft:#f8e4e1;
+  --f-display:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",Consolas,"D2Coding",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10141c; --surface:#171d28; --sunk:#1d2533; --line:#2b3546;
+  --ink:#e8ecf4; --muted:#9aa5ba; --navy:#8fb0ec; --amber:#f0a83c; --amber-soft:#3a2d17;
+  --good:#6fd1a8; --good-soft:#163328; --bad:#f09a90; --bad-soft:#3a1d1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141c; --surface:#171d28; --sunk:#1d2533; --line:#2b3546;
+  --ink:#e8ecf4; --muted:#9aa5ba; --navy:#8fb0ec; --amber:#f0a83c; --amber-soft:#3a2d17;
+  --good:#6fd1a8; --good-soft:#163328; --bad:#f09a90; --bad-soft:#3a1d1a; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:1180px;margin:0 auto;padding-block:48px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--navy)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:4px;font-size:14px}
+.toc .label{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:8px}
+.toc a{display:grid;grid-template-columns:28px 1fr;align-items:baseline;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none}
+.toc a:hover{background:var(--sunk);color:var(--ink)}
+.toc b{font-family:var(--f-mono);font-weight:500;color:var(--amber);font-size:12px}
+
+main{min-width:0;display:grid;gap:72px}
+.hero{display:grid;gap:20px;max-width:760px}
+.kicker{font-size:13px;letter-spacing:.1em;color:var(--amber);font-weight:600}
+.hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,4.6vw,3.1rem);line-height:1.25;letter-spacing:-.02em}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.series{font-size:14px;color:var(--muted)}
+
+.step{display:grid;gap:22px;scroll-margin-top:24px}
+.step-head{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline;border-top:2px solid var(--ink);padding-top:18px}
+.step-no{font-family:var(--f-mono);font-size:14px;color:var(--amber)}
+.step-head h2{font-family:var(--f-display);font-weight:800;font-size:clamp(1.45rem,2.6vw,1.9rem);line-height:1.35}
+.step-head .role{grid-column:2;color:var(--muted);font-size:15.5px;max-width:64ch}
+.body{display:grid;gap:18px;max-width:780px;min-width:0}
+.body>h3{font-size:1.05rem;color:var(--navy);margin-top:10px}
+
+.path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14.5px}
+.path span{background:var(--surface);border:1px solid var(--line);padding:3px 10px;border-radius:6px;font-weight:500}
+.path i{font-style:normal;color:var(--muted)}
+
+.rules{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;display:grid;gap:12px}
+.rules h3{font-size:15px;letter-spacing:.04em;color:var(--navy)}
+.rules ul{margin:0;padding-left:1.15em;display:grid;gap:7px}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ex{padding:14px 16px;border-radius:10px;font-size:15px;display:grid;gap:6px;align-content:start}
+.ex .tag{font-size:12px;font-weight:700;letter-spacing:.06em}
+.ex.no{background:var(--bad-soft)} .ex.no .tag{color:var(--bad)}
+.ex.yes{background:var(--good-soft)} .ex.yes .tag{color:var(--good)}
+.note{border-left:3px solid var(--amber);background:var(--amber-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15px}
+.result{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px 16px;border-radius:10px;background:var(--good-soft);font-size:15px}
+.result .tag{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--good);padding-top:3px;white-space:nowrap}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.05em;color:var(--muted);font-weight:600;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+
+/* 두 개의 시계 */
+.clocks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.clock{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:grid;gap:10px;align-content:start;min-width:0}
+.clock .name{font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.clock .reset{font-family:var(--f-display);font-weight:800;font-size:1.5rem;color:var(--navy);line-height:1.3}
+.clock p{font-size:14.5px;color:var(--muted)}
+.meter{height:10px;border-radius:5px;background:var(--sunk);overflow:hidden}
+.meter span{display:block;height:100%;background:var(--amber);border-radius:5px}
+.pool{background:var(--surface);border:1.5px dashed var(--line);border-radius:12px;padding:14px 18px;display:grid;gap:10px}
+.pool .chips{display:flex;flex-wrap:wrap;gap:8px}
+.pool .chips span{background:var(--sunk);padding:4px 12px;border-radius:999px;font-size:14px;font-weight:500}
+.pool p{font-size:14.5px;color:var(--muted)}
+
+/* 실제 사례 막대 */
+.split{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.split h3{font-size:15px;color:var(--navy)}
+.splitbar{display:flex;height:34px;border-radius:8px;overflow:hidden;font-size:13.5px;font-weight:600}
+.splitbar span{display:flex;align-items:center;padding:0 12px;white-space:nowrap;overflow:hidden}
+.splitbar .work{background:var(--amber);color:var(--bg)}
+.splitbar .chat{background:var(--navy);color:var(--bg)}
+.split .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.warnbox{display:grid;gap:6px;padding:16px 18px;border-radius:10px;background:var(--bad-soft);font-size:15px}
+.warnbox .tag{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--bad)}
+
+/* 많이 쓰는 순서 */
+ol.rank{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:r}
+ol.rank li{counter-increment:r;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+ol.rank li::before{content:counter(r);font-family:var(--f-display);font-weight:800;font-size:1.6rem;line-height:1.1;color:var(--amber);text-align:center}
+ol.rank li:first-child{border-color:var(--amber);background:linear-gradient(90deg,var(--amber-soft),var(--surface) 60%)}
+ol.rank strong{display:block;font-size:16px}
+ol.rank span{display:block;font-size:14.5px;color:var(--muted)}
+
+/* 절약법 */
+.habit{display:grid;gap:12px}
+.habit h3{font-size:1.08rem;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.habit h3 b{font-family:var(--f-mono);font-weight:500;font-size:13px;color:var(--amber)}
+.habit>p{color:var(--muted);font-size:15.5px}
+
+.video{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:14.5px}
+.video span.pending{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;font-weight:600;background:var(--sunk);color:var(--muted);border:1px dashed var(--line)}
+.video svg{width:14px;height:14px;fill:currentColor}
+
+.check{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.check li{display:grid;grid-template-columns:22px 1fr;gap:10px}
+.check li::before{content:"";width:16px;height:16px;margin-top:6px;border:2px solid var(--amber);border-radius:4px}
+
+footer{border-top:1px solid var(--line);padding-top:24px;font-size:13.5px;color:var(--muted);display:grid;gap:6px;max-width:780px}
+footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:40px}
+  .toc{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toc .label{grid-column:1/-1}
+}
+@media (max-width:620px){
+  .compare,.clocks{grid-template-columns:minmax(0,1fr)}
+  .toc{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="목차">
+    <div class="label">사용량 절약</div>
+    <a href="#overview"><b>—</b>두 개의 시계</a>
+    <a href="#s1"><b>01</b>한도는 어떻게 움직이나</a>
+    <a href="#s2"><b>02</b>실제로 겪은 경고</a>
+    <a href="#s3"><b>03</b>많이 쓰는 순서</a>
+    <a href="#s4"><b>04</b>절약하는 다섯 습관</a>
+    <a href="#s5"><b>05</b>사용량 확인하기</a>
+    <a href="#s6"><b>06</b>자주 묻는 것</a>
+  </nav>
+
+  <main>
+    <header class="hero" id="overview">
+      <p class="kicker">바이브코딩의 첫걸음 · 보충자료</p>
+      <h1>한도에 막히지 않고 Claude 오래 쓰기</h1>
+      <p class="lead">Claude는 보낸 메시지 개수가 아니라 Claude가 읽고 쓴 양으로 사용량을 셉니다. 같은 질문이라도 긴 대화 끝에서 하면 더 많이 듭니다. 무엇이 사용량을 크게 쓰는지 알면 같은 요금제로 훨씬 오래 쓸 수 있습니다.</p>
+      
+
+      <div class="clocks" aria-label="사용량의 두 가지 한도">
+        <div class="clock">
+          <span class="name">세션 한도</span>
+          <span class="reset">5시간마다 초기화</span>
+          <div class="meter" aria-hidden="true"><span style="width:62%"></span></div>
+          <p>짧은 시간 안에 몰아서 쓰는 양을 막습니다. 남은 시간이 지나면 다시 채워집니다.</p>
+        </div>
+        <div class="clock">
+          <span class="name">주간 한도</span>
+          <span class="reset">일주일마다 초기화</span>
+          <div class="meter" aria-hidden="true"><span style="width:11%"></span></div>
+          <p>초기화 요일과 시각은 계정마다 정해져 있습니다. 예시 계정은 매주 수요일 오전 10시입니다.</p>
+        </div>
+      </div>
+      <div class="pool">
+        <div class="chips"><span>웹</span><span>데스크톱 앱</span><span>모바일 앱</span><span>Claude Code</span></div>
+        <p>어디서 쓰든 하나의 사용량 통에서 빠져나갑니다. 휴대폰에서 많이 쓰면 컴퓨터의 Claude Code도 그만큼 덜 쓸 수 있습니다.</p>
+      </div>
+    </header>
+
+    <section class="step" id="s1">
+      <div class="step-head"><span class="step-no">01</span><h2>한도는 어떻게 움직이나</h2><p class="role">두 한도는 따로 돌아갑니다. 세션에 여유가 있어도 주간 한도를 다 쓰면 기다려야 합니다.</p></div>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>구분</th><th>초기화</th><th>기억할 점</th></tr></thead>
+            <tbody>
+              <tr><td>세션 한도</td><td>5시간마다</td><td>몰아 쓰기를 막는 짧은 시계</td></tr>
+              <tr><td>주간 한도</td><td>계정마다 정해진 요일·시각</td><td>Opus 모델 전용 막대와 그 밖의 모델 막대가 따로 있음</td></tr>
+              <tr><td>대화 길이 한도</td><td>초기화 없음</td><td>한 대화에 담을 수 있는 양. 가득 차면 앞부분을 요약하며 이어 가고, 이때 사용량이 더 듭니다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rules">
+          <h3>한도에 닿았을 때 고를 수 있는 길</h3>
+          <ul>
+            <li><strong>기다리기</strong>: 세션 또는 주간 초기화 시각까지 기다립니다. 추가 비용이 없습니다.</li>
+            <li><strong>사용량 크레딧</strong>: 유료 요금제에서 추가 사용량을 켜 두면 한도를 넘어도 이어서 쓸 수 있습니다. 쓴 만큼 비용이 나갑니다.</li>
+            <li><strong>요금제 올리기</strong>: Max 요금제는 Pro보다 세션당 5배 또는 20배를 씁니다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s2">
+      <div class="step-head"><span class="step-no">02</span><h2>실제로 겪은 경고</h2><p class="role">강연 보충자료를 만들면서 이틀 동안 한 대화를 길게 이어 간 날의 기록입니다.</p></div>
+      <div class="body">
+        <div class="warnbox">
+          <span class="tag">경고 화면</span>
+          <p>주간 한도를 겨우 11% 쓴 시점에 “이 속도면 월요일 저녁에 다 쓴다”는 안내가 떴습니다. 많이 쓴 양보다 쓰는 <strong>속도</strong>를 보고 미리 알려 주는 경고입니다.</p>
+        </div>
+        <div class="split">
+          <h3>그 주에 어디서 썼나</h3>
+          <div class="splitbar" role="img" aria-label="작업형 72퍼센트, 채팅 28퍼센트">
+            <span class="work" style="width:72%">작업형 72%</span>
+            <span class="chat" style="width:28%">채팅 28%</span>
+          </div>
+          <div class="legend"><span>작업형: 파일과 웹페이지를 만들고 저장소를 내려받는 일</span><span>채팅: 묻고 답하는 대화</span></div>
+        </div>
+        <div class="note">대화 횟수는 채팅이 훨씬 많았는데도 사용량은 작업형이 세 배 가까이 썼습니다. 결과물을 만드는 일이 비싸다는 것을 숫자로 확인한 사례입니다.</div>
+      </div>
+    </section>
+
+    <section class="step" id="s3">
+      <div class="step-head"><span class="step-no">03</span><h2>사용량을 많이 쓰는 순서</h2><p class="role">위에 있을수록 한 번에 크게 듭니다. 직접 써 보며 확인한 순서입니다.</p></div>
+      <div class="body">
+        <ol class="rank">
+          <li><div><strong>긴 대화</strong><span>Claude는 답할 때마다 대화 전체를 처음부터 다시 읽습니다. 앞에서 올린 이미지도 매번 다시 읽습니다. 대화가 길어질수록 한 번 답하는 값이 커집니다.</span></div></li>
+          <li><div><strong>작업형 일</strong><span>파일·웹페이지 만들기, 이미지 처리, GitHub 저장소 내려받기. 여러 단계를 스스로 실행하므로 한 번의 요청이 여러 번의 답과 같습니다.</span></div></li>
+          <li><div><strong>큰 화면 전체 캡처</strong><span>이미지는 면적이 클수록 많이 듭니다. 모니터 전체를 찍으면 필요 없는 부분까지 값을 치릅니다.</span></div></li>
+          <li><div><strong>이미 보낸 자료 다시 보내기</strong><span>같은 파일이나 긴 글을 다시 붙여넣으면 대화 안에 두 번 들어가 매번 두 번 읽힙니다.</span></div></li>
+          <li><div><strong>높은 성능 모델과 깊은 사고 설정</strong><span>Opus 같은 상위 모델과 오래 생각하는 설정은 같은 질문에도 더 많이 씁니다.</span></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="step" id="s4">
+      <div class="step-head"><span class="step-no">04</span><h2>절약하는 다섯 습관</h2><p class="role">03의 원인을 하나씩 막는 습관입니다. 결과물의 품질은 그대로 두고 낭비만 줄입니다.</p></div>
+      <div class="body">
+        <div class="habit">
+          <h3><b>1</b>주제가 바뀌면 새 대화</h3>
+          <p>긴 대화를 끊는 것이 가장 큰 절약입니다. 지금까지의 상태는 Notion 상태 페이지와 메모리에 남겨 두고, 새 대화 첫 줄에서 그 페이지를 읽게 합니다.</p>
+          <div class="compare">
+            <div class="ex no"><span class="tag">이렇게 하면 비쌉니다</span><p>이틀째 같은 대화에서 설정 이야기, 강연 이야기, 웹페이지 만들기를 이어서 함</p></div>
+            <div class="ex yes"><span class="tag">이렇게 하면 아낍니다</span><p>“Notion의 「현재 상태」 페이지를 읽고 이어서 하자. 오늘은 새 자료를 만들고 싶어.”</p></div>
+          </div>
+        </div>
+        <div class="habit">
+          <h3><b>2</b>필요한 부분만 캡처</h3>
+          <p>문제가 보이는 영역만 잘라 보냅니다. 왼쪽 사이드바의 다른 대화 제목처럼 보이면 안 되는 정보가 함께 찍히는 것도 막을 수 있습니다.</p>
+        </div>
+        <div class="habit">
+          <h3><b>3</b>같은 대화에서는 바꿀 곳만 말하기</h3>
+          <div class="compare">
+            <div class="ex no"><span class="tag">비쌉니다</span><p>수정한 글 전체를 다시 붙여넣고 “이거 다시 봐 줘”</p></div>
+            <div class="ex yes"><span class="tag">아낍니다</span><p>“앞의 03번 표에서 두 번째 줄만 이렇게 바꿔 줘”</p></div>
+          </div>
+        </div>
+        <div class="habit">
+          <h3><b>4</b>큰 결과물은 내용을 확정한 뒤 한 번에</h3>
+          <p>웹페이지나 PPT를 만들어 놓고 내용을 여러 번 고치면 매번 큰 파일을 다시 만듭니다. 목차와 문장을 대화로 먼저 정한 다음 “이제 만들어 줘”로 한 번에 만듭니다. 여러 대화에서 반복해 쓰는 자료는 프로젝트 파일에 올려 두면 다시 읽을 때 덜 듭니다.</p>
+        </div>
+        <div class="habit">
+          <h3><b>5</b>사용량을 수시로 확인</h3>
+          <p>02의 경고는 미리 알려 준 덕분에 대응할 수 있었습니다. 큰 작업을 시작하기 전과 끝낸 뒤에 한 번씩 확인하면 어떤 일이 얼마나 드는지 감이 생깁니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s5">
+      <div class="step-head"><span class="step-no">05</span><h2>사용량 확인하기</h2><p class="role">세션 막대, 주간 막대, 초기화까지 남은 시간을 한 화면에서 봅니다.</p></div>
+      <div class="body">
+        <div class="path"><span>왼쪽 아래 이름</span><i>›</i><span>설정</span><i>›</i><span>사용량</span></div>
+        <div class="rules">
+          <h3>화면에서 읽을 것</h3>
+          <ul>
+            <li><strong>현재 세션</strong>: 5시간 한도 중 쓴 비율과 남은 시간</li>
+            <li><strong>주간 한도</strong>: Opus 전용과 그 밖의 모델, 두 막대와 각각의 초기화 시각</li>
+            <li><strong>추가 사용량</strong>: 사용량 크레딧을 켰다면 쓴 금액과 한도</li>
+          </ul>
+        </div>
+        <div class="result"><span class="tag">직접 해 보기</span><p>큰 웹페이지 하나를 만들기 전과 후에 사용량 화면을 열어 막대가 얼마나 움직였는지 비교해 보세요.</p></div>
+      </div>
+    </section>
+
+    <section class="step" id="s6">
+      <div class="step-head"><span class="step-no">06</span><h2>자주 묻는 것</h2><p class="role">강연에서 받을 만한 질문을 미리 정리했습니다.</p></div>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>질문</th><th>답</th></tr></thead>
+            <tbody>
+              <tr><td>커넥터를 연결하면 돈이 더 드나요?</td><td>연결 자체에는 추가 요금이 없습니다. Notion이나 GitHub에서 내용을 읽어 올 때 그만큼 사용량이 듭니다.</td></tr>
+              <tr><td>PPT·Excel을 만들려면 Office가 필요한가요?</td><td>필요 없습니다. Claude가 자기 작업 공간에서 파일을 직접 만들어 건네줍니다. 다만 작업형 일이라 사용량은 큰 편입니다.</td></tr>
+              <tr><td>한도가 차면 대화가 지워지나요?</td><td>지워지지 않습니다. 초기화된 뒤 같은 대화에서 이어서 쓸 수 있습니다.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="check" aria-label="정리 체크리스트">
+          <li>주제가 바뀌면 새 대화를 열고 상태 페이지로 이었다</li>
+          <li>캡처는 필요한 부분만 잘랐다</li>
+          <li>큰 결과물은 내용을 정한 뒤 한 번에 만들었다</li>
+          <li>큰 작업 전후로 사용량 화면을 확인했다</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <p>2026년 10월 기준. 한도의 정확한 양은 요금제와 시기에 따라 달라질 수 있습니다.</p>
+      <ul>
+        <li><a href="https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits" target="_blank" rel="noopener noreferrer">Claude Help Center: How do usage and length limits work?</a></li>
+        <li><a href="https://support.claude.com/en/articles/9797557-usage-limit-best-practices" target="_blank" rel="noopener noreferrer">Claude Help Center: Usage limit best practices</a></li>
+        <li><a href="https://support.claude.com/en/articles/8324991-about-claude-s-pro-plan-usage" target="_blank" rel="noopener noreferrer">Claude Help Center: About Claude's Pro Plan Usage</a></li>
+      </ul>
+    </footer>
+  </main>
+</div>
+
+</body></html>

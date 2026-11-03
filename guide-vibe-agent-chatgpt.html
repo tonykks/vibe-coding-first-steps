@@ -1,0 +1,621 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Vibe Agent 설정 가이드</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: fixed navy sidebar TOC on the left, long reading column on the right; sidebar folds to a top bar on phones */
+:root{
+  --bg:#F4F6FA; --surface:#FFFFFF; --sunk:#E9EDF4;
+  --ink:#14213D; --ink-2:#47536B; --line:#D5DCE8;
+  --navy:#0E1A33; --navy-2:#1A2A4C; --navy-ink:#C9D3E6; --navy-dim:#8492AE;
+  --amber:#B4740E; --amber-soft:#FBEFD6; --amber-line:#E8C27A; --amber-bright:#F2B544;
+  --ok:#2F7A55;
+  --f-display:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --side-w:288px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1324; --surface:#121D35; --sunk:#0F182D;
+    --ink:#E4E9F2; --ink-2:#A6B1C7; --line:#24324F;
+    --navy:#07101F; --navy-2:#13213D; --navy-ink:#C9D3E6; --navy-dim:#7C8AA6;
+    --amber:#F2B544; --amber-soft:#2A2312; --amber-line:#6B5220; --amber-bright:#F2B544;
+    --ok:#6FC79A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1324; --surface:#121D35; --sunk:#0F182D;
+  --ink:#E4E9F2; --ink-2:#A6B1C7; --line:#24324F;
+  --navy:#07101F; --navy-2:#13213D; --navy-ink:#C9D3E6; --navy-dim:#7C8AA6;
+  --amber:#F2B544; --amber-soft:#2A2312; --amber-line:#6B5220; --amber-bright:#F2B544;
+  --ok:#6FC79A; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.78;-webkit-font-smoothing:antialiased}
+a{color:var(--amber);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--amber-bright);outline-offset:2px;border-radius:4px}
+
+/* ---------- sidebar ---------- */
+.side{position:fixed;inset:0 auto 0 0;width:var(--side-w);background:var(--navy);color:var(--navy-ink);
+  padding:calc(28px + env(safe-area-inset-top,0px)) 22px 28px max(22px,env(safe-area-inset-left,0px));overflow-y:auto;z-index:20}
+.brand{display:flex;flex-direction:column;gap:4px;padding-bottom:20px;border-bottom:1px solid var(--navy-2);margin-bottom:18px}
+.brand small{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-bright)}
+.brand strong{font-family:var(--f-display);font-size:20px;line-height:1.35;color:#fff;font-weight:700}
+.toc-group{margin:18px 0 6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--navy-dim);text-transform:uppercase}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.toc a{display:grid;grid-template-columns:26px 1fr;gap:6px;padding:7px 10px;border-radius:6px;color:var(--navy-ink);text-decoration:none;font-size:14.5px;line-height:1.45;border-left:2px solid transparent}
+.toc a .n{font-family:var(--f-mono);font-size:12px;color:var(--navy-dim);padding-top:2px}
+.toc a:hover{background:var(--navy-2);color:#fff}
+.toc a.on{background:var(--navy-2);color:#fff;border-left-color:var(--amber-bright)}
+.toc a.on .n{color:var(--amber-bright)}
+.side-foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--navy-2);font-size:12.5px;color:var(--navy-dim);line-height:1.6}
+.menu-btn{display:none}
+
+/* ---------- main ---------- */
+main{margin-left:var(--side-w);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
+.col{max-width:760px;margin:0 auto;min-width:0}
+.hero{padding-block:72px 40px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 14px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(32px,5vw,46px);line-height:1.22;margin:0 0 18px;text-wrap:balance;letter-spacing:-.01em}
+.lead{font-size:18.5px;color:var(--ink-2);margin:0 0 28px;max-width:62ch}
+.thesis{margin:0;padding:22px 24px;background:var(--navy);color:#EEF2F9;border-radius:10px;font-family:var(--f-display);font-size:18px;line-height:1.75;position:relative}
+.thesis::before{content:"강연의 한 문장";display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;color:var(--amber-bright);margin-bottom:8px}
+.note{font-size:14px;color:var(--ink-2);margin:18px 0 0;padding-left:14px;border-left:2px solid var(--line)}
+
+section{padding-block:56px 8px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.sec-no{font-family:var(--f-mono);font-size:13px;color:var(--amber);font-weight:500;letter-spacing:.04em}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3.2vw,30px);line-height:1.35;margin:0;text-wrap:balance}
+.sec-lead{font-size:17.5px;color:var(--ink);margin:14px 0 22px;font-weight:500}
+h3{font-size:18px;font-weight:600;margin:36px 0 10px;line-height:1.5;text-wrap:balance}
+p{margin:0 0 14px;max-width:68ch}
+ul.plain,ol.plain{margin:0 0 16px;padding-left:22px;max-width:68ch}
+ul.plain li,ol.plain li{margin-bottom:8px}
+ul.plain li::marker{color:var(--amber)}
+strong{font-weight:600}
+.term{font-weight:600}
+.term-def{display:block;margin:4px 0 18px;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-radius:8px;max-width:68ch}
+.term-def b{font-family:var(--f-display);font-weight:700;font-size:17px}
+.term-def .hj{color:var(--ink-2);font-size:14px}
+
+/* tables */
+.tbl{overflow-x:auto;margin:6px 0 20px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px;line-height:1.6}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
+th{font-weight:600;background:var(--sunk);font-size:13.5px;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+.tbl.compare td:first-child{white-space:normal}
+.muted{color:var(--ink-2)}
+
+/* layers diagram */
+.layers{display:grid;grid-template-columns:1fr 150px;gap:10px;margin:8px 0 24px}
+.stack{display:flex;flex-direction:column;gap:8px;min-width:0}
+.layer{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:start}
+.layer .lv{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;color:var(--amber);line-height:1.5}
+.layer .lv b{display:block;font-family:var(--f-body);font-size:15px;color:var(--ink);letter-spacing:0;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13.5px;padding:3px 10px;border-radius:999px;background:var(--sunk);border:1px solid var(--line);white-space:nowrap}
+.layer.l1{border-left:4px solid var(--navy-2)}
+.layer.l2{border-left:4px solid var(--amber-line)}
+.layer.l3{border-left:4px solid var(--amber)}
+.side-rail{border:1px dashed var(--amber-line);border-radius:10px;padding:14px;display:flex;flex-direction:column;justify-content:center;gap:6px;background:var(--amber-soft);font-size:13.5px;line-height:1.55}
+.side-rail b{font-size:14.5px}
+.diagram-cap{font-size:13.5px;color:var(--ink-2);margin:-12px 0 20px}
+
+/* steps */
+.steps{list-style:none;margin:8px 0 22px;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.steps li::before{content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--navy);color:var(--amber-bright);font-family:var(--f-mono);font-weight:500;display:grid;place-items:center;font-size:14px}
+.steps b{display:block;font-size:16px;margin-bottom:2px}
+.steps p{margin:0;color:var(--ink-2);font-size:15px}
+.steps ul{margin:8px 0 0;padding-left:18px;font-size:14.5px;color:var(--ink-2)}
+
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;margin:8px 0 20px;font-size:14.5px}
+.flow span{padding:6px 12px;border-radius:6px;background:var(--surface);border:1px solid var(--line)}
+.flow span.last{background:var(--navy);color:#fff;border-color:var(--navy)}
+.flow i{font-style:normal;color:var(--amber);padding:0 2px}
+
+/* callouts */
+.callout{margin:18px 0 22px;padding:16px 18px;border-radius:10px;background:var(--amber-soft);border:1px solid var(--amber-line);max-width:68ch}
+.callout .k{display:block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;color:var(--amber);margin-bottom:4px}
+.callout p:last-child{margin:0}
+
+/* prompt blocks */
+.prompt{margin:10px 0 22px;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.prompt-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px 8px 16px;background:var(--sunk);border-bottom:1px solid var(--line)}
+.prompt-head span{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--ink-2)}
+.copy{font-family:var(--f-body);font-size:13px;padding:5px 12px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.copy:hover{border-color:var(--amber)}
+.copy.done{color:var(--ok);border-color:var(--ok)}
+.prompt pre{margin:0;padding:14px 16px;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;font-family:var(--f-body);font-size:15px;line-height:1.75;color:var(--ink)}
+.prompt pre .ph{color:var(--amber);font-weight:500}
+
+/* file tree */
+.tree{font-family:var(--f-mono);font-size:13.5px;line-height:1.9;background:var(--navy);color:var(--navy-ink);border-radius:10px;padding:16px 18px;margin:8px 0 18px;overflow-x:auto}
+.tree .r{display:grid;grid-template-columns:150px 1fr;gap:12px;white-space:nowrap}
+.tree .r b{color:#fff;font-weight:500}
+.tree .r em{font-style:normal;color:var(--navy-dim);font-family:var(--f-body);font-size:13.5px}
+
+/* six-cell spec */
+.spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 22px}
+.spec div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.5}
+.spec b{display:block;font-size:14.5px;color:var(--amber)}
+
+/* checklist */
+.check{list-style:none;margin:8px 0 18px;padding:0;display:flex;flex-direction:column;gap:8px}
+.check label{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:15px}
+.check input{width:18px;height:18px;margin-top:4px;accent-color:var(--amber)}
+.check .q{font-weight:600;display:block}
+.check .a{color:var(--ink-2);font-size:14px}
+.check input:checked + span .q{text-decoration:line-through;text-decoration-color:var(--amber)}
+
+.avoid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0 18px}
+.avoid div{padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:14.5px;line-height:1.55}
+.avoid b{display:block;font-size:15px;margin-bottom:2px}
+
+.summary{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:t}
+.summary li{counter-increment:t;display:grid;grid-template-columns:34px 1fr;gap:10px;font-family:var(--f-display);font-size:18px;line-height:1.65;padding:14px 0;border-bottom:1px solid var(--line)}
+.summary li::before{content:counter(t);font-family:var(--f-mono);font-size:14px;color:var(--amber);padding-top:4px}
+
+.sources{font-size:14px;color:var(--ink-2);padding-left:20px}
+.sources li{margin-bottom:6px}
+.foot{margin-top:40px;font-size:13px;color:var(--ink-2)}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  :root{--side-w:0px}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--navy)}
+  .side{position:sticky;top:env(safe-area-inset-top,0px);inset:auto;width:auto;height:auto;max-height:none;overflow:visible;
+    padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));z-index:30;display:flex;flex-direction:column}
+  .brand{flex-direction:row;align-items:center;justify-content:space-between;padding:0;margin:0;border:0;gap:12px}
+  .brand small{display:none}
+  .brand strong{font-size:16px}
+  .menu-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-body);font-size:14px;padding:6px 12px;border-radius:6px;border:1px solid var(--navy-2);background:var(--navy-2);color:#fff;cursor:pointer;flex-shrink:0}
+  .toc{display:none;max-height:70vh;overflow-y:auto;padding-top:8px}
+  .side.open .toc{display:block}
+  .side-foot{display:none}
+  main{margin-left:0}
+  .hero{padding-block:36px 32px}
+  html{scroll-padding-top:72px}
+}
+@media (max-width:600px){
+  body{font-size:16px}
+  .layers{grid-template-columns:1fr}
+  .layer{grid-template-columns:1fr;gap:8px}
+  .spec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .avoid{grid-template-columns:1fr}
+  .steps li{grid-template-columns:32px 1fr;gap:10px;padding:12px}
+  .steps li::before{width:28px;height:28px;font-size:13px}
+  .thesis{font-size:16.5px;padding:18px}
+}
+</style>
+
+<aside class="side" id="side">
+  <div class="brand">
+    <small>바이브코딩의 첫걸음 · 보충자료</small>
+    <strong>Vibe Agent 설정 가이드</strong>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="toc">목차</button>
+  </div>
+  <nav class="toc" id="toc" aria-label="목차">
+    <div class="toc-group">이해하기</div>
+    <ol>
+      <li><a href="#intro"><span class="n">01</span><span>Vibe Agent란</span></a></li>
+      <li><a href="#layers"><span class="n">02</span><span>정보는 어디에 둘까</span></a></li>
+      <li><a href="#order"><span class="n">03</span><span>처음 설정하는 순서</span></a></li>
+    </ol>
+    <div class="toc-group">설정하기</div>
+    <ol>
+      <li><a href="#about"><span class="n">04</span><span>나를 소개하기</span></a></li>
+      <li><a href="#rules"><span class="n">05</span><span>답변 방식 지침 쓰기</span></a></li>
+      <li><a href="#memory"><span class="n">06</span><span>메모리 점검하기</span></a></li>
+      <li><a href="#project"><span class="n">07</span><span>프로젝트 지침 정하기</span></a></li>
+      <li><a href="#connect"><span class="n">08</span><span>앱 연결은 필요할 때</span></a></li>
+      <li><a href="#avoid"><span class="n">09</span><span>넣지 말아야 할 것</span></a></li>
+    </ol>
+    <div class="toc-group">활용하기</div>
+    <ol>
+      <li><a href="#talk"><span class="n">10</span><span>대화로 요구사항 만들기</span></a></li>
+      <li><a href="#test"><span class="n">11</span><span>설정 후 시험하기</span></a></li>
+      <li><a href="#together"><span class="n">12</span><span>두 AI 함께 쓰기</span></a></li>
+    </ol>
+    <div class="toc-group">정리</div>
+    <ol>
+      <li><a href="#summary"><span class="n">13</span><span>세 줄 요약</span></a></li>
+      <li><a href="#sources"><span class="n">↗</span><span>참고 자료</span></a></li>
+    </ol>
+  </nav>
+  <div class="side-foot">회색 상자의 [대괄호] 부분을 내 상황으로 바꿔 쓰세요. 상자마다 복사 버튼이 있습니다.</div>
+</aside>
+
+<main>
+<div class="col">
+
+  <header class="hero">
+    <p class="eyebrow">바이브코딩의 첫걸음 · 보충자료</p>
+    <h1>Vibe Agent 설정 가이드</h1>
+    <p class="lead">ChatGPT와 Claude가 나를 같은 기준으로 이해하도록 설정하고, 대화로 내 생각을 요구사항으로 바꾸는 방법을 정리했습니다. 강연이 끝난 뒤 내 계정을 설정할 때 순서대로 따라 하시면 됩니다.</p>
+    <blockquote class="thesis">AI가 나를 알아서 이해하는 것이 아닙니다. 내가 나를 정리해서 알려주고, 그 기준을 여러 AI에 똑같이 맞출 때 비로소 여러 명의 Vibe Agent와 함께 생각을 다듬을 수 있습니다.</blockquote>
+    <p class="note">메뉴 이름과 위치는 계정, 요금제, 앱 버전에 따라 다를 수 있습니다. 본인 화면에 보이는 이름을 기준으로 따라 하세요.</p>
+  </header>
+
+  <!-- 01 -->
+  <section id="intro">
+    <div class="sec-head"><span class="sec-no">01</span><h2>Vibe Agent란</h2></div>
+    <p class="sec-lead">Vibe Agent는 내 생각을 듣고 질문과 비교로 요구사항을 함께 정리하는 대화 상대입니다.</p>
+    <span class="term-def"><b>Vibe Agent</b> <span class="hj">(바이브 에이전트)</span> : 내가 하고 싶은 일을 듣고, 질문과 비교를 통해 목적·범위·완료 기준을 함께 정리하는 대화 상대. 강연에서 쓰는 역할 이름이며, 별도 제품이나 켜야 하는 기능은 아닙니다.</span>
+    <p><span class="term">Agent(대리인, 代理人)</span>는 라틴어 agere(행하다)에서 왔습니다. 나 대신 일을 맡아 처리하는 사람이라는 뜻으로, 부동산 중개인을 real estate agent라고 부르는 것과 같습니다.</p>
+    <ul class="plain">
+      <li>이 강연에서는 생각을 요구사항으로 정리하는 역할을 Vibe Agent, 코드를 구현하는 역할을 Coding Agent라고 구분합니다. 하나의 AI가 두 역할을 모두 수행할 수도 있습니다.</li>
+      <li>Vibe Agent와 나눈 대화의 결과가 Coding Agent에게 넘길 요구사항이 됩니다.</li>
+      <li>ChatGPT와 Claude를 함께 쓰면 같은 질문에 서로 다른 관점을 얻습니다. 비교가 공정하려면 두 AI가 나에 대해 같은 것을 알고, 같은 방식으로 답하도록 맞춰야 합니다.</li>
+    </ul>
+  </section>
+
+  <!-- 02 -->
+  <section id="layers">
+    <div class="sec-head"><span class="sec-no">02</span><h2>정보는 어디에 둘까</h2></div>
+    <p class="sec-lead">설정할 곳이 많아 보여도, 적용 범위로 나누면 세 층과 앱 연결 하나입니다.</p>
+
+    <div class="layers" role="img" aria-label="계정 전체, 작업별, 이번 대화의 세 층과 옆의 앱 연결">
+      <div class="stack">
+        <div class="layer l1"><div class="lv">모든 대화에 적용<b>계정 전체</b></div><div class="chips"><span class="chip">내 소개</span><span class="chip">답변 방식 지침</span><span class="chip">메모리</span></div></div>
+        <div class="layer l2"><div class="lv">그 작업 안에서만<b>프로젝트</b></div><div class="chips"><span class="chip">프로젝트 지침</span><span class="chip">기준 파일</span></div></div>
+        <div class="layer l3"><div class="lv">지금 이 대화만<b>프롬프트</b></div><div class="chips"><span class="chip">이번에 할 일</span><span class="chip">첨부 자료</span><span class="chip">원하는 결과</span></div></div>
+      </div>
+      <div class="side-rail"><b>앱 연결</b>실제 자료가 필요할 때 어느 층에서든 불러옵니다.</div>
+    </div>
+    <p class="diagram-cap">위층일수록 넓게, 오래 적용됩니다. 아래층일수록 구체적이고 자주 바뀝니다.</p>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th>구분</th><th>넣을 내용</th><th>쉬운 비유</th><th>ChatGPT</th><th>Claude</th></tr></thead>
+        <tbody>
+          <tr><td>내 소개</td><td>경력, 현재 활동, 쓰는 도구, 목표</td><td>내 소개서</td><td>More about you, 별명, 직업</td><td>개인 지침 앞부분, 호칭 칸</td></tr>
+          <tr><td>답변 방식 지침</td><td>호칭, 언어, 설명 방식, 확인·승인 원칙</td><td>함께 일하는 규칙</td><td>사용자 지정 지침</td><td>개인 지침</td></tr>
+          <tr><td>메모리</td><td>이어갈 사실과 선호, 바뀐 상태</td><td>갱신하는 수첩</td><td>메모리</td><td>메모리</td></tr>
+          <tr><td>프로젝트</td><td>그 작업의 목적·대상·범위·완료 기준, 기준 파일</td><td>프로젝트 업무 지침</td><td>Projects</td><td>Projects</td></tr>
+          <tr><td>프롬프트</td><td>이번에 할 일, 자료, 원하는 결과</td><td>오늘의 작업 요청</td><td>대화 입력창</td><td>대화 입력창</td></tr>
+          <tr><td>앱 연결</td><td>실제 자료가 있는 앱</td><td>자료실 열쇠</td><td>앱</td><td>커넥터</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><span class="k">기본 원칙</span><p>모든 대화에 맞는 것은 지침과 메모리에, 특정 작업에만 맞는 것은 프로젝트에 둡니다. 같은 내용을 두 곳에 넣지 않습니다.</p></div>
+  </section>
+
+  <!-- 03 -->
+  <section id="order">
+    <div class="sec-head"><span class="sec-no">03</span><h2>처음 설정하는 순서</h2></div>
+    <p class="sec-lead">꺼내고, 대조하고, 확정한 뒤에 나눕니다. 나누기부터 하면 다시 고치게 됩니다.</p>
+    <ol class="steps">
+      <li><div><b>꺼내기</b><p>AI 설정에서 확인할 수 있는 메모리와 기존 지침을 살펴보고, "나에 대해 기억하는 내용을 정리해 주세요"라고 요청합니다. 대화로 확인한 결과가 전체 기억을 빠짐없이 보여주는 것은 아닙니다.</p></div></li>
+      <li><div><b>대조하기</b><p>꺼낸 기억을 내 실제 기록(이력서, 노트, 일정표)과 비교해 중복·충돌·오래된 내용을 찾습니다.</p>
+        <ul><li>바뀐 회사·기관 이름이 예전 이름과 섞여 있음</li><li>입학·졸업·근무 종료 시기가 실제와 다름</li><li>그만 쓰는 도구가 아직 "사용 중"으로 남아 있음</li><li>예전 지침("항상 자세히")과 최근 선호("짧게 한 단계씩")가 충돌</li></ul></div></li>
+      <li><div><b>확정하기</b><p>항목별로 직접 확인해 하나의 기준본을 만듭니다. AI가 정리해 주어도 확정은 내가 합니다.</p></div></li>
+      <li><div><b>나누기</b><p>기준본을 02장의 표대로 나눕니다. 답변 방식은 지침, 나에 대한 사실과 진행 중인 일은 메모리, 특정 작업의 규칙은 프로젝트로 보냅니다.</p></div></li>
+      <li><div><b>맞추기</b><p>같은 지침과 같은 기준본을 다른 AI에도 넣습니다.</p></div></li>
+      <li><div><b>시험하기</b><p>짧은 질문 몇 개로 기대한 방식으로 답하는지 확인합니다(11장).</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 04 -->
+  <section id="about">
+    <div class="sec-head"><span class="sec-no">04</span><h2>나를 소개하기</h2></div>
+    <p class="sec-lead">경력은 짧게, 지금 하는 일과 목표는 구체적으로 적습니다.</p>
+    <ul class="plain">
+      <li><strong>ChatGPT</strong>: 설정 → 개인 맞춤 설정 → More about you. 별명·직업 칸이 따로 있으면 나누어 적습니다.</li>
+      <li><strong>Claude</strong>: 설정의 개인 지침 칸 앞부분에 소개 문장을 적고, "어떻게 불러드릴까요" 칸에 호칭을 맞춥니다.</li>
+      <li>구독을 중단한 도구, 바뀐 개발환경, 끝난 계획은 현재 상태로 고칩니다. 한국어로 적어도 됩니다.</li>
+    </ul>
+    <div class="prompt"><div class="prompt-head"><span>소개 문장 틀</span><button class="copy" type="button">복사</button></div>
+<pre>저는 <span class="ph">[직업·역할]</span>입니다. <span class="ph">[대상]</span>에게 <span class="ph">[하는 일]</span>을 하고 있습니다.
+AI와 대화하며 <span class="ph">[만들고 싶은 것]</span>을 직접 만들고, 그 과정을 <span class="ph">[활용 목적]</span>으로 정리하고 싶습니다.
+현재 사용하는 도구는 <span class="ph">[도구]</span>이고, 당장의 목표는 <span class="ph">[목표]</span>입니다.</pre></div>
+  </section>
+
+  <!-- 05 -->
+  <section id="rules">
+    <div class="sec-head"><span class="sec-no">05</span><h2>답변 방식 지침 쓰기</h2></div>
+    <p class="sec-lead">지침은 규칙 목록보다 "나는 이럴 때 이런 방식이 도움이 된다"는 1인칭 문장으로 씁니다.</p>
+    <ul class="plain">
+      <li><strong>이유까지 적습니다.</strong> 이유를 알면 AI가 처음 보는 상황에도 응용합니다.</li>
+      <li><strong>적용 상황을 붙입니다.</strong> 조건 없이 넓게 쓴 지침은 서로 충돌합니다. 아래 표처럼 고칩니다.</li>
+      <li><strong>꼭 지킬 규칙은 언제 적용할지 조건과 함께 명확히 적습니다.</strong> 배경 정보("나는 ○○를 공부한다")는 관련 있는 질문에서만 반영되는 경향이 있습니다.</li>
+      <li><strong>모든 주제에 공통인 규칙만 넣습니다.</strong> 특정 프로젝트의 파일 경로나 기능은 프로젝트 지침으로 보냅니다.</li>
+      <li><strong>글자 수 제한이 보이면</strong> 실제 답변을 바꾸는 규칙부터 남기고, 중복 설명은 줄입니다.</li>
+    </ul>
+
+    <h3>조건을 붙이면 지침끼리 덜 부딪힙니다</h3>
+    <div class="tbl compare">
+      <table>
+        <thead><tr><th>넓게 쓴 지침</th><th>적용 상황을 분명히 한 지침</th></tr></thead>
+        <tbody>
+          <tr><td>모든 설명을 자세한 고정 순서로</td><td>새 개념을 배울 때는 자세히, 실무와 복습은 간결하게</td></tr>
+          <tr><td>항상 한 단계씩 답변</td><td>설정·설치처럼 직접 따라 하는 작업에서만 한 단계씩</td></tr>
+          <tr><td>영어가 있으면 영어로 답변</td><td>영어로 말을 걸면 영어로, 검토용 영어 자료는 한국어로 설명</td></tr>
+          <tr><td>모든 제출에 Git과 README 점검</td><td>외부 제출은 결과물과 민감정보 점검, 코드 배포는 Git과 README도 점검</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prompt"><div class="prompt-head"><span>답변 방식 지침 예시</span><button class="copy" type="button">복사</button></div>
+<pre>정중한 한국어로 답해 주세요. 새로운 개념은 쉬운 정의와 큰 틀부터 설명하고, 주요 English 용어는 원어를 함께 적어 주세요. 처음부터 엄밀한 설명보다 큰 틀을 먼저 잡아야 제가 오래 기억합니다.
+PC 설정·설치처럼 직접 따라 하는 작업은 버튼과 메뉴 경로 중심으로 한 번에 한 단계씩 안내해 주세요. 복습과 단순 확인은 짧게 답해 주세요.
+요청이 불분명하면 먼저 확인하고, 요청한 범위를 넘어 작업을 시작하지 마세요. 최신 정보는 검색해 출처를 붙이고, 확실하지 않은 내용은 구별해 주세요.
+먼저 쓸 수 있는 작은 버전을 만들어 확인한 뒤 개선해 주세요. 외부 전송·공개·배포 전에는 항상 최종 결과물과 민감정보 포함 여부를 보여 주고 제 승인을 받아 주세요.</pre></div>
+
+    <h3>말투 메뉴는 선택 사항입니다</h3>
+    <p>ChatGPT의 "기본 스타일 및 톤"과 Claude 대화창의 "스타일" 메뉴는 말투와 길이를 조절합니다. 말투를 바꿔도 AI의 능력은 달라지지 않습니다. 지금 답변이 적절하면 그대로 두고, 길이와 설명 순서는 지침에서 구체적으로 정합니다.</p>
+  </section>
+
+  <!-- 06 -->
+  <section id="memory">
+    <div class="sec-head"><span class="sec-no">06</span><h2>메모리 점검하기</h2></div>
+    <p class="sec-lead">메모리는 저장된 내용이 지금도 사실인지 정기적으로 확인해야 합니다.</p>
+    <span class="term-def"><b>Memory</b> <span class="hj">(기억, 記憶)</span> : 지난 대화의 유용한 맥락을 다음 대화로 이어 주는 기능. 매번 새로 쓰는 일기가 아니라 고쳐 가며 쓰는 수첩에 가깝습니다.</span>
+    <ul class="plain">
+      <li><strong>ChatGPT</strong>: 설정 → 개인 맞춤 설정 → 메모리 요약에서 현재 내용을 확인하고, 관리 화면에서 변경을 요청할 수 있습니다. 메모리 요약과 대화에서 확인한 내용은 모든 과거 대화·기억의 완전한 목록이 아닙니다.</li>
+      <li><strong>Claude</strong>: 설정의 메모리 항목에서 보고 편집합니다. 예전 대화 검색·참조, 대화에서 메모리 생성, 민감한 주제 포함 여부를 각각 켜고 끌 수 있습니다.</li>
+      <li>도구 변경, 프로젝트 종료, 계획 완료처럼 상태가 바뀌면 바로 고칩니다.</li>
+    </ul>
+    <div class="prompt"><div class="prompt-head"><span>메모리 수정 요청 틀</span><button class="copy" type="button">복사</button></div>
+<pre>메모리에서 다음 내용만 수정해 주세요.
+1. <span class="ph">[프로젝트 이름]</span>은 개발 중이 아니라 <span class="ph">[보관 중 / 완료]</span>입니다.
+2. <span class="ph">[도구·장비]</span>는 <span class="ph">[새 상태]</span>로 바뀌었습니다.
+3. 한 번에 한 단계씩 안내하는 방식은 직접 따라 하는 작업에만 적용해 주세요.
+나머지 내용은 그대로 유지해 주세요.</pre></div>
+    <div class="callout"><span class="k">요청과 반영은 다릅니다</span><p>수정을 요청한 뒤에는 바뀐 메모리를 다시 읽어 확인합니다. 엉뚱한 항목에 중복으로 들어갔다면 삭제할 위치와 유지할 위치를 함께 지정합니다. 중요한 작업 기준은 메모리에만 두지 말고 프로젝트 지침과 기준 문서에도 적어 둡니다.</p></div>
+
+    <h3>다른 AI의 기억 옮기기</h3>
+    <ul class="plain">
+      <li><strong>Claude로 가져오기</strong>: 메모리 가져오기 기능에서 Claude가 주는 추출 프롬프트를 기존 AI에 넣고, 나온 결과를 붙여넣습니다. 기존 메모리를 덮어쓰지 않고 더해집니다.</li>
+      <li><strong>ChatGPT로 옮기기</strong>: 확정한 기준본에서 핵심 사실을 골라 대화에 전달하고 메모리 반영을 요청합니다. 요청 후 실제 요약을 재확인하고, 누락·중복 여부를 점검합니다.</li>
+      <li><strong>Claude에서 내보내기</strong>: 메모리를 Markdown 파일 묶음(.zip)으로 받아 백업할 수 있습니다. 실습 계정에서 받은 파일은 아래처럼 정리되어 있었습니다.</li>
+    </ul>
+    <div class="tree" role="img" aria-label="Claude 메모리 내보내기 파일 구조">
+      <div class="r"><b>profile.md</b><em>나는 누구인가: 이름, 역할, 지역, 언어</em></div>
+      <div class="r"><b>areas/</b><em>진행 중인 일: 프로젝트별 상태와 결정</em></div>
+      <div class="r"><b>topics/</b><em>나에 대한 사실과 습관: 경력, 개발 환경, 일하는 방식</em></div>
+      <div class="r"><b>projects/</b><em>특정 프로젝트 안에서 생긴 기억</em></div>
+    </div>
+    <p>이 예시처럼 내보낸 기억을 주제별 파일로 살펴볼 수 있습니다. 강연 4부의 Harness가 Agent 사이의 문맥을 파일로 이어 주는 것과 같은 원리입니다. 이 파일을 다른 AI에 줄 때는 건강·투자처럼 민감한 파일을 빼고, "바로 저장하지 말고 수정안만 만들어 달라"고 요청합니다. 확정은 내가 합니다.</p>
+  </section>
+
+  <!-- 07 -->
+  <section id="project">
+    <div class="sec-head"><span class="sec-no">07</span><h2>프로젝트 지침 정하기</h2></div>
+    <p class="sec-lead">계속 이어지는 작업은 프로젝트로 묶어, 새 대화를 열어도 같은 기준에서 시작하게 합니다.</p>
+    <span class="term-def"><b>Project</b> <span class="hj">(프로젝트)</span> : 라틴어 pro(앞으로)와 jacere(던지다)에서 온 말로, 앞으로 내다 던진 계획이라는 뜻. 여기서는 관련 대화·파일·지침을 한곳에 모아 작업의 맥락을 유지하는 공간입니다.</span>
+
+    <h3>1. 기존 지침부터 확인합니다</h3>
+    <p>지침이 이미 있으면 처음부터 새로 쓰지 말고 바뀐 부분만 고칩니다. 한 프로젝트로 먼저 시험해 본 뒤 다른 프로젝트에 적용합니다.</p>
+    <div class="prompt"><div class="prompt-head"><span>기존 지침 점검 요청</span><button class="copy" type="button">복사</button></div>
+<pre>이 프로젝트의 기존 지침과 제가 첨부한 최신 기준 문서 <span class="ph">[파일 이름]</span>을 비교해 주세요.
+유지할 내용, 오래된 내용, 빠진 내용을 먼저 짧게 정리해 주세요.
+아직 지침을 수정하거나 구현·배포하지 말고, 확인되지 않은 내용은 질문해 주세요.</pre></div>
+
+    <h3>2. 지침에 넣을 기본 항목</h3>
+    <div class="prompt"><div class="prompt-head"><span>프로젝트 지침 틀</span><button class="copy" type="button">복사</button></div>
+<pre>프로젝트 이름: <span class="ph">[이름]</span>
+목적: <span class="ph">[누구의 어떤 문제를 해결하는가]</span>
+사용자와 사용 상황: <span class="ph">[대상, 장소, 기기]</span>
+현재 상태: <span class="ph">[완료된 일과 남은 일]</span>
+이번 범위: <span class="ph">[할 일과 제외할 일]</span>
+참고 자료: <span class="ph">[최신 기준 문서와 실제 사용할 파일]</span>
+대화 역할: <span class="ph">[요구사항 정리, 비교, 검토 등]</span>
+진행 방식: 질문 → 정리 → 작은 Pilot → 검증 → 개선
+완료 기준: <span class="ph">[어떤 결과를 확인하면 완료인가]</span>
+승인 기준: <span class="ph">[외부 전송·공개·배포 전에 확인할 내용]</span></pre></div>
+    <p><span class="term">Pilot(시범 운영)</span>은 원래 배를 항구로 안내하는 도선사를 뜻했고, 지금은 본격 도입 전에 작게 먼저 해 보는 시험을 말합니다.</p>
+
+    <h3>3. 오래 유지할 것과 자주 바뀌는 것을 나눕니다</h3>
+    <p>목적, 금지사항, 완료 기준처럼 오래 유지할 내용은 지침에 둡니다. 진행 상황처럼 자주 바뀌는 내용은 "최신 상태" 문서를 파일로 올려 관리합니다.</p>
+
+    <h3>4. 기준 파일은 이름으로 지정합니다</h3>
+    <p>"이전 자료 참고해"라고 하기보다 파일을 올리고 이름을 지정합니다. 버전이 여러 개라면 무엇이 최신인지 알려 줍니다.</p>
+    <ul class="plain">
+      <li>지식 파일은 프로젝트마다 분리됩니다. 다른 프로젝트의 파일은 그 프로젝트 안에서만 보입니다.</li>
+      <li><strong>Claude</strong>: 프로젝트 메모리를 계정 전체 메모리와 연결할지, 완전히 분리할지 고를 수 있습니다. 프로젝트 안에서 예전 대화를 찾으면 그 프로젝트의 대화만 검색됩니다.</li>
+      <li><strong>ChatGPT</strong>: 프로젝트에는 기본 메모리와 프로젝트 전용 메모리처럼 참조 범위가 다른 방식이 있습니다. 프로젝트 생성 시 선택한 메모리 범위를 확인하세요. 일반 Project는 내 PC 폴더를 직접 보지 않습니다. 데스크톱 앱의 로컬 프로젝트는 폴더를 연결할 수 있으니, 어떤 폴더가 연결됐는지 확인합니다.</li>
+    </ul>
+  </section>
+
+  <!-- 08 -->
+  <section id="connect">
+    <div class="sec-head"><span class="sec-no">08</span><h2>앱 연결은 필요할 때</h2></div>
+    <p class="sec-lead">요구사항을 대화로 정리하는 데는 앱 연결이 필요 없습니다. 실제 자료를 확인해야 할 때 연결합니다.</p>
+    <span class="term-def"><b>Connector</b> <span class="hj">(연결기, 連結器)</span> : Drive, Gmail, Notion, GitHub 같은 내 앱의 자료를 AI가 직접 읽도록 이어 주는 통로. ChatGPT에서는 "앱"이라고 부릅니다.</span>
+    <ul class="plain">
+      <li>연결한 앱과 사용자가 허용한 권한에 따라 접근할 수 있는 자료 범위가 달라집니다. 연결 전 권한과 접근 범위를 확인합니다.</li>
+      <li>자료와 목적을 함께 지정합니다. 예: "Drive의 <span class="muted">[문서 이름]</span>에서 대상과 일정만 확인해 주세요."</li>
+      <li>연결했다고 모든 자료를 확인한 것은 아닙니다. 어떤 자료를 읽었고 무엇을 확인했는지 보여 달라고 요청합니다.</li>
+      <li>활용 예: Notion을 연결해 이력과 일정 데이터베이스를 조회하면, 메모리에 저장된 내용이 사실인지 대조할 수 있습니다.</li>
+    </ul>
+  </section>
+
+  <!-- 09 -->
+  <section id="avoid">
+    <div class="sec-head"><span class="sec-no">09</span><h2>넣지 말아야 할 것</h2></div>
+    <p class="sec-lead">지침과 메모리는 여러 대화에서 반복해 읽히므로, 노출되면 곤란한 정보와 충돌할 정보는 넣지 않습니다.</p>
+    <div class="avoid">
+      <div><b>식별번호</b>학번, 자격번호, 면허번호, 계좌번호</div>
+      <div><b>비밀 정보</b>비밀번호, API Key, Token</div>
+      <div><b>다른 사람의 개인정보</b>수강생, 고객, 가족의 연락처와 기록</div>
+      <div><b>앱 하나에만 쓰는 규칙</b>해당 프로젝트 지침으로 보냅니다</div>
+      <div><b>이미 바뀐 예전 지침</b>새 지침과 충돌합니다</div>
+      <div><b>같은 내용의 중복</b>지침과 메모리 중 한 곳에만 둡니다</div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="talk">
+    <div class="sec-head"><span class="sec-no">10</span><h2>대화로 요구사항 만들기</h2></div>
+    <p class="sec-lead">처음부터 완성된 프롬프트를 쓸 필요는 없습니다. 내 말로 목적과 불편을 설명하고, 대화하며 조건을 채웁니다.</p>
+    <p><span class="term">Prompt(프롬프트, 지시문)</span>는 라틴어 promptus(앞으로 꺼내 놓은, 준비된)에서 왔습니다. 연극에서 배우에게 대사를 일러 주는 사람을 prompter라고 하듯, AI가 움직이도록 건네는 질문이나 요청을 말합니다.</p>
+
+    <div class="prompt"><div class="prompt-head"><span>요구사항 대화 시작</span><button class="copy" type="button">복사</button></div>
+<pre>제가 하고 싶은 일은 <span class="ph">[생각]</span>입니다. 지금 불편한 점은 <span class="ph">[문제]</span>입니다. 먼저 요구사항을 정리하고 싶습니다.
+제 생각을 짧게 정리해 보여 준 뒤, 결과를 바꿀 중요한 질문부터 하나씩 해 주세요.
+이미 알려 준 것은 다시 묻지 말고, 아직 구현이나 외부 작업은 시작하지 마세요.
+마지막에는 목적·사용자·입력·처리·출력·완료 기준으로 정리해 주세요.</pre></div>
+
+    <h3>대화는 이 순서로 발전합니다</h3>
+    <div class="flow"><span>생각 설명</span><i>→</i><span>AI가 이해한 내용 확인</span><i>→</i><span>빠진 조건 질문</span><i>→</i><span>첫 범위 선택</span><i>→</i><span>완료 기준 확인</span><i>→</i><span class="last">요구사항 확정</span></div>
+    <p>AI가 이해한 내용을 먼저 확인하면, 방향이 어긋난 채로 구현하는 일을 줄일 수 있습니다. AI의 제안은 근거와 함께 검토하고, 실제로 써 본 결과를 보고 보완합니다.</p>
+
+    <h3>요구사항은 여섯 칸으로 정리됩니다</h3>
+    <div class="spec">
+      <div><b>목적</b>왜 만드는가</div>
+      <div><b>사용자</b>누가, 어디서 쓰는가</div>
+      <div><b>입력</b>무엇을 넣는가</div>
+      <div><b>처리</b>무엇을 판단·변환하는가</div>
+      <div><b>출력</b>무엇을 받는가</div>
+      <div><b>완료 기준</b>무엇을 보면 끝인가</div>
+    </div>
+    <p>이 여섯 칸이 채워진 문서가 Coding Agent에게 넘길 요구사항서가 됩니다.</p>
+
+    <h3>바로 시작할 수 있는 예시</h3>
+    <div class="prompt"><div class="prompt-head"><span>예시 1 · 수업 복습 도구</span><button class="copy" type="button">복사</button></div>
+<pre>학생들이 수업 후 혼자 복습하기 어려워합니다. 수업 자료를 바탕으로 질문에 답하고, 이해한 부분을 확인하는 도구를 만들고 싶습니다.
+먼저 한 차시를 Pilot으로 정리하고, 학생 수준·질문 범위·완료 기준을 저와 함께 정해 주세요.</pre></div>
+    <div class="prompt"><div class="prompt-head"><span>예시 2 · 드론 영상 편집</span><button class="copy" type="button">복사</button></div>
+<pre>여러 촬영 영상에서 쓸 장면을 골라 짧은 영상으로 만들고 싶습니다.
+먼저 촬영 목적·대상 시청자·영상 길이·화면 비율을 확인해 편집 요구사항을 정리해 주세요.
+원본을 수정하거나 업로드하기 전에 검토할 편집안을 보여 주세요.</pre></div>
+
+    <h3>대화 전·후 비교: 요구사항이 완성되는 모습</h3>
+    <p>아래는 가상의 수업 복습 도구 예시입니다. 처음에는 막연한 생각뿐이지만, 질문과 답변을 거치면 Coding Agent에게 전달할 요구사항으로 구체화됩니다.</p>
+    <div class="callout"><span class="k">대화 전</span><p>"학생들이 집에서 복습할 수 있는 앱을 만들고 싶어요."</p></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>요구사항 항목</th><th>대화 후 확정한 내용 (예시)</th></tr></thead>
+        <tbody>
+          <tr><td>목적</td><td>학생의 수업 복습 지원</td></tr>
+          <tr><td>사용자</td><td>초등학교 5~6학년</td></tr>
+          <tr><td>입력</td><td>강사가 등록한 한 차시의 학습 내용</td></tr>
+          <tr><td>처리</td><td>5문항 퀴즈 출제·채점</td></tr>
+          <tr><td>출력</td><td>정답률과 오답 설명</td></tr>
+          <tr><td>완료 기준</td><td>한 차시 Pilot에서 퀴즈·채점·결과 표시가 정상 작동</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>여섯 항목이 구체화되면 첫 Pilot을 구현하고, 실제 사용 결과를 바탕으로 수정·확대합니다.</p>
+  </section>
+
+  <!-- 11 -->
+  <section id="test">
+    <div class="sec-head"><span class="sec-no">11</span><h2>설정 후 시험하기</h2></div>
+    <p class="sec-lead">설정을 마치면 짧은 질문 다섯 개로 확인합니다. 기대와 다른 항목은 관련 지침 한 줄만 고칩니다.</p>
+    <ul class="check">
+      <li><label><input type="checkbox" id="t1"><span><span class="q">개념 질문을 해 봅니다</span><span class="a">쉬운 정의와 큰 틀부터 나오는가? 예: "Git이 무엇인가요?"</span></span></label></li>
+      <li><label><input type="checkbox" id="t2"><span><span class="q">설치·설정 방법을 물어봅니다</span><span class="a">지금 할 한 단계만 안내하는가? 예: "PC에 프로그램을 설치하려면 첫 단계가 무엇인가요?"</span></span></label></li>
+      <li><label><input type="checkbox" id="t3"><span><span class="q">일부러 막연하게 요청합니다</span><span class="a">실행하기 전에 필요한 조건을 묻는가? 예: "학생용 앱을 만들어 주세요."</span></span></label></li>
+      <li><label><input type="checkbox" id="t4"><span><span class="q">프로젝트 안에서 질문합니다</span><span class="a">지정한 목적과 기준 파일을 사용하는가? 예: "이 프로젝트의 완료 기준을 알려 주세요."</span></span></label></li>
+      <li><label><input type="checkbox" id="t5"><span><span class="q">공개·배포를 요청해 봅니다</span><span class="a">실행 전에 점검 내용을 보여 주고 승인을 받는가? 예: "이 프로젝트를 외부에 공개하고 싶습니다. 실행 전에 점검해 주세요."</span></span></label></li>
+    </ul>
+  </section>
+
+  <!-- 12 -->
+  <section id="together">
+    <div class="sec-head"><span class="sec-no">12</span><h2>두 AI 함께 쓰기</h2></div>
+    <p class="sec-lead">두 서비스에는 비슷한 목적의 기능이 있지만, 지침·메모리의 저장 구조와 참조 범위, 연결 방식은 서로 다릅니다.</p>
+    <div class="tbl compare">
+      <table>
+        <thead><tr><th>역할</th><th>Claude</th><th>ChatGPT</th></tr></thead>
+        <tbody>
+          <tr><td>항상 적용되는 답변 방식</td><td>개인 지침 (한 칸)</td><td>사용자 지정 지침 + 별명·직업·More about you (여러 칸)</td></tr>
+          <tr><td>말투·길이 조절</td><td>지침 문장 + 대화창의 스타일 메뉴</td><td>기본 스타일 및 톤 (선택 메뉴)</td></tr>
+          <tr><td>나에 대한 기억</td><td>메모리 (보기·편집·내보내기)</td><td>메모리 (요약 보기·변경 요청, 전체 기록과는 다름)</td></tr>
+          <tr><td>예전 대화 참고</td><td>채팅 검색 및 참조</td><td>채팅 기록 참조</td></tr>
+          <tr><td>다른 AI 기억 옮기기</td><td>메모리 가져오기 기능</td><td>대화에 붙여넣고 저장 요청</td></tr>
+          <tr><td>작업별 기준</td><td>Projects (지침 + 지식 파일, 메모리 연결/분리 선택)</td><td>Projects (지침 + 파일, 프로젝트별 메모리 범위 선택 가능, 데스크톱 앱의 로컬 폴더 연결)</td></tr>
+          <tr><td>내 앱 자료 연결</td><td>커넥터</td><td>앱</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>함께 쓸 때의 원칙</h3>
+    <ul class="plain">
+      <li>두 AI에 같은 목적·대상·원본 자료·완료 기준을 줍니다.</li>
+      <li>한쪽에서 고친 지침과 메모리는 다른 쪽에 자동으로 반영되지 않습니다. 각각 확인합니다.</li>
+      <li>답이 다르면 어느 쪽이 맞는지보다 각 답의 근거와 빠진 조건을 비교합니다.</li>
+      <li>최종 판단은 사람(Owner)이 합니다.</li>
+    </ul>
+  </section>
+
+  <!-- 13 -->
+  <section id="summary">
+    <div class="sec-head"><span class="sec-no">13</span><h2>세 줄 요약</h2></div>
+    <ol class="summary">
+      <li>나에 대한 사실은 소개와 메모리에, 답변 방식은 지침에, 작업 기준은 프로젝트에 둡니다.</li>
+      <li>꺼내고, 대조하고, 확정한 뒤에 나누고, 두 AI에 똑같이 맞춥니다.</li>
+      <li>짧은 대화와 Pilot으로 시험하며 요구사항을 구체화하고, 최종 판단은 내가 합니다.</li>
+    </ol>
+  </section>
+
+  <section id="sources">
+    <div class="sec-head"><span class="sec-no">↗</span><h2>참고 자료</h2></div>
+    <ul class="sources">
+      <li><a href="https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude" target="_blank" rel="noopener">Claude 도움말 · Import and export your memory from Claude</a></li>
+      <li><a href="https://openai.com/academy/personalization" target="_blank" rel="noopener">OpenAI Academy · Personalizing ChatGPT</a></li>
+      <li><a href="https://learn.chatgpt.com/docs/personalize" target="_blank" rel="noopener">ChatGPT Docs · Personalize ChatGPT</a></li>
+      <li><a href="https://learn.chatgpt.com/docs/projects" target="_blank" rel="noopener">ChatGPT Docs · Projects and chats</a></li>
+      <li><a href="https://learn.chatgpt.com/docs/prompting" target="_blank" rel="noopener">ChatGPT Docs · Prompting</a></li>
+    </ul>
+    <p class="foot">메뉴 이름과 기능은 서비스 업데이트에 따라 달라질 수 있습니다. 실제 계정에 보이는 설정을 기준으로 확인하세요.</p>
+  </section>
+
+</div>
+</main>
+
+<script>
+(function(){
+  // copy buttons
+  document.querySelectorAll('.prompt').forEach(function(box){
+    var btn = box.querySelector('.copy'), pre = box.querySelector('pre');
+    if(!btn || !pre) return;
+    btn.addEventListener('click', function(){
+      var text = pre.innerText;
+      function ok(){ btn.textContent='복사됨'; btn.classList.add('done'); setTimeout(function(){btn.textContent='복사'; btn.classList.remove('done');},1600); }
+      function fallback(){ var r=document.createRange(); r.selectNodeContents(pre); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent='선택됨 · Ctrl+C'; setTimeout(function(){btn.textContent='복사';},2400); }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok, fallback); }
+        else fallback();
+      }catch(e){ fallback(); }
+    });
+  });
+
+  // mobile toc toggle
+  var side = document.getElementById('side'), menu = document.getElementById('menuBtn');
+  menu.addEventListener('click', function(){
+    var open = side.classList.toggle('open');
+    menu.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.textContent = open ? '닫기' : '목차';
+  });
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click', function(){
+      if(side.classList.contains('open')){ side.classList.remove('open'); menu.setAttribute('aria-expanded','false'); menu.textContent='목차'; }
+    });
+  });
+
+  // scrollspy
+  var links = {};
+  document.querySelectorAll('.toc a').forEach(function(a){ links[a.getAttribute('href').slice(1)] = a; });
+  var current = null;
+  function setOn(id){
+    if(id === current || !links[id]) return;
+    if(current && links[current]) links[current].classList.remove('on');
+    links[id].classList.add('on'); current = id;
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) setOn(e.target.id); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    document.querySelectorAll('main section[id]').forEach(function(s){ io.observe(s); });
+  }
+  setOn('intro');
+})();
+</script>
+
+</body></html>
