@@ -1,0 +1,336 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>채팅에서 IDE로</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: 1·2편과 같은 틀. 왼쪽 목차 + 오른쪽 본문. 구조 → 사례 → 많이 쓰는 순서 → 절약법 → 확인 → 자주 묻는 것 → 영상 */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --sunk:#eceef2; --line:#d6dae2;
+  --ink:#16213a; --muted:#56607a; --navy:#1f3a6b; --amber:#b86e08; --amber-soft:#fbefd9;
+  --good:#1d6b4f; --good-soft:#e2f2ea; --bad:#a3342c; --bad-soft:#f8e4e1;
+  --f-display:"Noto Serif KR","Nanum Myeongjo",Georgia,serif;
+  --f-body:"IBM Plex Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",Consolas,"D2Coding",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10141c; --surface:#171d28; --sunk:#1d2533; --line:#2b3546;
+  --ink:#e8ecf4; --muted:#9aa5ba; --navy:#8fb0ec; --amber:#f0a83c; --amber-soft:#3a2d17;
+  --good:#6fd1a8; --good-soft:#163328; --bad:#f09a90; --bad-soft:#3a1d1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141c; --surface:#171d28; --sunk:#1d2533; --line:#2b3546;
+  --ink:#e8ecf4; --muted:#9aa5ba; --navy:#8fb0ec; --amber:#f0a83c; --amber-soft:#3a2d17;
+  --good:#6fd1a8; --good-soft:#163328; --bad:#f09a90; --bad-soft:#3a1d1a; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:1180px;margin:0 auto;padding-block:48px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--navy)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:4px;font-size:14px}
+.toc .label{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:600;margin-bottom:8px}
+.toc a{display:grid;grid-template-columns:28px 1fr;align-items:baseline;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none}
+.toc a:hover{background:var(--sunk);color:var(--ink)}
+.toc b{font-family:var(--f-mono);font-weight:500;color:var(--amber);font-size:12px}
+
+main{min-width:0;display:grid;gap:72px}
+.hero{display:grid;gap:20px;max-width:760px}
+.kicker{font-size:13px;letter-spacing:.1em;color:var(--amber);font-weight:600}
+.hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,4.6vw,3.1rem);line-height:1.25;letter-spacing:-.02em}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.series{font-size:14px;color:var(--muted)}
+
+.step{display:grid;gap:22px;scroll-margin-top:24px}
+.step-head{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline;border-top:2px solid var(--ink);padding-top:18px}
+.step-no{font-family:var(--f-mono);font-size:14px;color:var(--amber)}
+.step-head h2{font-family:var(--f-display);font-weight:800;font-size:clamp(1.45rem,2.6vw,1.9rem);line-height:1.35}
+.step-head .role{grid-column:2;color:var(--muted);font-size:15.5px;max-width:64ch}
+.body{display:grid;gap:18px;max-width:780px;min-width:0}
+.body>h3{font-size:1.05rem;color:var(--navy);margin-top:10px}
+
+.path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14.5px}
+.path span{background:var(--surface);border:1px solid var(--line);padding:3px 10px;border-radius:6px;font-weight:500}
+.path i{font-style:normal;color:var(--muted)}
+
+.rules{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;display:grid;gap:12px}
+.rules h3{font-size:15px;letter-spacing:.04em;color:var(--navy)}
+.rules ul{margin:0;padding-left:1.15em;display:grid;gap:7px}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ex{padding:14px 16px;border-radius:10px;font-size:15px;display:grid;gap:6px;align-content:start}
+.ex .tag{font-size:12px;font-weight:700;letter-spacing:.06em}
+.ex.no{background:var(--bad-soft)} .ex.no .tag{color:var(--bad)}
+.ex.yes{background:var(--good-soft)} .ex.yes .tag{color:var(--good)}
+.note{border-left:3px solid var(--amber);background:var(--amber-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15px}
+.result{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px 16px;border-radius:10px;background:var(--good-soft);font-size:15px}
+.result .tag{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--good);padding-top:3px;white-space:nowrap}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.05em;color:var(--muted);font-weight:600;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+
+/* 두 개의 시계 */
+.clocks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.clock{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:grid;gap:10px;align-content:start;min-width:0}
+.clock .name{font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.clock .reset{font-family:var(--f-display);font-weight:800;font-size:1.5rem;color:var(--navy);line-height:1.3}
+.clock p{font-size:14.5px;color:var(--muted)}
+.meter{height:10px;border-radius:5px;background:var(--sunk);overflow:hidden}
+.meter span{display:block;height:100%;background:var(--amber);border-radius:5px}
+.pool{background:var(--surface);border:1.5px dashed var(--line);border-radius:12px;padding:14px 18px;display:grid;gap:10px}
+.pool .chips{display:flex;flex-wrap:wrap;gap:8px}
+.pool .chips span{background:var(--sunk);padding:4px 12px;border-radius:999px;font-size:14px;font-weight:500}
+.pool p{font-size:14.5px;color:var(--muted)}
+
+/* 실제 사례 막대 */
+.split{display:grid;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.split h3{font-size:15px;color:var(--navy)}
+.splitbar{display:flex;height:34px;border-radius:8px;overflow:hidden;font-size:13.5px;font-weight:600}
+.splitbar span{display:flex;align-items:center;padding:0 12px;white-space:nowrap;overflow:hidden}
+.splitbar .work{background:var(--amber);color:var(--bg)}
+.splitbar .chat{background:var(--navy);color:var(--bg)}
+.split .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.warnbox{display:grid;gap:6px;padding:16px 18px;border-radius:10px;background:var(--bad-soft);font-size:15px}
+.warnbox .tag{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--bad)}
+
+/* 많이 쓰는 순서 */
+ol.rank{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:r}
+ol.rank li{counter-increment:r;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+ol.rank li::before{content:counter(r);font-family:var(--f-display);font-weight:800;font-size:1.6rem;line-height:1.1;color:var(--amber);text-align:center}
+ol.rank li:first-child{border-color:var(--amber);background:linear-gradient(90deg,var(--amber-soft),var(--surface) 60%)}
+ol.rank strong{display:block;font-size:16px}
+ol.rank span{display:block;font-size:14.5px;color:var(--muted)}
+
+/* 절약법 */
+.habit{display:grid;gap:12px}
+.habit h3{font-size:1.08rem;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.habit h3 b{font-family:var(--f-mono);font-weight:500;font-size:13px;color:var(--amber)}
+.habit>p{color:var(--muted);font-size:15.5px}
+
+.video{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:14.5px}
+.video span.pending{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;font-weight:600;background:var(--sunk);color:var(--muted);border:1px dashed var(--line)}
+.video svg{width:14px;height:14px;fill:currentColor}
+
+.check{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.check li{display:grid;grid-template-columns:22px 1fr;gap:10px}
+.check li::before{content:"";width:16px;height:16px;margin-top:6px;border:2px solid var(--amber);border-radius:4px}
+
+footer{border-top:1px solid var(--line);padding-top:24px;font-size:13.5px;color:var(--muted);display:grid;gap:6px;max-width:780px}
+footer ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:40px}
+  .toc{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toc .label{grid-column:1/-1}
+}
+@media (max-width:620px){
+  .compare,.clocks{grid-template-columns:minmax(0,1fr)}
+  .toc{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>
+/* 4편 추가: 신호 카드, 사례 수치, 폴더 그림 */
+.signals{display:grid;gap:12px}
+.signal{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.signal .n{font-family:var(--f-display);font-weight:800;font-size:1.6rem;line-height:1.1;color:var(--amber);text-align:center}
+.signal h3{font-size:1.05rem;margin-bottom:4px}
+.signal p{font-size:15px;color:var(--muted)}
+.signal p+p{margin-top:6px}
+.signal .eg{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:2px;min-width:0}
+.stat b{font-family:var(--f-display);font-weight:800;font-size:1.5rem;color:var(--navy);font-variant-numeric:tabular-nums}
+.stat span{font-size:13.5px;color:var(--muted)}
+pre.tree{font-family:var(--f-mono);font-size:14px;line-height:1.8;white-space:pre;overflow-x:auto}
+.versus{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.vcard{border-radius:12px;padding:18px 20px;display:grid;gap:8px;align-content:start;border:1px solid var(--line);background:var(--surface)}
+.vcard h3{font-size:1.05rem;color:var(--navy)}
+.vcard ul{margin:0;padding-left:1.1em;display:grid;gap:5px;font-size:15px}
+.vcard.alt{border-color:var(--amber);background:linear-gradient(180deg,var(--amber-soft),var(--surface) 70%)}
+@media (max-width:620px){.stats,.versus{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="목차">
+    <div class="label">채팅에서 IDE로</div>
+    <a href="#overview"><b>—</b>질문 바꾸기</a>
+    <a href="#s1"><b>01</b>채팅이 더 나은 때</a>
+    <a href="#s2"><b>02</b>옮길 때를 알리는 네 신호</a>
+    <a href="#s3"><b>03</b>사례: 채팅으로 만든 편집기</a>
+    <a href="#s4"><b>04</b>사례: AI Studio 수업 도구</a>
+    <a href="#s5"><b>05</b>두 번째부터 빨라진다</a>
+    <a href="#s6"><b>06</b>어디서든 지킬 원칙</a>
+  </nav>
+
+  <main>
+    <header class="hero" id="overview">
+      <p class="kicker">바이브코딩의 첫걸음 · 보충자료</p>
+      <h1>언제 채팅을 떠나 IDE로 옮길까</h1>
+      <p class="lead">채팅창이나 AI Studio로도 웹앱을 충분히 만듭니다. 그래서 “IDE가 더 좋다”는 말은 금방 힘을 잃습니다. 질문을 바꿔야 합니다. 어느 쪽이 좋은지가 아니라, <strong>어떤 신호가 오면 옮겨야 하는지</strong>입니다.</p>
+      <p class="series">한도에 자주 닿는다면 그것이 옮길 때를 알리는 첫 신호입니다. Claude는 답할 때마다 긴 대화 전체를 다시 읽기 때문에, 긴 대화가 가장 비쌉니다.</p>
+      <div class="versus">
+        <div class="vcard">
+          <h3>채팅 · AI Studio = 수선집</h3>
+          <ul>
+            <li>맡기면 결과를 받아 옵니다</li>
+            <li>빠르고 설치할 것이 없습니다</li>
+            <li>원본과 도구는 그쪽에 있습니다</li>
+          </ul>
+        </div>
+        <div class="vcard alt">
+          <h3>IDE = 내 작업장</h3>
+          <ul>
+            <li>원본 파일이 내 컴퓨터와 저장소에 있습니다</li>
+            <li>차리는 데 시간이 듭니다</li>
+            <li>부품이 쌓일수록 빨라집니다</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">바지 하나 줄이려고 작업장을 차릴 필요는 없습니다. 매주 옷을 고치고 새로 만들 거라면 작업장이 있어야 합니다.</div>
+    </header>
+
+    <section class="step" id="s1">
+      <div class="step-head"><span class="step-no">01</span><h2>채팅이 더 나은 때</h2><p class="role">먼저 솔직하게 인정하고 시작합니다. 아래에 해당하면 IDE를 열 이유가 없습니다.</p></div>
+      <div class="body">
+        <ul class="check" aria-label="채팅이 맞는 경우">
+          <li>한 번 만들고 거의 고치지 않는 화면 (행사 안내, 수업 한 번용 도구)</li>
+          <li>숨겨야 할 비밀 Key가 없는 화면</li>
+          <li>만들자마자 주소를 나눠 줘야 하는 경우</li>
+          <li>비슷한 것을 다시 만들 계획이 없는 경우</li>
+        </ul>
+        <div class="result"><span class="tag">직접 겪은 예</span><p>이 보충자료의 일부 페이지도 채팅에서 만들었습니다. 페이지 하나씩이고, 비밀 정보가 없고, 가끔만 고치기 때문입니다.</p></div>
+      </div>
+    </section>
+
+    <section class="step" id="s2">
+      <div class="step-head"><span class="step-no">02</span><h2>옮길 때를 알리는 네 가지 신호</h2><p class="role">하나라도 “예”라면 IDE로 옮길 때가 가까워진 것입니다.</p></div>
+      <div class="body">
+        <div class="signals">
+          <div class="signal"><span class="n">1</span><div>
+            <h3>결과물이나 만드는 방법이 오래 살며 계속 업그레이드되는가?</h3>
+            <p>결과물 하나는 한 번 만들고 끝나도, 강의 자료 만들기처럼 <strong>만드는 일이 반복</strong>되면 오래 사는 것은 만드는 방법(템플릿)입니다. 말로 굳힌 방법은 AI가 매번 비슷하게 만들고, 파일과 코드로 굳힌 방법은 매번 똑같이 만들며 바꾼 이력도 남습니다.</p>
+          </div></div>
+          <div class="signal"><span class="n">2</span><div>
+            <h3>작은 것 하나 고치는데 전체가 흔들리는가?</h3>
+            <p>결과가 HTML 한 장으로 나와도 안에는 화면, 모양, 동작, 데이터가 뭉쳐 있습니다. 한 대화에서 계속 고치면 AI는 답할 때마다 긴 대화와 커진 파일을 다시 읽고 다시 씁니다. 한도에 자주 닿고, 어제 되던 기능이 깨집니다.</p>
+          </div></div>
+          <div class="signal"><span class="n">3</span><div>
+            <h3>숨겨야 하는 비밀 Key가 있거나, 내 컴퓨터의 것을 써야 하는가?</h3>
+            <p>기준은 “DB를 쓰느냐”가 아니라 “숨길 비밀이 있느냐”입니다. Firebase 웹 설정값은 원래 공개되는 값이라 한 페이지에서도 로그인과 저장을 할 수 있습니다. Gemini나 결제 Key처럼 브라우저에 보이면 안 되는 Key, 내 PC의 영상 파일과 프로그램이 필요하면 IDE입니다.</p>
+          </div></div>
+          <div class="signal"><span class="n">4</span><div>
+            <h3>써 보면서 고치는 일을 반복하는가?</h3>
+            <p>IDE의 에이전트는 대화 기록이 아니라 <strong>지금 파일</strong>을 읽고, 고칠 줄만 고칩니다. 직접 실행해 보고 실제 오류 메시지를 읽으므로, 사람이 화면을 캡처해 설명하지 않아도 원인을 찾습니다.</p>
+          </div></div>
+        </div>
+        <div class="rules">
+          <h3>설득할 때는 주장하지 말고 물어보세요</h3>
+          <ul>
+            <li>한도에 자주 닿으시나요?</li>
+            <li>고치다가 어제 되던 기능이 깨진 적 있으신가요?</li>
+            <li>내려받은 파일 중 어느 것이 최신인지 헷갈린 적 있으신가요?</li>
+            <li>며칠 전 버전으로 돌아가고 싶었던 적 있으신가요?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="s3">
+      <div class="step-head"><span class="step-no">03</span><h2>사례: 채팅으로 만든 영상 편집기</h2><p class="role">어느 강사님이 한 채팅 대화에서 오래 다듬어 완성한 웹 영상 편집기를 내려받아 살펴봤습니다.</p></div>
+      <div class="body">
+        <div class="stats">
+          <div class="stat"><b>10.8MB</b><span>HTML 한 장의 크기</span></div>
+          <div class="stat"><b>약 0.2MB</b><span>그중 실제 프로그램 코드</span></div>
+          <div class="stat"><b>63개</b><span>버튼 수 (작업 탭 8개)</span></div>
+        </div>
+        <p>자동 컷, 화면전환, 자막 자동 생성, 배경음악까지 들어 있는 놀라운 결과물입니다. 나머지 용량은 대부분 예제 음원을 글자로 바꿔 넣은 것입니다.</p>
+        <div class="note">코드를 열어 보면 변수 이름이 줄어 있고, 여러 파일을 하나로 묶을 때 생기는 흔적이 있습니다. 채팅 뒤에서 AI가 <strong>여러 파일로 나눠 만들고 마지막에 한 장으로 묶어</strong> 건넨 것으로 보입니다.</div>
+        <div class="compare">
+          <div class="ex no"><span class="tag">원본이 내 손에 없을 때</span><p>대화를 새로 열면 원본이 사라지니, 무겁고 길어진 그 대화를 놓을 수 없습니다. 한도에 자주 닿는 이유입니다.</p></div>
+          <div class="ex no"><span class="tag">사용자 입장에서는</span><p>고칠 때마다 11MB 파일을 새로 받아야 하고, 지금 쓰는 것이 몇 번째 버전인지 알기 어렵습니다.</p></div>
+        </div>
+        <p class="series">실전에서는 긴 4K 영상 처리, 내보내기 속도와 형식, 한국어 자막 정확도에서 한계가 있을 것으로 보입니다. 직접 써 보며 확인할 부분입니다.</p>
+      </div>
+    </section>
+
+    <section class="step" id="s4">
+      <div class="step-head"><span class="step-no">04</span><h2>사례: AI Studio로 만든 수업 도구</h2><p class="role">초등 3~4학년 “게임 캐릭터 만들기” 수업용 픽셀아트 도구입니다. 약 40분 동안 다듬은 프롬프트로 만들었습니다.</p></div>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>구분</th><th>프롬프트의 요구</th><th>실제 결과</th></tr></thead>
+            <tbody>
+              <tr><td>기능</td><td>연필·지우개·채우기, 캔버스 크기, 되돌리기, 투명 PNG 확대 저장</td><td>모두 있음. 스포이트, 좌우 대칭 등 추가 기능까지</td></tr>
+              <tr><td>기술</td><td>프레임워크 없이 순수 Vanilla JS</td><td>React로 만들어짐</td></tr>
+              <tr><td>배포</td><td>GitHub에 올려 Vercel로 배포</td><td>AI Studio 주소에 올라감</td></tr>
+              <tr><td>빈칸</td><td>(요구 없음)</td><td>새로고침하면 그리던 그림이 사라짐</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>이런 수업 도구라면 AI Studio가 충분히 좋은 선택입니다. 다만 이 사례는 세 가지를 보여 줍니다.</p>
+        <ul class="check">
+          <li><strong>요구한 것과 받은 것이 다를 수 있고</strong>, 만든 사람은 모르고 넘어가기 쉽습니다.</li>
+          <li><strong>아무도 묻지 않은 상황</strong>(아이가 실수로 창을 닫으면?)은 결과물에도 빠집니다.</li>
+          <li>40분짜리 프롬프트가 <strong>진짜 자산</strong>입니다. 다음 도구를 만들 때 또 40분을 쓰지 않으려면 이 방법을 쌓아 둘 곳이 필요합니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step" id="s5">
+      <div class="step-head"><span class="step-no">05</span><h2>두 번째부터 빨라진다</h2><p class="role">IDE를 권하는 가장 강한 이유는 첫 결과물의 품질이 아니라, 같은 종류의 일을 반복할 때 줄어드는 시간입니다.</p></div>
+      <div class="body">
+        <p>AI Studio의 앱은 하나하나가 따로 떨어진 방이라, 새 앱을 만들 때 AI는 지난 앱의 코드를 보지 못합니다. IDE에서는 한 작업장 안에 수업 도구들이 폴더로 쌓이고, 에이전트가 이미 만든 것을 열어 보고 가져다 씁니다.</p>
+        <pre class="tree">초등-SW-수업도구/
+├─ 공통/                 여러 수업에서 같이 쓰는 부품
+│  ├─ 팔레트, 격자
+│  ├─ 투명 PNG 내보내기
+│  ├─ 개념 설명 팝업
+│  └─ 디자인 (글꼴, 색, 큰 버튼)
+├─ 수업기준.md           40분 프롬프트를 정리한 템플릿
+├─ 01-픽셀-캐릭터/
+├─ 02-스크래치-배경/      공통 부품 + 새로 필요한 것만
+└─ 03-도트-애니메이션/</pre>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>줄어드는 시간</th><th>어떻게</th></tr></thead>
+            <tbody>
+              <tr><td>프롬프트</td><td>매번 같은 부분(학년, 디자인, 기기, 배포)은 수업기준.md에 두고 새로 필요한 것만 씀</td></tr>
+              <tr><td>만들기</td><td>격자·팔레트·내보내기는 이미 있으니 이번 수업만의 기능만 만듦</td></tr>
+              <tr><td>고치기</td><td>공통 부품을 한 번 고치면 그 부품을 쓰는 모든 도구가 함께 좋아짐</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">단서가 있습니다. 첫 번째 도구는 공통 부품과 기준 문서를 만드느라 오히려 더 걸립니다. 이득은 두 번째, 세 번째부터 커집니다. 무엇이 공통이고 무엇이 이번만의 것인지 나누는 감각도 필요한데, 이것은 에이전트와 함께 정리하며 배울 수 있습니다.</div>
+      </div>
+    </section>
+
+    <section class="step" id="s6">
+      <div class="step-head"><span class="step-no">06</span><h2>어디서든 지킬 원칙: 만드는 쪽과 검사하는 쪽을 나눈다</h2><p class="role">이것은 IDE로 옮길 신호가 아닙니다. 채팅에서 만들든 IDE에서 만들든 지켜야 하는 원칙입니다.</p></div>
+      <div class="body">
+        <p>한 대화에서 만들고 그 대화에게 “잘 됐어?”라고 물으면, 만든 쪽이 자기를 검사하는 셈입니다. 04의 React 사례처럼 요구가 어긋나도 아무도 알아채지 못합니다. 건물을 지을 때 시공사와 감리를 따로 두는 것과 같은 이치입니다.</p>
+        <div class="compare">
+          <div class="ex no"><span class="tag">검사가 약한 구조</span><p>만든 AI에게 페르소나만 바꿔서 “이제 검토자로서 봐 줘”</p></div>
+          <div class="ex yes"><span class="tag">검사가 되는 구조</span><p>요구사항 문서와 결과물을 <strong>새 대화나 다른 AI</strong>에게 주고 항목별로 대조하게 함</p></div>
+        </div>
+        <div class="rules">
+          <h3>이 강연에서 쓰는 역할 나누기</h3>
+          <ul>
+            <li><strong>Vibe Agent</strong> (채팅의 AI): 내 생각을 요구사항으로 만들고, 기획과 결과물이 요구사항에 맞는지 검사</li>
+            <li><strong>코딩 에이전트</strong> (IDE의 AI): 기획하고 만듦</li>
+            <li><strong>나</strong>: 둘 사이를 중재하고 최종 승인</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>2026년 10월 기준. 03·04의 사례는 만든 분이 드러나지 않도록 이름과 주소를 뺐습니다. 03의 실전 한계는 코드 구조를 보고 추정한 것입니다.</p>
+    </footer>
+  </main>
+</div>
+
+</body></html>
