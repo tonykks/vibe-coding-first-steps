@@ -1,0 +1,157 @@
+/* 강연 흐름: 맨 위 길잡이, 부 머리말, 목차의 부 이름, 구역 안 "영상으로 보기" */
+
+/* 맨 위 길잡이 (PART 1~4) */
+.roadmap {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 930px;
+  margin-top: 22px;
+}
+
+.road-step {
+  display: grid;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-decoration: none;
+  transition: .18s ease;
+}
+
+.road-step:hover,
+.road-step:focus-visible {
+  border-color: var(--purple);
+  background: var(--purple-soft);
+  outline: none;
+}
+
+.road-step span {
+  color: var(--teal);
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+
+.road-step strong { font-size: 1.05rem; }
+
+.road-step em {
+  color: var(--muted);
+  font-size: .8rem;
+  font-style: normal;
+}
+
+/* 부 머리말 */
+.part {
+  margin-top: 84px;
+  padding: 22px 24px;
+  border: 1px solid rgba(139, 124, 255, .3);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(139, 124, 255, .14), rgba(50, 197, 179, .06));
+  scroll-margin-top: 20px;
+}
+
+.part + section { padding-top: 40px; }
+
+.part-no {
+  color: var(--teal);
+  font-size: .74rem;
+  font-weight: 850;
+  letter-spacing: .16em;
+}
+
+.part-title {
+  margin: 4px 0 6px;
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+  font-weight: 850;
+  letter-spacing: -.03em;
+}
+
+.part-desc {
+  max-width: 820px;
+  margin: 0;
+  color: #bac9d8;
+}
+
+/* 목차의 부 이름 */
+.sidebar nav .nav-title { margin-top: 18px; }
+.sidebar nav .nav-title:first-child { margin-top: 0; }
+
+nav a.nav-part {
+  display: inline;
+  padding: 0;
+  color: var(--muted-2);
+  font-size: inherit;
+  background: none;
+}
+
+nav a.nav-part::before { display: none; }
+nav a.nav-part:hover { color: var(--teal); background: none; }
+
+/* 구역 안 "영상으로 보기" */
+.video-strip {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  align-items: start;
+  margin: 18px 0;
+  padding: 16px 18px;
+  border: 1px solid rgba(50, 197, 179, .32);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius-sm);
+  background: var(--teal-soft);
+}
+
+.vs-label {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--teal);
+  color: #051813;
+  font-size: .74rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.vs-body strong { display: block; margin-bottom: 4px; }
+.vs-body p { margin: 0; color: #c5d0dc; font-size: .9rem; }
+
+.vs-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 2;
+}
+
+.vs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid rgba(50, 197, 179, .45);
+  border-radius: 999px;
+  color: #8ee8dc;
+  font-size: .82rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.vs-link:hover,
+.vs-link:focus-visible { background: rgba(50, 197, 179, .18); outline: none; }
+
+/* 사례 지도 표 */
+.vs-muted { color: var(--muted-2); font-size: .82rem; }
+.vs-cell { white-space: nowrap; }
+.vs-cell .vs-link { margin: 2px 4px 2px 0; }
+#videos td a[href^="#"] { color: #c9e0ff; }
+
+@media (max-width: 820px) {
+  .roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .video-strip { grid-template-columns: 1fr; }
+  .vs-links { grid-column: 1; }
+  .vs-cell { white-space: normal; }
+}
+
+@media print {
+  .roadmap, .video-strip { break-inside: avoid; }
+}

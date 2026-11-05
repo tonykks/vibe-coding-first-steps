@@ -9,7 +9,9 @@ GitHub Pages 주소에서 `index.html`을 엽니다. 별도 설치는 필요 없
 
 | 고칠 것 | 파일 |
 |---|---|
-| 구역 글 | `src/sections/NN-이름.html` (앞 번호 순서대로 본문에 들어갑니다) |
+| 구역 글 | `src/sections/<부 폴더>/NN-이름.html` (폴더 → 앞 번호 순서대로 본문에 들어갑니다) |
+| 부 머리말 | `src/sections/<부 폴더>/00-part.html` |
+| 강연 흐름 길잡이 | `src/sections/00-hero.html` 아래쪽 `roadmap` |
 | 왼쪽 목차 | `src/partials/sidebar.html` (구역을 더하거나 빼면 같이 고칩니다) |
 | 머리글, CSS 연결 | `src/page.html` |
 | 색, 글꼴 | `css/01-tokens.css` |
@@ -20,8 +22,16 @@ python build.py          # src/ → index.html
 python build.py --check  # index.html이 src/와 같은지 확인
 ```
 
-구역 파일: 00 hero(맨 위), 01 question, 02 services, 03 ladder, 04 limits, 05 model, 06 vibe, 07 owner,
-08 coding, 09 harness, 10 case(SkyView), 11 videos(화면 녹화), 12 security, 13 knowledge(마무리)
+강연 흐름 (4부)
+
+| 부 | 폴더 | 구역 | 화면 녹화 연결 |
+|---|---|---|---|
+| PART 1 왜 — 웹에서 시작해 내 컴퓨터로 | `1-why/` | 01 question, 02 services, 03 ladder, 04 limits | 03에 관광대 ①②, 04에 한글타자연습앱 ①②③ |
+| PART 2 어떻게 — 세 역할과 Harness | `2-how/` | 05 model, 06 vibe, 07 owner, 08 coding, 09 harness | 06에 요구사항 문서, 08에 Coding Agent 만들기, 09에 관광대 ③ |
+| PART 3 실제로 — 사례와 화면 녹화 | `3-cases/` | 10 case(SkyView), 11 videos(사례 지도) | 11에 모든 영상과 연결 구역 |
+| PART 4 그다음 — 안전하게 쓰고 지식 쌓기 | `4-next/` | 12 security, 13 knowledge | |
+
+구역 안 "▶ 영상으로 보기" 상자는 `video-strip` 부품이고, 모양은 `css/13-story.css`에 있습니다.
 
 ## 하위 페이지 (주소를 바꾸지 않으려고 맨 위 폴더에 둡니다)
 - `infographic-prompt.html` : 인포그래픽과 Prompt 전문 (11개 부분, 55개 문장 쌍)

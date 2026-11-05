@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/10-links-closing.css">
   <link rel="stylesheet" href="css/11-footer.css">
   <link rel="stylesheet" href="css/12-responsive.css">
+  <link rel="stylesheet" href="css/13-story.css">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
@@ -26,20 +27,29 @@
     <div class="brand">
       <strong>Vibe Coding</strong>
     </div>
-    <p class="nav-title">Contents</p>
     <nav>
+      <p class="nav-title"><a class="nav-part" href="#part1">Part 1 · 왜</a></p>
       <ul>
         <li><a href="#question">바이브코딩은 무엇을 바꾸는가</a></li>
         <li><a href="#services">세 회사 모두 같은 길</a></li>
         <li><a href="#ladder">일이 커지면 환경도 옮겨 갑니다</a></li>
         <li><a href="#limits">웹에서 만나는 벽</a></li>
+      </ul>
+      <p class="nav-title"><a class="nav-part" href="#part2">Part 2 · 어떻게</a></p>
+      <ul>
         <li><a href="#model">전체 구조</a></li>
         <li><a href="#vibe">Vibe Agent</a></li>
         <li><a href="#owner">Owner 50·40·10</a></li>
         <li><a href="#coding">Extension과 CLI의 작업 좌석</a></li>
         <li><a href="#harness">Harness</a></li>
+      </ul>
+      <p class="nav-title"><a class="nav-part" href="#part3">Part 3 · 실제로</a></p>
+      <ul>
         <li><a href="#case">SkyView 사례</a></li>
-        <li><a href="#videos">화면 녹화로 보는 실제 작업</a></li>
+        <li><a href="#videos">화면 녹화 사례 지도</a></li>
+      </ul>
+      <p class="nav-title"><a class="nav-part" href="#part4">Part 4 · 그다음</a></p>
+      <ul>
         <li><a href="#security">업무에 쓰기 전, Data의 길</a></li>
         <li><a href="#knowledge">나의 지식은 어디에 쌓이나</a></li>
       </ul>
@@ -57,7 +67,19 @@
         <span class="mark" aria-hidden="true">!</span>
         <p>이 강연의 핵심은 Code 작성법이 아니라, 머릿속의 문제와 해결 방법을 Agent가 구현할 수 있는 요구사항으로 바꾸고 완성된 결과를 사람이 검증하는 방법입니다.</p>
       </div>
+      <div class="roadmap" role="navigation" aria-label="강연 흐름">
+        <a class="road-step" href="#part1"><span>PART 1</span><strong>왜</strong><em>웹에서 시작해 내 컴퓨터로</em></a>
+        <a class="road-step" href="#part2"><span>PART 2</span><strong>어떻게</strong><em>세 역할과 Harness</em></a>
+        <a class="road-step" href="#part3"><span>PART 3</span><strong>실제로</strong><em>사례와 화면 녹화</em></a>
+        <a class="road-step" href="#part4"><span>PART 4</span><strong>그다음</strong><em>안전하게 쓰고 지식 쌓기</em></a>
+      </div>
     </header>
+
+    <div class="part" id="part1">
+      <span class="part-no">PART 1</span>
+      <p class="part-title">왜 — 웹에서 시작해 내 컴퓨터로</p>
+      <p class="part-desc">바이브코딩이 무엇을 바꾸는지, 세 회사의 같은 길, 그리고 웹에서 끝까지 가 보면 만나는 벽을 봅니다.</p>
+    </div>
 
     <section id="question">
       <p class="section-kicker">Starting Point</p>
@@ -204,6 +226,11 @@
             <div class="takeaway">데스크톱 앱의 Agent는 복잡한 작업을 승인 한 번에 이어서 처리할 만큼 강력합니다.</div>
           </div>
         </article>
+        <div class="video-strip">
+          <span class="vs-label">▶ 영상으로 보기</span>
+          <div class="vs-body"><strong>관광대 강의 준비 ①② — 데스크톱 앱으로 강의 자료를 웹사이트로</strong><p>Claude Code에게 강의 자료 폴더를 맡겨 Github Pages로 배포하고(①), 데스크톱 앱 Claude가 내 컴퓨터에서 무엇을 보고 무엇을 고칠 수 있는지 묻고 확인합니다(②). 웹과 IDE 사이의 다리가 실제로 어떻게 쓰이는지 보입니다.</p></div>
+          <div class="vs-links"><a class="vs-link" href="videos/jtu-website.html" target="_blank" rel="noopener noreferrer">① 설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM" target="_blank" rel="noopener noreferrer">① 영상 <span aria-hidden="true">↗</span></a><a class="vs-link" href="videos/jtu-claude-desktop.html" target="_blank" rel="noopener noreferrer">② 설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=lKZ_dH2pOQI" target="_blank" rel="noopener noreferrer">② 영상 <span aria-hidden="true">↗</span></a></div>
+        </div>
         <article class="card scene">
           <span class="number">6</span>
           <div class="scene-body">
@@ -355,8 +382,19 @@
             <div class="takeaway">Playground에서 가볍게 실험하고, Build Mode에서 골격을 빠르게 만든 뒤, Antigravity IDE로 내려받아 완성하고 내 자산으로 쌓아 갑니다.</div>
           </div>
         </article>
+      <div class="video-strip">
+        <span class="vs-label">▶ 영상으로 보기</span>
+        <div class="vs-body"><strong>같은 요구, 세 가지 AI — 한글타자연습앱 만들기 ①②③</strong><p>이 구역의 벽은 실제로 겪은 일입니다. 같은 요구 사항으로 ① AI Studio Build 모드(웹)에서 만들고, ② Claude Code와 ③ Codex(내 컴퓨터)에서 다시 만들어 로그인·순위표·배포까지 갔습니다. 세 앱은 직접 써 볼 수 있습니다.</p></div>
+        <div class="vs-links"><a class="vs-link" href="videos/typing-summary.html" target="_blank" rel="noopener noreferrer">세 편 한눈에 <span aria-hidden="true">↗</span></a><a class="vs-link" href="videos/typing-ai-studio.html" target="_blank" rel="noopener noreferrer">① AI Studio <span aria-hidden="true">↗</span></a><a class="vs-link" href="videos/typing-claude-code.html" target="_blank" rel="noopener noreferrer">② Claude Code <span aria-hidden="true">↗</span></a><a class="vs-link" href="videos/typing-codex.html" target="_blank" rel="noopener noreferrer">③ Codex <span aria-hidden="true">↗</span></a></div>
+      </div>
       <div class="answer-band">이 결과를 가지고, 역할을 나누는 협업 구조로 갑니다.</div>
     </section>
+
+    <div class="part" id="part2">
+      <span class="part-no">PART 2</span>
+      <p class="part-title">어떻게 — 세 역할과 Harness</p>
+      <p class="part-desc">Vibe Agent가 생각을 요구사항으로 바꾸고, Owner가 판단하고, Coding Agent Team이 좌석을 나눠 구현합니다. 그 사이를 기록이 잇습니다.</p>
+    </div>
 
     <section id="model">
       <p class="section-kicker">Core Model</p>
@@ -486,6 +524,11 @@
           <div class="takeaway">근간이 되는 기준은 정하기 전에 묻습니다. 사람이 정해 주지 않았다면 AI가 대신 정하지 않습니다. 사람은 모르는 말이 나오면 “쉽게 다시 설명해 줘”라고 묻습니다.</div>
         </div>
       </article>
+      <div class="video-strip">
+        <span class="vs-label">▶ 영상으로 보기</span>
+        <div class="vs-body"><strong>실제로 Coding Agent에게 넘긴 요구사항 문서</strong><p>한글타자연습앱 세 편에서 실제로 쓴 요구사항 문서입니다. Vibe Agent와의 대화가 어떤 문서가 되어 Coding Agent에게 넘어가는지 그대로 볼 수 있습니다.</p></div>
+        <div class="vs-links"><a class="vs-link" href="videos/docs/build-mode-requirements.html" target="_blank" rel="noopener noreferrer">① AI Studio용 <span aria-hidden="true">↗</span></a><a class="vs-link" href="videos/docs/claude-code-project-intent.html" target="_blank" rel="noopener noreferrer">② Claude Code용 <span aria-hidden="true">↗</span></a><a class="vs-link" href="videos/docs/codex-requirements.html" target="_blank" rel="noopener noreferrer">③ Codex용 <span aria-hidden="true">↗</span></a></div>
+      </div>
       <article class="card scene" style="margin-top:18px">
         <span class="number">예</span>
         <div class="scene-body">
@@ -546,6 +589,11 @@
           </tbody>
         </table>
       </div>
+      <div class="video-strip">
+        <span class="vs-label">▶ 영상으로 보기</span>
+        <div class="vs-body"><strong>나만의 Coding Agent 만들기 — Antigravity IDE에 AI 여섯의 자리 정하기</strong><p>이 좌석 배치를 실제로 차려 본 강연 주제 영상입니다. IDE에는 지니, 옆 창 Extension에는 행크(Codex)와 버디(Claude Code), Terminal CLI에는 애니·토디·제리를 앉히고, 설치 안내는 Vibe Agent 토비가, 결정은 Owner가 맡습니다.</p></div>
+        <div class="vs-links"><a class="vs-link" href="videos/coding-agent-antigravity.html" target="_blank" rel="noopener noreferrer">설명 페이지 <span aria-hidden="true">↗</span></a></div>
+      </div>
     </section>
 
     <section id="harness">
@@ -584,6 +632,11 @@
           <div class="takeaway">같은 앱 안이라도 Claude 탭은 클라우드에서 계획하고, Code 탭은 내 PC 안에서 직접 일합니다. 둘을 이어 주는 것은 기록이고, 로그인·승인·범위는 끝까지 사람이 쥡니다.</div>
         </div>
       </article>
+      <div class="video-strip">
+        <span class="vs-label">▶ 영상으로 보기</span>
+        <div class="vs-body"><strong>관광대 강의 준비 ③ — Claude 둘이 문서로 일을 나눈 하룻밤</strong><p>대화창 Claude는 요구 사항 문서를 쓰고, Code 탭 Claude는 그 문서대로 고친 뒤 보고서를 남깁니다. 사람은 두 문서를 오가며 결정과 승인만 합니다. 기록이 두 Agent를 잇는 Harness의 실제 모습입니다.</p></div>
+        <div class="vs-links"><a class="vs-link" href="videos/jtu-site-fix.html" target="_blank" rel="noopener noreferrer">설명 페이지 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=687xdlKTbmI" target="_blank" rel="noopener noreferrer">영상 (43분) <span aria-hidden="true">↗</span></a></div>
+      </div>
       <article class="card scene" style="margin-top:18px">
         <span class="number">예</span>
         <div class="scene-body">
@@ -606,6 +659,12 @@
       <div class="answer-band">Harness의 목적은 Agent가 사람 대신 판단하게 만드는 것이 아니라, 사람이 정한 기준과 Agent의 작업 상태가 문맥 한계를 넘어 계속 이어지게 하는 것입니다.</div>
     </section>
 
+    <div class="part" id="part3">
+      <span class="part-no">PART 3</span>
+      <p class="part-title">실제로 — 사례와 화면 녹화</p>
+      <p class="part-desc">운영 중인 SkyView와, 강연 내용을 그대로 보여 주는 화면 녹화 영상으로 확인합니다.</p>
+    </div>
+
     <section id="case">
       <p class="section-kicker">Case Story</p>
       <h2>SkyView 사례 — YouTube 드론 영상이 Web Service가 되기까지</h2>
@@ -622,34 +681,31 @@
 
     <section id="videos">
       <p class="section-kicker">Screen Recordings</p>
-      <h2>화면 녹화로 보는 실제 작업 — 내가 요구한 것과 AI가 한 일</h2>
-      <p class="section-intro">강연에서 말한 역할 구조가 실제로 어떻게 돌아가는지, 작업 화면을 녹화해 편집한 영상입니다. 영상은 빠르게 훑어보고, 설명 페이지에서 장면마다 “내 요구”와 “AI가 한 일”을 나눠 읽으면 AI가 어디까지 해 주는지 보입니다.</p>
-      <article class="card scene">
-        <span class="number">▶</span>
-        <div class="scene-body">
-          <h3>나만의 Coding Agent 만들기 — Antigravity IDE에 AI 여섯의 자리 정하기</h3>
-          <p>강연 주제 영상입니다. IDE 안의 지니, 옆 창의 행크(Codex)와 버디(Claude Code), 터미널의 애니·토디·제리에게 자리와 역할을 주고, 설치 안내는 Claude 데스크톱 앱의 토비가 맡습니다. 사람은 결정과 클릭, 로그인만 합니다.</p>
-          <a class="demo-link" href="videos/coding-agent-antigravity.html" target="_blank" rel="noopener noreferrer">Coding Agent 만들기 설명 보기 <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
-      <article class="card scene" style="margin-top:18px">
-        <span class="number">⌨</span>
-        <div class="scene-body">
-          <h3>같은 요구, 세 가지 AI — 한글타자연습앱 만들기</h3>
-          <p>같은 요구 사항으로 Google AI Studio, Claude Code, Codex가 각각 로그인·순위표·배포까지 만든 과정입니다. 세 앱은 직접 열어 써 볼 수 있습니다.</p>
-          <a class="demo-link" href="videos/typing-summary.html" target="_blank" rel="noopener noreferrer">세 편 한눈에 보기 <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
-      <article class="card scene" style="margin-top:18px">
-        <span class="number">✎</span>
-        <div class="scene-body">
-          <h3>관광대 강의 준비 — 강의 자료를 웹사이트로 만들고 고치기</h3>
-          <p>외국인 유학생용 3개 언어 강의 사이트를 Claude와 함께 만들고, 대화창 Claude와 Code 탭 Claude가 일을 나눠 고쳐 갑니다.</p>
-          <a class="demo-link" href="videos/jtu-website.html" target="_blank" rel="noopener noreferrer">관광대 강의 준비 보기 <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
+      <h2>화면 녹화 사례 지도 — 강연의 어느 장면을 보여 주는가</h2>
+      <p class="section-intro">앞에서 말한 구조가 실제로 어떻게 돌아가는지 작업 화면을 녹화해 편집한 영상입니다. 각 구역 안의 “▶ 영상으로 보기”와 같은 영상을 한곳에 모았습니다. 설명 페이지에서는 장면마다 “내 요구”와 “AI가 한 일”을 나눠 읽을 수 있습니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>영상</th><th>강연에서 연결되는 구역</th><th>보기</th></tr></thead>
+          <tbody>
+                <tr><td><strong>나만의 Coding Agent 만들기 [Antigravity IDE 활용]</strong><br><span class="vs-muted">AI 여섯에게 자리와 이름을 주는 과정</span></td><td><a href="#coding">PART 2 · Extension과 CLI의 작업 좌석</a></td><td class="vs-cell"><a class="vs-link" href="videos/coding-agent-antigravity.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a></td></tr>
+                <tr><td><strong>한글타자연습앱 ① AI Studio</strong><br><span class="vs-muted">웹 빌더로 앱·로그인·배포까지, 그리고 만난 벽</span></td><td><a href="#limits">PART 1 · 웹에서 만나는 벽</a></td><td class="vs-cell"><a class="vs-link" href="videos/typing-ai-studio.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=zlpo840TKDU" target="_blank" rel="noopener noreferrer">영상 <span aria-hidden="true">↗</span></a></td></tr>
+                <tr><td><strong>한글타자연습앱 ② Claude Code</strong><br><span class="vs-muted">웹에서 만든 파일을 내 컴퓨터에서 나눠 완성</span></td><td><a href="#limits">PART 1 · 웹에서 만나는 벽</a></td><td class="vs-cell"><a class="vs-link" href="videos/typing-claude-code.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=mtvfSvFh170" target="_blank" rel="noopener noreferrer">영상 <span aria-hidden="true">↗</span></a></td></tr>
+                <tr><td><strong>한글타자연습앱 ③ Codex</strong><br><span class="vs-muted">빈 폴더에서 같은 요구로 처음부터</span></td><td><a href="#limits">PART 1 · 웹에서 만나는 벽</a></td><td class="vs-cell"><a class="vs-link" href="videos/typing-codex.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=3rD49X_Cznk" target="_blank" rel="noopener noreferrer">영상 <span aria-hidden="true">↗</span></a></td></tr>
+                <tr><td><strong>관광대 강의 준비 ① 강의 자료를 웹사이트로</strong><br><span class="vs-muted">Claude Code로 Github Pages 배포</span></td><td><a href="#ladder">PART 1 · 일이 커지면 환경도 옮겨 갑니다</a></td><td class="vs-cell"><a class="vs-link" href="videos/jtu-website.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM" target="_blank" rel="noopener noreferrer">영상 <span aria-hidden="true">↗</span></a></td></tr>
+                <tr><td><strong>관광대 강의 준비 ② Claude 데스크톱 앱 이해하기</strong><br><span class="vs-muted">Claude md, 폴더 권한, 내 컴퓨터에서 보이는 범위</span></td><td><a href="#ladder">PART 1 · 일이 커지면 환경도 옮겨 갑니다</a></td><td class="vs-cell"><a class="vs-link" href="videos/jtu-claude-desktop.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=lKZ_dH2pOQI" target="_blank" rel="noopener noreferrer">영상 <span aria-hidden="true">↗</span></a></td></tr>
+                <tr><td><strong>관광대 강의 준비 ③ Claude 둘이 나눠 맡은 사이트 고치기</strong><br><span class="vs-muted">대화창은 문서, Code 탭은 수정, 사람은 승인</span></td><td><a href="#harness">PART 2 · Harness</a></td><td class="vs-cell"><a class="vs-link" href="videos/jtu-site-fix.html" target="_blank" rel="noopener noreferrer">설명 <span aria-hidden="true">↗</span></a><a class="vs-link" href="https://www.youtube.com/watch?v=687xdlKTbmI" target="_blank" rel="noopener noreferrer">영상 <span aria-hidden="true">↗</span></a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="takeaway">영상은 빠르게 훑어보고, 궁금한 장면은 설명 페이지의 시간 표시를 눌러 그 장면부터 보면 됩니다. 화면 녹화라 YouTube 화질을 1080p로 바꿔야 글씨가 보입니다.</div>
       <a class="demo-link" href="videos/index.html" target="_blank" rel="noopener noreferrer">화면 녹화 사례 전체 보기 <span aria-hidden="true">↗</span></a>
     </section>
+
+    <div class="part" id="part4">
+      <span class="part-no">PART 4</span>
+      <p class="part-title">그다음 — 안전하게 쓰고 지식 쌓기</p>
+      <p class="part-desc">업무에 쓰기 전 Data의 길을 구분하고, 내 지식이 어디에 쌓이는지 묻습니다.</p>
+    </div>
 
     <section id="security">
       <p class="section-kicker">Scope & Security</p>

@@ -4,7 +4,8 @@
   python build.py --check  index.html이 src/와 같은지 확인만 한다 (다르면 종료 코드 1)
 
 고치는 곳
-- 글: src/sections/NN-이름.html (파일 이름 앞 번호 순서대로 본문에 들어간다)
+- 글: src/sections/<부 폴더>/NN-이름.html (폴더 → 파일 이름 앞 번호 순서대로 본문에 들어간다)
+- 부 머리말: src/sections/<부 폴더>/00-part.html
 - 왼쪽 목차: src/partials/sidebar.html (구역을 더하거나 빼면 목차도 같이 고친다)
 - 머리글·CSS 연결: src/page.html
 - 디자인: css/*.css (index.html이 바로 읽으므로 조립하지 않아도 바로 반영된다)
@@ -27,7 +28,8 @@ def read(p):
 def build():
     page = read(SRC / "page.html")
     page = re.sub(r"^[ \t]*<!-- @include (\S+) -->", lambda m: read(SRC / m.group(1)), page, flags=re.M)
-    sections = sorted((SRC / "sections").glob("*.html"))
+    # 폴더(1-why, 2-how …)와 파일 이름 앞 번호 순서대로 모은다. 각 폴더의 00-part.html은 부 머리말이다.
+    sections = sorted((SRC / "sections").rglob("*.html"), key=lambda p: p.relative_to(SRC).as_posix())
     body = "\n\n".join(read(p) for p in sections)
     page = re.sub(r"^[ \t]*<!-- @sections -->", lambda m: body, page, flags=re.M)
     page = page.replace("<html lang=\"ko\">", f"<html lang=\"ko\">\n{NOTE}", 1)
