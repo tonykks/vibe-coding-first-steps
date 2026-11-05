@@ -1,0 +1,26 @@
+/* 색·글꼴·크기 기준값 (여기만 고치면 전체 색이 바뀝니다) */
+:root {
+  color-scheme: dark;
+  --bg: #07111b;
+  --surface: #0c1926;
+  --surface-2: #112233;
+  --surface-3: #172b3d;
+  --line: #243b4f;
+  --text: #edf5ff;
+  --muted: #9eb0c2;
+  --muted-2: #74889d;
+  --purple: #8b7cff;
+  --purple-soft: rgba(139, 124, 255, .13);
+  --teal: #32c5b3;
+  --teal-soft: rgba(50, 197, 179, .12);
+  --orange: #ffb44a;
+  --orange-soft: rgba(255, 180, 74, .13);
+  --blue: #62a6ff;
+  --blue-soft: rgba(98, 166, 255, .12);
+  --danger: #ff8f8f;
+  --shadow: 0 18px 48px rgba(0, 0, 0, .24);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --sidebar: 272px;
+  --content: 1060px;
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>강의 자료를 웹사이트로 관광대 강의 준비 ①</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero one"><p class="series">관광대 강의 준비</p>
+<nav class="tabs"><a class="tab on" href="jtu-website.html">① 웹사이트로</a><a class="tab" href="jtu-claude-desktop.html">② 데스크톱 앱</a><a class="tab" href="jtu-site-fix.html">③ 사이트 고치기</a></nav><h1>강의 자료를<br>웹사이트로<span class="h1sub">관광대 강의 준비 ①</span></h1><p>외국인 유학생(베트남·미얀마) 강의 자료를 웹사이트로 만들고, Claude와 함께 고쳐 갑니다. 실제 강의 사이트를 열어 보며 영상과 비교해 보세요.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
+<details class="cmp" open><summary>한눈에 비교</summary><div class="tbl"><table><thead><tr><th></th><th>① 웹사이트로</th><th>② 데스크톱 앱 이해</th><th>③ 사이트 고치기</th></tr></thead><tbody><tr><td>무엇을 했나</td><td>강의 자료 폴더를 Github Pages로 배포</td><td>Claude md·권한 등 궁금증 확인, 표준 검토</td><td>대화창·Code 탭 분업으로 사이트 수정</td></tr><tr><td>쓴 AI</td><td>Claude Code</td><td>Claude 데스크톱 앱(대화창)</td><td>대화창 Claude + Code 탭 Claude</td></tr><tr><td>사람이 한 일</td><td>배포 요청, 결과 확인</td><td>질문, 폴더 허락, 되묻기</td><td>결정, 원고, 공개 승인</td></tr><tr><td>영상 길이</td><td>1:57</td><td>4:12</td><td>43:02</td></tr></tbody></table></div></details></header>
+<main class="single"><article class="video" id="jtu1">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만들고 고친 강의 사이트입니다. 언어 버튼으로 베트남어·미얀마어로도 바꿔 볼 수 있습니다.</p><code>https://tonykks.github.io/jtu-it-course/</code></div><a class="play" href="https://tonykks.github.io/jtu-it-course/" target="_blank" rel="noopener">관광대 강의 사이트 열어 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>강의 자료를<br>웹사이트로</h3>
+<p class="sub">관광대 강의 준비 ①</p></div>
+<div class="meta"><span class=len>01:57</span><a class="play" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">HTML로 만들어 둔 강의 자료 폴더를 Claude Code에게 맡겨 Github 저장소에 올리고 Github Pages로 배포한다. 외국인 유학생이 주소 하나로, 자기 언어로 6주 강의 자료를 볼 수 있게 된다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude Code)가 한 일</th></tr></thead><tbody><tr><td>맡기기</td><td>강의 자료 폴더를 주고 배포 요청</td><td>Github 저장소 만들기, Github Pages 배포</td></tr><tr><td>정리</td><td>공개 범위 확인</td><td>내용이 빈 3차시 파일은 공개하지 않고 따로 보관, 계획표에 "준비 중" 표시, 파일 이름 정리</td></tr><tr><td>연결</td><td>타자 연습 버튼 요청</td><td>종합계획표의 주차별 버튼 연결, 타자 연습 사이트 버튼 추가</td></tr><tr><td>확인</td><td>실제 사이트 열어 보기</td><td>다시 넣은 빈 파일도 올리지 않고 그대로 둠</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=0s" target="_blank" rel="noopener">0:00</a><span>웹페이지로 만든 강의 자료 폴더</span></h4>
+<p>관광대 강의 자료를 HTML 파일로 만들어 둔 폴더에서 시작.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=12s" target="_blank" rel="noopener">0:12</a><span>Github 저장소 만들고 Pages로 배포</span></h4>
+<ul><li><span class="tag me">내 요구</span> 학생들이 볼 수 있게 인터넷에 올려 달라.</li><li><span class="tag ai">AI가 한 일</span> Github 저장소를 만들고 Github Pages로 배포.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Github Pages</strong>는 Github 저장소의 파일을 그대로 웹사이트로 열어 주는 무료 서비스. <strong>배포</strong>는 내 컴퓨터의 파일을 누구나 주소로 볼 수 있게 올리는 일.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=24s" target="_blank" rel="noopener">0:24</a><span>빈 파일은 공개하지 않기 (핵심 장면)</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 내용이 빈 3차시 파일을 스스로 찾아 공개에서 빼고 따로 보관, 계획표에는 "준비 중"으로 표시. 나중에 다시 넣어 봐도 여전히 비어 있어 올리지 않음.</li><li><span class="tag key">핵심</span> 시키는 대로 다 올리지 않고, 공개하면 안 되는 것을 먼저 걸러 냈다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=36s" target="_blank" rel="noopener">0:36</a><span>종합계획표와 주차별 버튼</span></h4>
+<p>6주 동안 컴퓨터 기초, 한글 타자, 아래아 한글 세 과목. 주차별 강의자료 버튼을 누르면 해당 차시 페이지로 바로 이동.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=66s" target="_blank" rel="noopener">1:06</a><span>타자 연습 사이트 버튼</span></h4>
+<p>타자 과목 제목 옆에 연습 사이트로 가는 버튼 두 개.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=84s" target="_blank" rel="noopener">1:24</a><span>실제 사이트에서 확인하기</span></h4>
+<p>Github에 올라간 사이트에서 종합계획표, 한컴타자연습 버튼, 6차시 종합평가 안내를 차례로 확인.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=106s" target="_blank" rel="noopener">1:46</a><span>베트남어로 바꿔 보기</span></h4>
+<p>언어 버튼으로 베트남어, 미얀마어로 바뀌어 유학생이 자기 언어로 볼 수 있다.</p></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=0s" target="_blank" rel="noopener">0:00</a><span>웹페이지로 만든 강의 자료 폴더</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=12s" target="_blank" rel="noopener">0:12</a><span>Github 저장소 만들고 Pages로 배포</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=24s" target="_blank" rel="noopener">0:24</a><span>내용이 빈 3차시 파일은 공개하지 않기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=36s" target="_blank" rel="noopener">0:36</a><span>종합계획표와 주차별 강의자료 버튼</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=66s" target="_blank" rel="noopener">1:06</a><span>타자 연습 사이트 버튼 달기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=84s" target="_blank" rel="noopener">1:24</a><span>실제 사이트에서 확인하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=106s" target="_blank" rel="noopener">1:46</a><span>베트남어로 바꿔 보기</span></li></ol></details>
+</article></main>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>

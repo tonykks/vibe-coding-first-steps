@@ -1,0 +1,130 @@
+    <section id="ladder">
+      <p class="section-kicker">Growing Path</p>
+      <h2>일이 커지면 작업 환경도 함께 옮겨 갑니다</h2>
+      <p class="section-intro">작은 일은 웹에서 빠르게 시작하고, 일이 커질수록 작업 환경도 함께 옮겨 갑니다. 그 길을 따라가 보면 왜 역할을 나누는 협업 구조가 필요한지 보입니다.</p>
+        <article class="card scene">
+          <span class="number">1</span>
+          <div class="scene-body">
+            <h3>한두 번 쓸 결과물은 AI Studio가 빠릅니다</h3>
+            <p>AI Studio는 구글이 제공하는 웹 기반 AI 개발 도구입니다. Playground는 모델에 말을 걸며 시험해 보는 공간이고, Build Mode는 말로 앱을 만들게 하는 기능입니다. 먼저 Playground로 맛을 보고, 마음에 들면 Build Mode로 더 정교하게 만들어 볼 수 있습니다.</p>
+            <p>문제, 입력, 처리, 결과, 검증을 적은 요구사항 문서를 그대로 넣으면 결과가 훨씬 구체적으로 나옵니다. 한두 번 쓰고 버릴 목적이라면 저는 AI Studio를 권합니다.</p>
+            <div class="takeaway">요구사항 문서만 있으면, 웹 도구에서도 내가 원하는 방향으로 빠르게 만들 수 있습니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">2</span>
+          <div class="scene-body">
+            <h3>수정이 쌓이면 웹 환경의 한계가 먼저 보입니다</h3>
+            <p>제 경험으로는 수정이 늘수록 Build Mode처럼 새로 만들어 덮어쓰는 방식은 한계가 금방 왔습니다. 일반적으로 대화가 길어지면 AI가 매번 읽어야 할 양이 늘어납니다. 이 양을 세는 단위가 토큰(token)이며, AI가 글을 읽고 쓰는 처리 단위입니다. 양이 많아질수록 시간과 비용이 늘고, 앞의 내용을 놓치기 쉽습니다.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>비교</th><th>웹 환경</th><th>내 컴퓨터(로컬)</th></tr></thead>
+                <tbody>
+                  <tr><td>시작</td><td>빠름</td><td>준비가 필요함</td></tr>
+                  <tr><td>구동</td><td>AI는 클라우드에서 돌고, 작업물도 클라우드에 남음</td><td>AI는 똑같이 클라우드에서 돌고, 작업물은 내 컴퓨터에 남음</td></tr>
+                  <tr><td>오가는 횟수</td><td>내려받고 올리기를 되풀이함</td><td>내 폴더에서 바로 수정하고 실행함</td></tr>
+                  <tr><td>수정 방식</td><td>새로 만들어 덮어쓰기가 많음</td><td>필요한 파일의 필요한 부분만 수정</td></tr>
+                  <tr><td>작업물</td><td>대화와 서비스 안에 머묾</td><td>내 폴더의 파일로 남음</td></tr>
+                  <tr><td>변경 기록</td><td>이전 상태와 비교하기 어려움</td><td>버전 기록을 남길 수 있음</td></tr>
+                  <tr><td>쌓이는 것</td><td>그때의 결과물</td><td>규칙과 경험이 파일로 쌓임</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="takeaway">시작은 웹이 빠르고, 오래 고치는 일은 로컬이 유리합니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">3</span>
+          <div class="scene-body">
+            <h3>웹에서 IDE로 옮길 때는 네 가지 신호를 봅니다</h3>
+            <p>채팅이나 AI Studio가 더 나은 때도 분명히 있습니다. 한 번 만들고 거의 고치지 않는 화면, 숨길 비밀이 없는 화면, 만들자마자 주소를 나눠야 하는 화면이 그렇습니다. 그래서 질문을 “어느 쪽이 좋은가”에서 “어떤 신호가 오면 옮기는가”로 바꿉니다.</p>
+            <ol>
+              <li>결과물이나 만드는 방법이 오래 살며 계속 업그레이드되는가?</li>
+              <li>작은 것 하나 고치는데 전체가 흔들리는가?</li>
+              <li>숨겨야 하는 비밀 Key가 있거나, 내 컴퓨터의 것을 써야 하는가?</li>
+              <li>써 보면서 고치는 일을 반복하는가?</li>
+            </ol>
+            <p>채팅은 맡기면 결과를 받아 오는 수선집이고, IDE는 원본과 도구가 내 곁에 쌓이는 작업장입니다.</p>
+            <a class="demo-link" href="chat-to-ide.html" target="_blank" rel="noopener noreferrer">네 가지 신호와 사례 보기 <span aria-hidden="true">↗</span></a>
+            <div class="takeaway">바지 하나 줄이려고 작업장을 차릴 필요는 없습니다. 매주 옷을 고치고 새로 만들 거라면 작업장이 있어야 합니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">4</span>
+          <div class="scene-body">
+            <h3>처음 구조는 웹에서, 이후 수정은 내 컴퓨터에서</h3>
+            <p>웹 환경은 처음에 좋은 화면과 구조를 빠르게 만들어 주는 데 강합니다. 그러니 그 장점은 처음에만 쓰고, 이후의 수정은 내 컴퓨터로 내려받아 이어 가는 편이 효율적입니다. 이 과정은 세 단계입니다.</p>
+            <ol>
+              <li>웹에서 요구사항을 넣어 화면과 기본 구조를 만듭니다.</li>
+              <li>결과물을 내 컴퓨터로 내려받습니다.</li>
+              <li>이후의 수정과 확장은 내 컴퓨터에서 이어 갑니다.</li>
+            </ol>
+            <p>그런데 내려받은 뒤에 무엇으로 수정할까요? 그 사이를 이어 주는 것이 데스크톱 앱입니다.</p>
+            <div class="takeaway">웹의 속도와 로컬의 지속성을 순서대로 이용하면 두 장점을 모두 얻습니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">5</span>
+          <div class="scene-body">
+            <h3>데스크톱 앱은 웹과 IDE 사이의 다리입니다</h3>
+            <p>Claude와 Codex는 각각 데스크톱에 설치하는 앱에서 코딩 Agent를 쓸 수 있습니다. 작업이 복잡해질수록 웹 브라우저보다 이 방식이 유리합니다. 제가 직접 겪은 장면을 소개합니다.</p>
+            <p>Claude Code에게 한 번 승인을 했더니 Firebase의 로그인(Authentication)과 데이터베이스(Firestore) 설정을 숨 돌릴 틈 없이 처리했습니다. Firebase는 구글이 제공하는 앱 백엔드 서비스입니다. 웹페이지를 띄워 확인하는 일도 앱 안의 브라우저 하나만 승인하면 눈 깜짝할 사이에 끝냈습니다. 그 능력은 정말 상상을 뛰어넘었습니다.</p>
+            <details class="memo">
+              <summary>덧붙임 · 이런 문제의식도 있습니다</summary>
+              <div class="memo-body">
+                <p>AI가 알아서 다 해 주는 편리함에 문제의식을 제기하는 분들도 있습니다. 과학철학자 장하석 교수는 최재천 교수와의 대담(「최재천의 아마존」, 2026년 10월)에서, 계산기를 쓰더라도 계산의 원리는 알아야 하듯 AI를 쓰더라도 사람이 직접 경험해야 할 최소한이 있다고 했습니다.</p>
+                <p>결과를 받아 쓰는 일과, 그 결과가 왜 그렇게 나왔는지 아는 일은 서로 다릅니다. AI가 다 해 준다는 말은 편리하지만, 사람이 꼭 알아야 할 경험의 기회를 가져갈 수도 있습니다.</p>
+                <p>같은 대담에서 장 교수는 AI를 도구이자 조수로 쓰되, 판단과 책임은 사람에게 있다는 취지로도 말했습니다. 편리함을 받아들이되 끌려다니지 않으려면, 사람이 꼭 경험해야 할 최소한은 직접 해 봐야 한다는 이야기입니다.</p>
+                <p>이 문제의식에 대한 저의 답은 6번 장면에서 이어집니다.</p>
+                <p>출처: <a href="https://www.youtube.com/watch?v=HYkXmBCHtTE" target="_blank" rel="noopener noreferrer">장하석 · 최재천 대담, 「최재천의 아마존」</a></p>
+              </div>
+            </details>
+            <div class="takeaway">데스크톱 앱의 Agent는 복잡한 작업을 승인 한 번에 이어서 처리할 만큼 강력합니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">6</span>
+          <div class="scene-body">
+            <h3>Antigravity는 구글이 내놓은 데스크톱 앱입니다</h3>
+            <p>각 회사가 데스크톱 앱을 내놓았고, 구글의 것이 Antigravity IDE입니다. IDE라고 하면 화면에 창이 많아 낯설게 느껴집니다. 그러나 바이브코더가 사용하는 것은 채팅창 하나이고, 나머지는 안내만 하면 됩니다.</p>
+            <p>채팅창을 통해 코딩이 진행되는 과정이 화면에 모두 보입니다. 원래 이 과정은 웹에서 클라우드가 대신 진행하던 일이고, 우리는 그것을 몰라도 지금까지 잘 사용해 왔습니다. 지금도 보지 않고 몰라도 상관없습니다.</p>
+            <div class="takeaway">IDE에서 내가 쓰는 도구는 채팅창뿐이며, 보이는 나머지는 원래 클라우드에서 하던 일이 보이는 것입니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">7</span>
+          <div class="scene-body">
+            <h3>IDE에서는 막히는 곳을 직접 해 보게 됩니다</h3>
+            <p>같은 Firebase 작업을 Antigravity IDE에서 했을 때는, 권한을 주었는데도 Agent가 이 부분은 제가 직접 해야 한다고 안내했습니다. 브라우저를 MCP로 연결하는 일도 시키는 대로 하나씩 해야 했습니다. MCP(Model Context Protocol)는 AI가 브라우저 같은 외부 도구에 접근하도록 연결하는 규격입니다.</p>
+            <p>그 과정에서 브라우저의 프로필이 무엇인지 처음 배웠고, AI가 접근할 별도의 프로필을 만들어 제가 쓰는 프로필을 건드리지 못하게 했습니다. 번거로웠지만 일이 어떻게 돌아가는지 몸으로 알게 되었습니다. 그래서 Claude Code가 이 모두를 승인 한 번에 처리하는 것을 보고 감탄할 수 있었습니다. 도구 설정과 버전에 따라 경험은 달라질 수 있습니다.</p>
+            <div class="takeaway">Claude Code는 편리함을, IDE는 배움의 기회를 주었습니다. 알고 감탄하는 것과 모르고 받는 것은 다릅니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">8</span>
+          <div class="scene-body">
+            <h3>결과물이 내 컴퓨터에 있으니 다른 회사 AI가 검토합니다</h3>
+            <p>모든 결과물이 내 컴퓨터에 있으니, 다른 회사의 AI에게 검토를 맡겨 볼 수 있습니다.</p>
+            <ol>
+              <li>다른 회사의 AI에게 최초의 요구사항을 읽게 합니다.</li>
+              <li>그 AI에게 만들어진 Code를 검토하게 합니다.</li>
+              <li>제 경험으로는 대부분 더 나은 대안이 하나 이상 나옵니다.</li>
+              <li>그 대안을 원래 만든 AI에게 보여 주고 맞는지 검토해 달라고 합니다.</li>
+              <li>이번에도 대부분 고칠 부분이 있다고 답합니다.</li>
+            </ol>
+            <p>이 과정은 Antigravity IDE에 서로 다른 회사의 AI를 함께 설치해 두면 훨씬 쉬워집니다. 하나의 작업 공간에서 여러 AI가 서로의 작업을 검토하는 환경이 만들어집니다.</p>
+            <div class="takeaway">결과물이 내 컴퓨터에 있기 때문에, 서로 다른 AI에게 서로의 작업을 검토시킬 수 있습니다.</div>
+          </div>
+        </article>
+        <article class="card scene">
+          <span class="number">9</span>
+          <div class="scene-body">
+            <h3>완벽을 요구하면 AI는 한 문장에 멈춥니다</h3>
+            <p>영어 따라 말하기(쉐도잉) 연습 자료를 만들 때의 일입니다. 저는 영상의 스크립트를 타임스탬프별로 끊고 직역해 달라고 했습니다. 제가 이해한 해석과 맞는지 확인하려면 의역이 아닌 직역이 필요했기 때문입니다. 그런데 영상이 1시간을 넘으면 전체 스크립트가 제대로 확보되지 않았습니다. AI가 스크립트만 보지 않고 음성까지 들으며 화면과 맞춰 보고, 조금이라도 틀리면 안 된다며 같은 부분을 반복했기 때문입니다. 시간과 토큰은 크게 들었고, 끝까지 완성되는 영상은 거의 없었습니다.</p>
+            <p>음성은 배제하고 화면과 스크립트만 대조하라고 해도 자꾸 멈췄습니다. 확인해 보니 화면과 스크립트에 같은 오타가 있었습니다. I am 27 years old가 1 am 27 years old로 적혀 있었고, AI는 이를 1. Am 27 years old로 읽어 해석이 이상해지자 실패로 규정했습니다. 저는 스크립트만 보라고 하고, 틀린 것은 제가 고치겠다고 했습니다. 해당 txt 파일을 찾아 1을 I로 직접 바꾸면 되는 일이었습니다.</p>
+            <p>그 뒤로 방향을 바꿨습니다. 제가 쉬운 기준을 주고, 나머지는 사용하다 발견한 오류를 제가 직접 고치는 것입니다. 개발은 더 빨리 끝났고 실제 학습도 더 잘 되었습니다.</p>
+            <div class="takeaway">AI에게 완벽을 요구하면 비용이 폭증합니다. 기준은 정하고, 마지막 오류는 사람이 고치는 편이 효율적입니다.</div>
+          </div>
+        </article>
+      <div class="answer-band">다음 구역에서는 웹에서 만나는 벽을 하나씩 자세히 보겠습니다.</div>
+    </section>

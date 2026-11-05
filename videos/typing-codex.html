@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브 코딩으로 한글타자연습앱 만들기 ③ Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero one"><p class="series">바이브 코딩으로 한글타자연습앱 만들기</p>
+<nav class="tabs"><a class="tab" href="typing-ai-studio.html">① AI Studio</a><a class="tab" href="typing-claude-code.html">② Claude Code</a><a class="tab on" href="typing-codex.html">③ Codex</a><a class="tab sum" href="typing-summary.html">세 편 한눈에</a></nav><h1>바이브 코딩으로<br>한글타자연습앱 만들기<span class="h1sub">③ Codex</span></h1><p>같은 요구 사항에서 출발해 한글타자연습앱을 세 가지 AI 도구로 만들고 배포까지 간 과정입니다. 편마다 출발점과 작업 환경이 다르니, 각 편에서 내가 요구한 것과 AI가 한 일을 따로 보세요.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
+</header>
+<main class="single"><article class="video" id="typing2">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만든 앱이 실제로 배포되어 있습니다. 로그인하면 기록과 순위표도 볼 수 있습니다.</p><code>https://tonykks.github.io/codex_hangul-key/</code></div><a class="play" href="https://tonykks.github.io/codex_hangul-key/" target="_blank" rel="noopener">Codex로 만든 한글타자연습앱 써 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>바이브 코딩으로<br>한글타자연습앱 만들기</h3>
+<p class="sub">③ Codex</p></div>
+<div class="meta"><span class=len>19:42</span><a class="play" href="https://www.youtube.com/watch?v=3rD49X_Cznk" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">바이브 코딩으로 한글타자연습앱을 만드는 세 편 중 마지막. 앞의 두 편에서 쓴 첫 요구 사항을 OpenAI의 Codex 데스크톱 앱에 넣고, 빈 폴더에서 시작해 앱 만들기, Shift 문제 진단, Google 로그인과 순위표, Github Pages 배포까지 진행한다.</p>
+<h4 class='sec'>이 편의 출발점</h4><ul><li>출발점: 앞의 두 편에서 쓴 첫 요구 사항을 ChatGPT로 정리한 시작 프롬프트(<a href="docs/codex-requirements.html" target="_blank" rel="noopener"><code>요구사항.md</code></a>)와 빈 폴더.</li><li>일한 곳: 내 컴퓨터의 폴더. OpenAI의 Codex 데스크톱 앱이 파일을 만들고 명령을 실행한다.</li><li>이 편의 특징: 오른쪽 Shift 문제를 키보드 신호 진단 페이지를 만들어 풀었고, Firebase 설정 화면 조작과 Github 배포까지 Codex가 직접 했다. 사람은 허용 버튼과 로그인만 했다.</li></ul>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Codex)가 한 일</th></tr></thead><tbody><tr><td>준비</td><td>ChatGPT로 Codex에 줄 시작 프롬프트 정리, MP3 음악 넣기, 구현 승인</td><td>빈 폴더 확인, 개발 계획과 파일 구조 짜기</td></tr><tr><td>앱 만들기·고치기</td><td>써 보고 문제 화면 캡처해 알려 주기</td><td>파일 만들기, 자동 테스트, 빈 화면·배치 고치기</td></tr><tr><td>Shift 문제</td><td>증상 알려 주기, 진단 페이지에서 키 눌러 보기</td><td>키보드 신호 진단 페이지 만들기, Shift 설정 기능 붙이기</td></tr><tr><td>로그인·기록</td><td>브라우저 조작 허용, Google 계정으로 로그인, 점수 방식 정하기</td><td>Firebase 설정 화면 찾아가 로그인 켜기, Firestore 기록·순위표·관리자 화면 만들기</td></tr><tr><td>배포</td><td>배포 지시, 결과 확인과 되묻기</td><td>Github에 올리기, Github Pages 배포 설정, 보안 경고 설명</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></h4>
+<ul><li>완성된 앱 화면 위에 제목이 나오고, 이 편에서 무엇을 하는지 먼저 설명한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=22s" target="_blank" rel="noopener">0:22</a><span>ChatGPT로 시작 프롬프트 만들기</span></h4>
+<ul><li><span class="tag me">내 요구</span> Codex가 사람 도움 없이 기획부터 완성까지 할 수 있는지 보려고, 앞의 두 편에서 쓴 첫 요구 사항을 ChatGPT에게 시작 프롬프트로 정리하게 함.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Codex 데스크톱 앱</strong>은 OpenAI가 만든 코딩 AI 프로그램. 내 컴퓨터의 폴더를 열어 파일을 만들고 명령을 실행한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=58s" target="_blank" rel="noopener">0:58</a><span>빈 폴더에서 계획 세우기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 폴더가 비어 있는지 확인하고, 화면 구성·연습 방식·기록 저장·파일 구조를 담은 개발 계획을 먼저 보여 줌.</li><li><span class="tag me">내가 한 일</span> 배경 음악 MP3 4곡을 폴더에 넣고 "구현해도 된다"고 승인.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=94s" target="_blank" rel="noopener">1:34</a><span>첫 구현과 빈 화면</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 파일을 만들고 자동 테스트까지 통과시킴. 단, 브라우저로 화면을 직접 확인하는 단계는 막혀서 하지 못함.</li><li><span class="tag me">내 요구</span> 열어 보니 화면이 비어 있어 캡처를 보내고 고쳐 달라고 함 → 원인을 찾아 고치자 연습 화면과 키보드가 나옴.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>자동 테스트</strong>는 AI가 짠 작은 확인 프로그램. 계산이 맞는지는 보지만, 화면이 제대로 보이는지는 사람이 열어 봐야 알 때가 많다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=202s" target="_blank" rel="noopener">3:22</a><span>화면 다듬기와 기록 확인</span></h4>
+<ul><li><span class="tag me">내 요구</span> 한 화면 안에 다 들어오게, 입력 기록 칸 위치와 줄 수를 바꾸게 함. 미얀마어로 바꿔 보고 TXT 기록 다운로드도 확인.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=310s" target="_blank" rel="noopener">5:10</a><span>오른쪽 Shift가 오답이 되는 문제 (이 편의 핵심 장면 ①)</span></h4>
+<ul><li><span class="tag key">증상</span> 쌍자음 연습에서 오른쪽 Shift로 바르게 쳐도 오답 처리.</li><li><span class="tag ai">AI가 한 일</span> 짐작으로 고치지 않고, 키보드가 보내는 신호를 그대로 보여 주는 <strong>진단 페이지</strong>를 따로 만듦. 확인해 보니 이 컴퓨터는 오른쪽 Shift를 구분하는 신호를 보내지 않았음. 그래서 사용자가 자기 키보드에 맞춰 Shift를 정해 두는 <strong>Shift 설정</strong> 기능을 붙임.</li><li><span class="tag key">왜 대단한가</span> 사람이 하면 개발자 도구를 열어 키 이벤트를 하나씩 찍어 봐야 하는 일. AI가 확인 도구까지 스스로 만들어 원인을 좁혔다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=502s" target="_blank" rel="noopener">8:22</a><span>Firebase로 Google 로그인 붙이기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 브라우저를 열어 Firebase 설정 화면을 찾아가 로그인 방식에 Google을 켜고, 로그인할 수 있는 주소를 등록함. 내 컴퓨터에 시험용 서버도 띄움.</li><li><span class="tag me">내가 한 일</span> AI가 브라우저를 조작해도 되는지 묻는 창에서 허용, Google 계정으로 로그인.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>Firebase</strong>: Google의 앱 뒷단 서비스. 서버 없이 로그인과 데이터 저장을 쓸 수 있음.</li><li><strong>Authentication</strong>: "누가 들어왔는지" 확인하는 로그인 장치.</li><li><strong>시험용 서버(localhost)</strong>: 내 컴퓨터 안에서만 열리는 임시 웹 주소. Google 로그인은 파일을 바로 열면 막히고 이런 주소에서만 된다.</li></ul></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=652s" target="_blank" rel="noopener">10:52</a><span>강연용으로 쉽게 설명받기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 로그인을 왜 만들었고 Firebase가 무엇인지 청중이 알아듣게 설명해 달라고 함. 설명을 강의 자료 파일(<code>LECTURE_LOGIN_GUIDE.md</code>)로 받아 저장.</li><li><span class="tag ai">AI의 비유</span> 로그인은 도서관 출입증처럼 학생을 구분하고, 기록을 그 학생 칸에 안전하게 쌓는 방법.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=730s" target="_blank" rel="noopener">12:10</a><span>순위표, 닉네임, 관리자 화면</span></h4>
+<ul><li><span class="tag me">내 요구</span> 학생별 누적 기록, 순위표, 닉네임, 관리자 전용 화면을 한 번에 요청. Codex가 점수 방식을 묻자 "정답 1점, 오타 1점 감점, 최소 0점"으로 정함.</li><li><span class="tag ai">AI가 한 일</span> 몇 분 동안 혼자 12개 파일을 고치고 시험함. 학생 기록을 <strong>Firestore</strong>에 쌓고, 학생은 자기 기록만, 관리자는 전체를 보게 규칙을 만듦.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Firestore</strong>는 학생 기록을 모아 두는 인터넷 저장소. 어느 컴퓨터에서 접속해도 같은 기록이 보인다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=840s" target="_blank" rel="noopener">14:00</a><span>로그인 버튼이 안 눌리는 문제</span></h4>
+<ul><li><span class="tag key">원인</span> 파일을 바로 연 화면이었음. 시험용 서버 주소로 열자 로그인, 순위표, 관리자 모드가 나옴.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=936s" target="_blank" rel="noopener">15:36</a><span>Shift 설정이 다시 안 될 때 (이 편의 핵심 장면 ②)</span></h4>
+<ul><li><span class="tag me">내 요구</span> "왜 안 되지? 이전에 성공한 코드와 비교해서 고쳐 줘."</li><li><span class="tag ai">AI가 한 일</span> 파일로 열 때와 서버 주소로 열 때 설정이 따로 저장된다는 원인을 찾고, 같은 설정을 쓰게 고침. 자동 테스트도 다시 통과.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1032s" target="_blank" rel="noopener">17:12</a><span>Github에 올리고 배포하기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 커밋·푸시하고 배포까지 마무리. 음악 4곡도 함께 올리기로 함.</li><li><span class="tag ai">AI가 한 일</span> Github 저장소에 올리고 Github Pages 배포까지 진행. 저장소에 파일이 안 보인다는 질문에는 올라간 위치를 확인해 주고, 메일로 온 보안 경고는 Firebase 설정값 때문이라고 설명. "Google로 배포한 거냐"는 되물음에는 사이트는 Github Pages, Google(Firebase)은 로그인과 기록 저장에만 쓴다고 정리.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Github Pages</strong>는 Github 저장소의 파일을 그대로 웹사이트로 열어 주는 무료 서비스.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1128s" target="_blank" rel="noopener">18:48</a><span>배포된 사이트에서 연습해 보기</span></h4>
+<ul><li>실제 주소에서 로그인, 쌍자음 연습, 관리자 모드, 기록 다운로드까지 확인.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=22s" target="_blank" rel="noopener">0:22</a><span>ChatGPT로 Codex 시험용 프롬프트 만들기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=58s" target="_blank" rel="noopener">0:58</a><span>빈 폴더에서 개발 계획 세우기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=94s" target="_blank" rel="noopener">1:34</a><span>첫 구현과 빈 화면 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=202s" target="_blank" rel="noopener">3:22</a><span>화면 다듬기와 TXT 기록 확인</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=310s" target="_blank" rel="noopener">5:10</a><span>오른쪽 Shift가 오답으로 나오는 문제</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=338s" target="_blank" rel="noopener">5:38</a><span>키보드 신호 진단 페이지</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=454s" target="_blank" rel="noopener">7:34</a><span>Shift 설정 기능으로 해결</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=500s" target="_blank" rel="noopener">8:20</a><span>Firebase로 Google 로그인 붙이기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=656s" target="_blank" rel="noopener">10:56</a><span>강연용으로 로그인 쉽게 설명받기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=730s" target="_blank" rel="noopener">12:10</a><span>순위표, 닉네임, 관리자 화면 요청</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=840s" target="_blank" rel="noopener">14:00</a><span>로그인 버튼이 안 눌리는 문제</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=931s" target="_blank" rel="noopener">15:31</a><span>Shift 설정 다시 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1032s" target="_blank" rel="noopener">17:12</a><span>Github에 올리고 배포하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1126s" target="_blank" rel="noopener">18:46</a><span>배포된 사이트에서 연습해 보기</span></li></ol></details>
+</article></main>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>

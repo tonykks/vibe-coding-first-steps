@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI와 함께 일하기: 화면 녹화 사례 모음</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero"><h1>AI와 함께 일하기: 화면 녹화 사례 모음</h1><p>Claude, Codex, Google AI Studio 같은 AI 도구로 실제 일을 해 본 화면 녹화입니다. 영상은 빠르게 훑어보고, 이 페이지에서 &#x27;내가 요구한 것&#x27;과 &#x27;AI가 한 일&#x27;을 나눠 읽으면 AI가 어디까지 해 주는지 보입니다.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div><div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div></header>
+<div class="wrap"><nav><ul><li><a class="gn" href="#g1">나만의 Coding Agent 만들기</a><ul><li><a href="#antigravity">나만의 Coding Agent 만들기</a></li></ul></li><li><a class="gn" href="#g2">관광대 강의 준비</a><ul><li><a href="#jtu1">강의 자료를 웹사이트로</a></li><li><a href="#jtu2">Claude 데스크톱 앱 이해하기</a></li><li><a href="#jtu3">Claude 둘이 나눠 맡은 강의 사이트 고치기</a></li></ul></li><li><a class="gn" href="#g3">바이브 코딩으로 한글타자연습앱 만들기</a><ul><li><a href="#typing3">바이브 코딩으로 한글타자연습앱 만들기</a></li><li><a href="#typing1">바이브 코딩으로 한글타자연습앱 만들기</a></li><li><a href="#typing2">바이브 코딩으로 한글타자연습앱 만들기</a></li></ul></li><li><a class="gn" href="#g4">AI와 일하는 방법</a><ul><li><a href="#solo1">Claude 안내로 프로그램 이사하기</a></li><li><a href="#solo3">대화창은 계획, Code 탭은 실행 네 프로그램 이사 마무리</a></li><li><a href="#solo5">Notion 게시판으로 AI 넷이 협업하기</a></li><li><a href="#solo2">AI 에이전트 팀으로 강의 편집 도구 만들기</a></li><li><a href="#solo4">매번 AI에게 시킬까, 프로그램으로 남길까</a></li></ul></li></ul></nav><main><section class="group" id="g1"><h2>나만의 Coding Agent 만들기</h2><p class="gdesc">강연 주제 영상입니다. Antigravity IDE 하나에 AI 여섯이 일할 자리를 만들고, 각자에게 이름과 역할을 줍니다.</p><article class="video" id="antigravity">
+
+
+<header class="vh">
+<div class="vt"><h3>나만의 Coding Agent 만들기</h3>
+<p class="sub">[Antigravity IDE 활용]</p></div>
+<div class="meta"><span class=len>10:20</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">강연 주제 "나만의 코딩 에이전트 만들기"의 출발점이다. Google의 Antigravity IDE 하나에 AI 여섯이 일할 자리를 만들고 이름과 역할을 준다. IDE 안의 지니, 옆 창의 행크(Codex)와 버디(Claude Code), 터미널의 애니·토디·제리. 설치는 Claude 데스크톱 앱의 토비가 화면 캡처를 보고 한 단계씩 안내하고, 사람(Owner)은 결정과 클릭, 로그인만 한다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>이름</th><th>자리</th><th>맡은 일</th></tr></thead><tbody><tr><td>Owner(나)</td><td>사람</td><td>결정, 클릭, 로그인, 허락</td></tr><tr><td>토비</td><td>Claude 데스크톱 앱 대화창</td><td>계획을 세우고 단계마다 안내 (Vibe Agent)</td></tr><tr><td>지니</td><td>Antigravity IDE 기본 에이전트</td><td>IDE 안 작업, IDE 설정</td></tr><tr><td>행크</td><td>Codex 확장 프로그램 (IDE 옆 창)</td><td>일을 나누고 점검하는 총괄</td></tr><tr><td>버디</td><td>Claude Code 확장 프로그램 (IDE 옆 창)</td><td>행크와 함께 계획과 검토</td></tr><tr><td>애니</td><td>Antigravity CLI (터미널)</td><td>실행 담당</td></tr><tr><td>토디</td><td>Codex CLI (터미널)</td><td>애니와 함께 구현과 시험</td></tr><tr><td>제리</td><td>Claude Code CLI (터미널)</td><td>실행 담당</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:00</span><span>AI 여섯의 자리 만들기</span></h4>
+<ul><li>목표: Antigravity IDE 하나 안에서 여러 AI가 역할을 나눠 일하게 하기.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>IDE</strong>: 코드를 쓰고 실행하는 작업 프로그램. Antigravity는 Google이 만든 AI 중심 IDE.</li><li><strong>확장 프로그램</strong>: IDE에 기능을 더하는 추가 부품. 여기서는 Codex와 Claude Code를 IDE 옆 창으로 넣는다.</li><li><strong>CLI(명령 도구)</strong>: 같은 AI를 터미널에서 글자 명령으로 부르는 버전.</li></ul></ul>
+<h4 class="ch"><span class="ts">0:22</span><span>토비에게 설치 안내 맡기기</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 화면을 캡처해 Claude 데스크톱 앱(토비)에 보냄. 버튼은 직접 누름.</li><li><span class="tag ai">AI가 한 일</span> 캡처를 보고 "다음은 이 버튼"을 알려 줌. 비슷한 이름의 다른 앱이 아니라 독립 실행형(Standalone) IDE를 받으라고 짚어 줌.</li><li><span class="tag key">핵심</span> AI는 화면을 보고 안내하고, 실제 클릭과 로그인은 사람이 한다. 이 역할 나누기가 끝까지 이어진다.</li></ul>
+<h4 class="ch"><span class="ts">1:36</span><span>Google 로그인과 첫 설정</span></h4>
+<ul><li>화면 색, 에이전트 작업 방식, 함께 쓸 Google 도구, 보안 안내를 차례로 고름.</li><li>2:12 에이전트 방식: "중요한 단계마다 내가 검토"(Review-driven)를 고름. 토비가 네 가지 차이를 설명.</li></ul>
+<h4 class="ch"><span class="ts">2:55</span><span>행크: Codex 확장 프로그램</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> "codex" 검색, 설치, ChatGPT 계정으로 로그인.</li><li><span class="tag ai">AI가 한 일</span> 이름이 비슷한 확장 프로그램 중 게시자(openai)와 다운로드 수로 공식 제품을 가려 줌.</li><li><span class="tag word">알아 두면 좋은 말</span> Codex는 내 ChatGPT 요금제 한도를 쓴다.</li></ul>
+<h4 class="ch"><span class="ts">4:48</span><span>버디: Claude Code 확장 프로그램</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 같은 방법으로 설치, Anthropic 게시자 확인, 브라우저에서 Claude 계정 승인.</li><li><span class="tag key">정리</span> 기본 에이전트 지니까지 IDE 안에 AI가 셋이 된다.</li></ul>
+<h4 class="ch"><span class="ts">6:23</span><span>애니·토디·제리: 터미널 명령 도구 세 개</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 토비가 준 공식 설치 명령을 터미널에 붙여 넣고 결과를 캡처.</li><li><span class="tag ai">AI가 한 일</span> 빨간 경고 글자가 실제 오류가 아니라고 풀어 주고, 경로 등록 명령과 세 도구 버전 확인 명령(<code>agy --version; codex --version; claude --version</code>)을 만들어 줌.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>경로(PATH) 등록</strong>은 프로그램 이름만 쳐도 어느 폴더에서나 실행되게 컴퓨터에 위치를 알려 두는 일.</li></ul>
+<h4 class="ch"><span class="ts">8:36</span><span>자리 정리</span></h4>
+<p>IDE에는 지니, 옆 창에는 행크와 버디, 터미널에는 애니·토디·제리. 계획과 안내는 토비, 결정은 Owner.</p>
+<h4 class="ch"><span class="ts">9:04</span><span>지니의 버튼이 없다</span></h4>
+<ul><li><span class="tag me">내 요구</span> 행크와 버디처럼 지니도 버튼으로 바로 누르게 해 달라.</li><li>AI의 답(토비): 나는 IDE 화면을 직접 바꿀 수 없다. IDE 안의 지니에게 맡기는 게 맞다.</li><li><span class="tag key">핵심</span> AI마다 손댈 수 있는 범위가 다르다. 정한 역할 배치는 Notion 기록에 남겨 다음 대화에서도 이어지게 한다.</li></ul>
+<h4 class="ch"><span class="ts">10:00</span><span>지니가 내장 버튼 켜기</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 다른 에이전트에게 물어 버튼이 IDE에 이미 내장된 기능이라는 것을 알고 지니에게 알려 줌.</li><li>AI가 한 일(지니): 설정을 켜고 창을 새로 고쳐(Reload Window) 오른쪽에 에이전트 버튼을 바로 보이게 함.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><span class="ts">0:00</span><span>AI 여섯의 자리 만들기</span></li><li><span class="ts">0:22</span><span>토비에게 설치 안내 맡기기</span></li><li><span class="ts">1:36</span><span>Google 로그인과 첫 설정</span></li><li><span class="ts">2:12</span><span>에이전트 작업 방식 고르기</span></li><li><span class="ts">2:55</span><span>행크: Codex 확장 프로그램</span></li><li><span class="ts">4:48</span><span>버디: Claude Code 확장 프로그램</span></li><li><span class="ts">6:23</span><span>애니·토디·제리: 터미널 명령 도구</span></li><li><span class="ts">8:19</span><span>세 도구 버전 확인</span></li><li><span class="ts">8:36</span><span>자리 정리</span></li><li><span class="ts">9:04</span><span>지니의 버튼이 없다</span></li><li><span class="ts">10:00</span><span>지니가 내장 버튼 켜기</span></li></ol></details>
+</article></section>
+<section class="group" id="g2"><h2>관광대 강의 준비</h2><p class="gdesc">외국인 유학생(베트남·미얀마) 강의 자료를 웹사이트로 만들고, Claude와 함께 고쳐 갑니다. 실제 강의 사이트를 열어 보며 영상과 비교해 보세요.</p><article class="video" id="jtu1">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만들고 고친 강의 사이트입니다. 언어 버튼으로 베트남어·미얀마어로도 바꿔 볼 수 있습니다.</p><code>https://tonykks.github.io/jtu-it-course/</code></div><a class="play" href="https://tonykks.github.io/jtu-it-course/" target="_blank" rel="noopener">관광대 강의 사이트 열어 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>강의 자료를<br>웹사이트로</h3>
+<p class="sub">관광대 강의 준비 ①</p></div>
+<div class="meta"><span class=len>01:57</span><a class="play" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">HTML로 만들어 둔 강의 자료 폴더를 Claude Code에게 맡겨 Github 저장소에 올리고 Github Pages로 배포한다. 외국인 유학생이 주소 하나로, 자기 언어로 6주 강의 자료를 볼 수 있게 된다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude Code)가 한 일</th></tr></thead><tbody><tr><td>맡기기</td><td>강의 자료 폴더를 주고 배포 요청</td><td>Github 저장소 만들기, Github Pages 배포</td></tr><tr><td>정리</td><td>공개 범위 확인</td><td>내용이 빈 3차시 파일은 공개하지 않고 따로 보관, 계획표에 "준비 중" 표시, 파일 이름 정리</td></tr><tr><td>연결</td><td>타자 연습 버튼 요청</td><td>종합계획표의 주차별 버튼 연결, 타자 연습 사이트 버튼 추가</td></tr><tr><td>확인</td><td>실제 사이트 열어 보기</td><td>다시 넣은 빈 파일도 올리지 않고 그대로 둠</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=0s" target="_blank" rel="noopener">0:00</a><span>웹페이지로 만든 강의 자료 폴더</span></h4>
+<p>관광대 강의 자료를 HTML 파일로 만들어 둔 폴더에서 시작.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=12s" target="_blank" rel="noopener">0:12</a><span>Github 저장소 만들고 Pages로 배포</span></h4>
+<ul><li><span class="tag me">내 요구</span> 학생들이 볼 수 있게 인터넷에 올려 달라.</li><li><span class="tag ai">AI가 한 일</span> Github 저장소를 만들고 Github Pages로 배포.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Github Pages</strong>는 Github 저장소의 파일을 그대로 웹사이트로 열어 주는 무료 서비스. <strong>배포</strong>는 내 컴퓨터의 파일을 누구나 주소로 볼 수 있게 올리는 일.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=24s" target="_blank" rel="noopener">0:24</a><span>빈 파일은 공개하지 않기 (핵심 장면)</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 내용이 빈 3차시 파일을 스스로 찾아 공개에서 빼고 따로 보관, 계획표에는 "준비 중"으로 표시. 나중에 다시 넣어 봐도 여전히 비어 있어 올리지 않음.</li><li><span class="tag key">핵심</span> 시키는 대로 다 올리지 않고, 공개하면 안 되는 것을 먼저 걸러 냈다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=36s" target="_blank" rel="noopener">0:36</a><span>종합계획표와 주차별 버튼</span></h4>
+<p>6주 동안 컴퓨터 기초, 한글 타자, 아래아 한글 세 과목. 주차별 강의자료 버튼을 누르면 해당 차시 페이지로 바로 이동.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=66s" target="_blank" rel="noopener">1:06</a><span>타자 연습 사이트 버튼</span></h4>
+<p>타자 과목 제목 옆에 연습 사이트로 가는 버튼 두 개.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=84s" target="_blank" rel="noopener">1:24</a><span>실제 사이트에서 확인하기</span></h4>
+<p>Github에 올라간 사이트에서 종합계획표, 한컴타자연습 버튼, 6차시 종합평가 안내를 차례로 확인.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=106s" target="_blank" rel="noopener">1:46</a><span>베트남어로 바꿔 보기</span></h4>
+<p>언어 버튼으로 베트남어, 미얀마어로 바뀌어 유학생이 자기 언어로 볼 수 있다.</p></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=0s" target="_blank" rel="noopener">0:00</a><span>웹페이지로 만든 강의 자료 폴더</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=12s" target="_blank" rel="noopener">0:12</a><span>Github 저장소 만들고 Pages로 배포</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=24s" target="_blank" rel="noopener">0:24</a><span>내용이 빈 3차시 파일은 공개하지 않기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=36s" target="_blank" rel="noopener">0:36</a><span>종합계획표와 주차별 강의자료 버튼</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=66s" target="_blank" rel="noopener">1:06</a><span>타자 연습 사이트 버튼 달기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=84s" target="_blank" rel="noopener">1:24</a><span>실제 사이트에서 확인하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=-Z6Ns29hLoM&t=106s" target="_blank" rel="noopener">1:46</a><span>베트남어로 바꿔 보기</span></li></ol></details>
+</article><article class="video" id="jtu2">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만들고 고친 강의 사이트입니다. 언어 버튼으로 베트남어·미얀마어로도 바꿔 볼 수 있습니다.</p><code>https://tonykks.github.io/jtu-it-course/</code></div><a class="play" href="https://tonykks.github.io/jtu-it-course/" target="_blank" rel="noopener">관광대 강의 사이트 열어 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>Claude 데스크톱 앱<br>이해하기</h3>
+<p class="sub">관광대 강의 준비 ②</p></div>
+<div class="meta"><span class=len>04:12</span><a class="play" href="https://www.youtube.com/watch?v=4VUafTBirNI" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">Claude 데스크톱 앱을 쓰며 생긴 궁금증을 하나씩 묻고 확인한다. Claude md 파일이 꼭 필요한지, Claude Code가 무엇을 할 수 있는지, 내 컴퓨터에서 무엇을 볼 수 있는지 알아보고, 마지막에 강의 사이트를 어떤 기준으로 맞출지 검토를 받는다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude 데스크톱)가 한 일</th></tr></thead><tbody><tr><td>궁금증 묻기</td><td>"Claude md는 꼭 만들어야 하나?" 질문</td><td>필수가 아니라 폴더별 약속 메모라고 설명, 초안 만드는 방법 안내</td></tr><tr><td>근거 확인</td><td>내 협업 Kit를 직접 읽어 보라고 지시, 폴더 연결 허락</td><td>Github 저장소와 공식 문서를 읽고 실제 규칙 위치를 찾음</td></tr><tr><td>문서 고치기</td><td>고칠 내용 승인, 결과가 이상하면 캡처로 되묻기</td><td>Agent md와 Readme 수정, Github에 올리기, 원본 Kit에도 반영</td></tr><tr><td>범위 확인</td><td>"내 컴퓨터에서 무엇을 보나?" 질문</td><td>허락한 폴더만 열린다고 설명</td></tr><tr><td>강의 사이트</td><td>강의 폴더 연결, 표준 기준 요청</td><td>18쪽을 비교해 공통 틀과 고칠 점 정리</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=0s" target="_blank" rel="noopener">0:00</a><span>데스크톱 앱도 웹 설정을 쓸까</span></h4>
+<p>데스크톱 앱이 웹에서 정한 개인 지침과 메모리를 그대로 쓰는지 확인.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=8s" target="_blank" rel="noopener">0:08</a><span>Claude md는 꼭 만들어야 하나</span></h4>
+<ul><li><span class="tag me">내 요구</span> 폴더마다 Claude md를 꼭 만들어야 하는지 물음.</li><li><span class="tag ai">AI의 답</span> 필수가 아니라 그 폴더에서 일할 때의 약속 메모. 이닛 명령으로 초안을 받고 필요할 때 한 줄씩 보태면 된다. Agent md가 이미 있으면 그것을 가리키는 한 줄이면 충분.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Claude md / Agent md</strong>는 AI에게 "이 폴더에서는 이렇게 일해"라고 적어 두는 메모 파일. AI가 일을 시작할 때 먼저 읽는다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=33s" target="_blank" rel="noopener">0:33</a><span>협업 Kit를 직접 읽혀 근거 찾기 (핵심 장면 ①)</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 예전에 들은 이야기가 맞는지 내 협업 Kit 저장소를 직접 읽어 보라고 함. 폴더를 추가하고 웹 문서 읽기를 허락.</li><li><span class="tag ai">AI가 한 일</span> Github 저장소와 공식 문서를 차례로 읽고, Claude md 파일은 없고 규칙은 Readme에 있다는 사실을 찾아냄. 잘 읽히는지는 <code>/context</code> 명령으로 확인할 수 있다고 알려 줌.</li><li><span class="tag key">핵심</span> AI가 말로만 답하지 않고, 내 자료를 직접 읽어 근거를 확인했다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=87s" target="_blank" rel="noopener">1:27</a><span>Claude Code가 하는 일과 확장 장치</span></h4>
+<ul><li>Claude Code는 파일을 찾고, 고치고, 실행하고, 결과를 보고 다시 고치는 일까지 스스로 하는 Agent.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Skill</strong>(자주 하는 작업을 묶어 둔 것), <strong>Hook</strong>(정해진 때 자동으로 도는 점검), <strong>MCP</strong>(다른 서비스와 잇는 통로). 처음부터 다 갖출 필요는 없고 불편할 때 하나씩 더한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=130s" target="_blank" rel="noopener">2:10</a><span>문서 고치고 근거 남기기</span></h4>
+<ul><li><span class="tag me">내 요구</span> Agent md를 고치고 왜 그렇게 고쳤는지 Readme에 남겨 달라.</li><li><span class="tag ai">AI가 한 일</span> 파일을 고쳐 Github에 올림. 그동안 나는 Github에서 협업 Kit 문서를 열어 Agent별 역할과 승인 절차를 살펴봄.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=168s" target="_blank" rel="noopener">2:48</a><span>"원본은 왜 안 고쳤지?" (핵심 장면 ②)</span></h4>
+<ul><li><span class="tag key">증상</span> 올렸다는데 화면에서 바뀐 곳이 안 보임. 캡처를 보여 주며 되물음.</li><li><span class="tag key">원인</span> 원본 Kit가 아니라 다른 저장소만 고쳤음.</li><li><span class="tag me">내가 한 일</span> 근본을 고쳐야 다음부터 적용되지 않느냐고 짚음.</li><li><span class="tag ai">AI가 한 일</span> 판단이 틀렸다고 인정하고 원본에도 반영해 올림.</li><li><span class="tag key">핵심</span> AI가 "다 했다"고 해도 결과는 사람이 확인해야 한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=208s" target="_blank" rel="noopener">3:28</a><span>Claude는 내 컴퓨터에서 무엇을 볼 수 있나</span></h4>
+<p>폴더 이름은 길을 찾으려고 보이지만, 안의 내용은 내가 허락한 폴더만 열린다.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=223s" target="_blank" rel="noopener">3:43</a><span>강의 사이트 표준 검토</span></h4>
+<ul><li><span class="tag me">내 요구</span> 앞으로 만들 강의 페이지도 같은 모양이 되도록 기준을 세워 달라.</li><li><span class="tag ai">AI가 한 일</span> 강의 페이지 18쪽을 비교해, 공통 틀은 잘 지켜졌지만 언어 설정과 디자인 파일이 페이지마다 달라 하나로 묶어야 한다고 정리. 이 결과가 관광대 ③에서 실제로 고치는 출발점이 된다.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=0s" target="_blank" rel="noopener">0:00</a><span>데스크톱 앱도 웹 설정과 메모리를 공유할까?</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=8s" target="_blank" rel="noopener">0:08</a><span>Claude md는 꼭 만들어야 하나?</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=33s" target="_blank" rel="noopener">0:33</a><span>협업 Kit를 읽혀 근거 찾기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=66s" target="_blank" rel="noopener">1:06</a><span>조사 결과: Claude md는 없고 규칙은 Readme에</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=87s" target="_blank" rel="noopener">1:27</a><span>Claude Code가 하는 일과 확장 장치</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=130s" target="_blank" rel="noopener">2:10</a><span>Agent md 수정과 근거 남기기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=168s" target="_blank" rel="noopener">2:48</a><span>"원본은 왜 안 고쳤지?" → 원본 Kit에도 반영</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=208s" target="_blank" rel="noopener">3:28</a><span>Claude는 내 컴퓨터에서 무엇을 볼 수 있나</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=4VUafTBirNI&t=223s" target="_blank" rel="noopener">3:43</a><span>강의 웹페이지 표준화 검토</span></li></ol></details>
+</article><article class="video" id="jtu3">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만들고 고친 강의 사이트입니다. 언어 버튼으로 베트남어·미얀마어로도 바꿔 볼 수 있습니다.</p><code>https://tonykks.github.io/jtu-it-course/</code></div><a class="play" href="https://tonykks.github.io/jtu-it-course/" target="_blank" rel="noopener">관광대 강의 사이트 열어 보기 ↗</a></div>
+
+<header class="vh">
+<div class="vt"><h3>Claude 둘이 나눠 맡은<br>강의 사이트 고치기</h3>
+<p class="sub">관광대 강의 준비 ③</p></div>
+<div class="meta"><span class=len>43:02</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">외국인 유학생용 3개 언어 강의 사이트를 수업 전날 밤에 고친다. 대화창의 Claude가 요구 사항과 원고를 쓰고 Code 탭의 Claude가 파일을 고쳐 검사·보고하며, 사람은 결정과 승인만 하는 분업 방식을 만들어 간다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>대화창 Claude가 한 일</th><th>Code 탭 Claude가 한 일</th></tr></thead><tbody><tr><td>범위 정하기</td><td>우선순위 고르기, 수업 시간·TOPIK 등급 결정</td><td>19개 페이지 조사, 할 일과 질문 정리</td><td></td></tr><tr><td>방법 바꾸기</td><td>"더 빠른 방법 없나?" 질문</td><td>대화창은 문서, Code 탭은 수정으로 분업 제안, 요구 사항 문서 작성</td><td></td></tr><tr><td>고치기</td><td>화면 캡처로 문제 알려 주기</td><td>보고서 검토, 꼭 고칠 것만 추려 수정 요청서 작성</td><td>고치기 전 기록·화면 저장, 수정, 전후 비교, 보고서</td></tr><tr><td>공개</td><td>점검표 보고 승인</td><td></td><td>개인 정보·초안 폴더 점검, Github에 올리기, 공개 사이트 확인</td></tr><tr><td>원고 쓰기</td><td>장면별 원고 함께 쓰기, 낱말 뜻 되묻기</td><td>Notion 강의 기록 읽기, 사전·기사 찾아 원고 다듬기</td><td>원고·사진을 페이지에 넣고 출처 적기</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:00</span><span>작업 범위 정하기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 내일 9시 수업 전에 강의 사이트를 고치자. 무엇부터 할지 정해 달라.</li><li><span class="tag ai">AI가 한 일</span> 19개 페이지를 읽고 "언어 기억, 공통 디자인 파일(<code>course.css</code>), 탭 제목 맞추기"로 첫 범위를 제안. 내가 결정할 질문(수업 시간 표기, TOPIK 등급)은 따로 모아 물음.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>CSS 파일</strong>은 글꼴·색·배치 같은 디자인 규칙을 모아 둔 파일. 하나로 모으면 한 곳만 고쳐도 모든 페이지가 같이 바뀐다.</li></ul>
+<h4 class="ch"><span class="ts">1:45</span><span>번역 빠진 곳 찾기</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 미얀마어 화면을 캡처해 보냄.</li><li><span class="tag ai">AI가 한 일</span> 화면을 하나씩 보는 대신 자동 검사 프로그램을 돌려 번역이 빠진 곳을 모두 찾아 채움.</li></ul>
+<h4 class="ch"><span class="ts">3:30</span><span>"더 빠른 방법 없나?" (이 편의 핵심 장면 ①)</span></h4>
+<ul><li><span class="tag me">내 요구</span> 하나씩 고치는 속도가 너무 느리다.</li><li><span class="tag ai">AI의 답</span> 데스크톱 대화창보다 Code 탭이 빠르다. 파일을 바로 고치고 브라우저로 결과를 직접 확인할 수 있기 때문.</li><li>정한 방식: 대화창 Claude는 <strong>요구 사항 문서</strong>(<code>_drafts/REQ_…md</code>)를 쓰고, Code 탭 Claude는 그 문서대로 고친 뒤 <strong>보고서</strong>(<code>REPORT_…md</code>)를 남긴다. 사람은 두 문서를 오가며 결정과 승인만 한다.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Code 탭</strong>은 Claude 데스크톱 앱 안의 코딩용 작업 공간. 폴더를 열어 파일을 직접 고치고 명령을 실행한다.</li></ul>
+<h4 class="ch"><span class="ts">4:45</span><span>번역 원칙 정하기</span></h4>
+<ul><li>컴퓨터 용어(File, Folder, USB)는 영어 그대로, 화면 버튼 이름은 "한국어 + 영어"로. 학생이 실제 한국 컴퓨터 화면에서 찾을 수 있게.</li></ul>
+<h4 class="ch"><span class="ts">6:15</span><span>다음 학기까지 쓸 수 있게</span></h4>
+<ul><li>검사와 변환을 한 번 쓰고 버릴 작업이 아니라 프로그램으로 남기기로 함. 오늘 밤은 1주차만.</li></ul>
+<h4 class="ch"><span class="ts">7:15</span><span>Code 탭의 1단계 작업</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 고치기 전 상태를 Git에 기록하고, 19개 페이지 화면을 찍어 둠. 고친 뒤 전후 비교 화면을 만들어 바뀐 곳을 스스로 확인. 보고서를 쓰고 내 컴퓨터에만 저장.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>Git 기록(커밋)</strong>: 파일의 그때 상태를 저장해 두는 것. 문제가 생기면 이 시점으로 되돌릴 수 있다.</li><li><strong>전후 비교 화면</strong>: 고치기 전·후 화면을 나란히 찍어 의도하지 않은 변화가 없는지 보는 방법. 사람이 하면 페이지마다 눈으로 비교해야 하는 일.</li></ul></ul>
+<h4 class="ch"><span class="ts">9:30</span><span>보고서 검토와 수정 요청서</span></h4>
+<ul><li>대화창 Claude가 보고서를 읽고 "내일 수업 전에 꼭 고칠 것"만 추림 → 수정 요청서(<code>REQ_fix-01.md</code>)로 만들어 Code 탭에 넘김.</li><li>11:15 Code 탭은 쪽 번호 규칙(1/18 형식)과 휴대폰 화면에서 표가 넘치는 문제를 고침.</li></ul>
+<h4 class="ch"><span class="ts">12:30</span><span>오른쪽 Shift 문제 진단</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 타자 연습 앱에서 오른쪽 Shift가 왼쪽처럼 처리되는 화면을 캡처해 보냄.</li><li><span class="tag ai">AI가 한 일</span> 키보드가 보내는 신호를 그대로 보여 주는 진단 화면을 붙이고, 내가 직접 눌러 보게 함. 메모장에서도 확인하게 해서 원인이 프로그램이 아니라 이 컴퓨터의 키보드 설정이라는 것을 찾아냄. 확인 후 앱은 원래 상태로 되돌림.</li><li><span class="tag key">핵심</span> 짐작으로 코드를 고치지 않고, 원인을 확인한 뒤 고칠 필요가 없으면 되돌렸다.</li></ul>
+<h4 class="ch"><span class="ts">14:30</span><span>짧은 주소 만들기</span></h4>
+<ul><li>학생이 치기 쉽게 강의 사이트와 타자 연습 프로그램의 짧은 주소(is.gd)를 만들고 첫 화면에 바로 가기 버튼을 넣음.</li></ul>
+<h4 class="ch"><span class="ts">19:45</span><span>공개 전 점검표 (이 편의 핵심 장면 ②)</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 올라갈 파일 목록, 개인 정보(이메일·전화번호·학생 실명) 검사 결과, 공개에서 빠지는 초안 폴더(<code>_drafts/</code>)를 표로 보여 주고 승인을 기다림.</li><li><span class="tag me">내가 한 일</span> 점검표를 보고 승인 → Code 탭이 Github에 올리고 공개 사이트에서 확인.</li><li><span class="tag key">핵심</span> AI가 공개 직전까지 다 준비해도, 올리는 결정은 사람이 한다.</li></ul>
+<h4 class="ch"><span class="ts">21:15</span><span>화면 배치 다듬기</span></h4>
+<ul><li>1교시 카드를 위아래로 쌓아 휴대폰에서도 읽기 쉽게 바꿈.</li></ul>
+<h4 class="ch"><span class="ts">22:15</span><span>장면 메모와 설명 원고 틀</span></h4>
+<ul><li>장면마다 메모(펼치기 제목, 요약)와 원고(자세히 읽어 보기)를 넣는 틀을 정함. 내가 장면별 글을 주면 Code 탭이 그대로 넣는다.</li></ul>
+<h4 class="ch"><span class="ts">25:15</span><span>순위표 정리와 닉네임 겹침</span></h4>
+<ul><li><span class="tag me">내 요구</span> 시험용 이름을 순위표에서 지우고, 같은 닉네임을 막을 수 있는지 물음.</li><li><span class="tag ai">AI의 답</span> Firebase의 <strong>보안 규칙</strong>으로 같은 닉네임 등록을 막을 수 있음. 이메일 일부를 보여 주는 것보다 계정 번호 끝 4자리로 구분하는 편이 개인 정보에 안전하다고 권함.</li></ul>
+<h4 class="ch"><span class="ts">27:00</span><span>원고는 누가 쓰나</span></h4>
+<ul><li>장면 원고를 Code 탭에 바로 줘도 되는지 묻고, "대화창에서 원고 쓰기 → Code 탭에서 넣기"로 역할을 다시 확인.</li></ul>
+<h4 class="ch"><span class="ts">30:00</span><span>Notion 기록을 읽고 원고 쓰기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> Notion에 정리해 둔 관광대 강의 기록을 읽고 장면별 메모·원고 형식을 정함.</li><li>31:45 1교시 하드웨어 장면 원고를 함께 씀. "웨어하우스"가 학생에게 어떻게 들릴지 묻자, 사전과 기사를 찾아 ware(물건)의 뜻을 확인하고 외우기 쉬운 설명으로 바꿈.</li></ul>
+<h4 class="ch"><span class="ts">35:00</span><span>자세히 읽어 보기 화면</span></h4>
+<ul><li>원고를 넘기면 Code 탭이 페이지마다 장면을 펼쳐 읽는 화면을 만듦. 브라우저 번역으로 미얀마어에서도 읽히는지 확인.</li></ul>
+<h4 class="ch"><span class="ts">38:30</span><span>사진과 출처 넣기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 무료 이미지 사이트(Pixabay 등)에서 메인보드·마우스 사진을 받아 자르고, 사진마다 출처를 적음. USB 화면 캡처에 개인 폴더 이름이 보인다고 공개 전에 먼저 경고.</li><li>40:45 공개 사이트에서 메인보드, 마우스, USB 장면을 열어 확인.</li></ul>
+<h4 class="ch"><span class="ts">42:15</span><span>한글 2020 글쇠 장면과 마무리</span></h4>
+<ul><li>같은 방식으로 한글 수업 장면을 바꾸고 공개 전 점검표를 받아 마무리.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><span class="ts">0:00</span><span>작업 범위 정하기</span></li><li><span class="ts">1:45</span><span>번역 빠진 곳 찾기</span></li><li><span class="ts">3:30</span><span>"더 빠른 방법 없나?" 대화창과 Code 탭 분업</span></li><li><span class="ts">4:45</span><span>번역 원칙 정하기</span></li><li><span class="ts">6:15</span><span>다음 학기까지 쓸 수 있게</span></li><li><span class="ts">7:15</span><span>Code 탭의 1단계 작업과 전후 비교</span></li><li><span class="ts">9:30</span><span>보고서 검토와 수정 요청서</span></li><li><span class="ts">12:30</span><span>오른쪽 Shift 문제 진단</span></li><li><span class="ts">14:30</span><span>짧은 주소 만들기</span></li><li><span class="ts">19:45</span><span>공개 전 점검표와 승인</span></li><li><span class="ts">21:15</span><span>화면 배치 다듬기</span></li><li><span class="ts">22:15</span><span>장면 메모와 설명 원고 틀</span></li><li><span class="ts">25:15</span><span>순위표 정리와 닉네임 겹침</span></li><li><span class="ts">30:00</span><span>Notion 기록을 읽고 원고 쓰기</span></li><li><span class="ts">35:00</span><span>자세히 읽어 보기 화면</span></li><li><span class="ts">38:30</span><span>사진과 출처 넣기</span></li><li><span class="ts">42:15</span><span>한글 2020 장면과 마무리</span></li></ol></details>
+</article></section>
+<section class="group" id="g3"><h2>바이브 코딩으로 한글타자연습앱 만들기</h2><p class="gdesc">같은 요구 사항에서 출발해 한글타자연습앱을 세 가지 AI 도구로 만들고 배포까지 간 과정입니다. 편마다 출발점과 작업 환경이 다르니, 각 편에서 내가 요구한 것과 AI가 한 일을 따로 보세요.</p><p><a class="link" href="typing-summary.html">세 편 한눈에 보기 →</a></p><article class="video" id="typing3">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만든 앱이 실제로 배포되어 있습니다. 로그인하면 기록과 순위표도 볼 수 있습니다.</p><code>https://tonykks.github.io/build_hangul-key/</code></div><a class="play" href="https://tonykks.github.io/build_hangul-key/" target="_blank" rel="noopener">AI Studio로 만든 한글타자연습앱 써 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>바이브 코딩으로<br>한글타자연습앱 만들기</h3>
+<p class="sub">① AI Studio</p></div>
+<div class="meta"><span class=len>29:33</span><a class="play" href="https://www.youtube.com/watch?v=zlpo840TKDU" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">바이브 코딩으로 한글타자연습앱을 만드는 세 편 중 첫 번째. Google AI Studio의 Build 모드에 요구 사항 파일 하나를 주고, 앱 만들기부터 Google 로그인·순위표·Github Pages 배포까지 진행한다. AI가 어디까지 해 주고 어디서 사람이 나서야 하는지가 잘 보인다.</p>
+<h4 class='sec'>이 편의 출발점</h4><ul><li>출발점: 미리 써 둔 요구 사항 파일(<a href="docs/build-mode-requirements.html" target="_blank" rel="noopener"><code>Build-Mode_요구사항.md</code></a>) 하나와 배경 음악 MP3 4곡.</li><li>일한 곳: 설치 없이 브라우저 안에서 쓰는 Google AI Studio의 Build 모드.</li><li>이 편의 특징: Firebase 로그인과 데이터베이스 연결은 AI Studio가 스스로 했고, Github에 저장소를 만들고 올리는 일은 보안 때문에 사람이 버튼을 눌러 했다.</li></ul>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Gemini)가 한 일</th></tr></thead><tbody><tr><td>앱 만들기</td><td>요구 사항 파일과 MP3 음악 올리기</td><td>계획 세우기, 수십 개 파일 나눠 만들기, 미리보기 실행</td></tr><tr><td>고치기</td><td>써 보고 문제 화면을 캡처해 알려 주기</td><td>원인 찾기, 코드 고치기, 확인용 장치 넣기</td></tr><tr><td>로그인·기록</td><td>요청문 다듬기, Google 계정으로 로그인 허락</td><td>Firebase 프로젝트 만들기, 로그인·데이터베이스·보안 규칙 연결</td></tr><tr><td>배포</td><td>Github 비밀번호 확인, 저장소 정리, Pages 설정, Firebase에 주소 등록</td><td>자동 배포 설정 파일 만들기, 할 일 순서 안내</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></h4>
+<ul><li>완성된 앱 화면 위에 제목이 나오고, 이 편에서 무엇을 하는지 먼저 설명한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=29s" target="_blank" rel="noopener">0:29</a><span>요구 사항 파일 하나로 시작</span></h4>
+<ul><li><span class="tag me">내 요구</span> 미리 써 둔 <a href="docs/build-mode-requirements.html" target="_blank" rel="noopener"><code>Build-Mode_요구사항.md</code></a>를 올리고 앱을 만들어 달라고 함. 배경 음악 MP3 4곡을 올림.</li><li><span class="tag ai">AI가 한 일</span> 요구 사항을 읽고 계획을 세운 뒤, 화면·가상 키보드·연습 세트·3개 언어 번역·음악 재생·TXT 저장을 각각 다른 파일로 나눠 만듦. 몇 분 만에 미리보기에서 바로 연습 가능.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Build 모드</strong>는 설치 없이 브라우저 안에서 코드를 만들고 바로 실행해 보는 Google AI Studio 기능.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=173s" target="_blank" rel="noopener">2:53</a><span>직접 써 보기</span></h4>
+<ul><li>연습 세트를 골라 쳐 보고, 연습을 마치면 결과를 TXT로 저장하는 창까지 확인.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=245s" target="_blank" rel="noopener">4:05</a><span>Shift 쌍자음 문제 고치기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 9세트 Shift 연습이 안 되는 화면을 캡처해 알려 줌.</li><li><span class="tag ai">AI가 한 일</span> 키 입력을 실시간으로 보여 주는 확인 장치를 넣고 Shift 판정 방식을 고침.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=365s" target="_blank" rel="noopener">6:05</a><span>언어 바꾸기와 Space 글쇠</span></h4>
+<ul><li><span class="tag me">내 요구</span> 미얀마어·베트남어로 바꿔 보다가 Space 글쇠 안의 글자를 지워 달라고 하고, 왜 넣었는지 물음.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=437s" target="_blank" rel="noopener">7:17</a><span>다음 단계 요청문을 Gemini 채팅에서 다듬기</span></h4>
+<ul><li><span class="tag me">내 요구</span> Google 로그인, 학생별 기록 저장, 순위표, 관리자 화면을 정리한 요청문을 따로 Gemini에게 다듬게 함.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=497s" target="_blank" rel="noopener">8:17</a><span>Firebase 자동 연결 (이 편의 핵심 장면)</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 요청문을 붙여 넣자 AI Studio가 Firebase 프로젝트를 직접 만들고, 데이터 구조 설계도(<code>firebase-blueprint.json</code>), 보안 규칙(<code>firestore.rules</code>), 로그인·순위표·관리자 화면 파일을 만듦.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>Firebase</strong>: Google의 앱 뒷단 서비스. 서버를 직접 만들지 않아도 로그인과 데이터 저장을 쓸 수 있음.</li><li><strong>Authentication</strong>: "누가 들어왔는지" 확인하는 로그인 장치. 여기서는 Google 계정으로 로그인.</li><li><strong>Firestore</strong>: 학생별 연습 기록을 모아 두는 인터넷 저장소. 어느 컴퓨터에서 접속해도 같은 기록이 보임.</li><li><strong>보안 규칙</strong>: 학생은 자기 기록만, 관리자는 전체 기록을 보게 막는 약속.</li></ul><li><span class="tag key">왜 대단한가</span> 사람이 하면 Firebase 사이트에서 프로젝트를 만들고, 로그인 방식을 켜고, 설정값을 코드에 옮기고, 보안 규칙을 따로 써야 하는 일. 여기서는 내가 한 일이 Google 로그인 허락 하나뿐이다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=581s" target="_blank" rel="noopener">9:41</a><span>로그인해 보고 요구 덧붙이기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 로그인해 보고 "관리자 계정은 순위에서 빼 줘", "Shift 호환 버튼은 무슨 기능이야?"처럼 써 보면서 생긴 요구를 덧붙임. 다른 계정으로도 로그인해 학생 화면을 확인.</li><li><span class="tag ai">AI가 한 일</span> 순위표 Top 5, 닉네임 정하기, 관리자 전용 화면, 화면 흔들림 수정.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=797s" target="_blank" rel="noopener">13:17</a><span>순위표에서 학생 기록 보기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 순위에서 학생을 누르면 지금까지의 기록(연습 시간, 점수, 오타 수)이 모두 보이게 해 달라고 함.</li><li><span class="tag ai">AI가 한 일</span> 학생별 상세 기록 창을 만듦.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=869s" target="_blank" rel="noopener">14:29</a><span>Github 계정 연결</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> AI Studio에 Github를 연결하면서 비밀번호 확인과 저장소 선택을 직접 함. AI가 대신할 수 없는 단계.</li><li>14:53 "로그인은 왜 있는 거지요?"에 대한 답: 기록을 학생마다 구분하고 안전하게 쌓기 위해서.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=941s" target="_blank" rel="noopener">15:41</a><span>코드를 내 컴퓨터로 받기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 전체 코드를 zip으로 받는 방법을 물음.</li><li><span class="tag ai">AI가 한 일</span> 다운로드 버튼을 달고, 내 컴퓨터에서 실행하는 명령(<code>npm install</code>, <code>npm run dev</code>)을 알려 줌. 학생 화면에는 필요 없어 버튼은 다시 지움.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1049s" target="_blank" rel="noopener">17:29</a><span>고치다 생긴 문제는 되돌리기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 흔들림이 다시 생기자 "zip 파일 만들기 전으로 되돌려 주세요"라고 요청. 미얀마어에서만 흔들리는 문제도 짚음.</li><li><span class="tag word">알아 두면 좋은 말</span> AI Studio는 단계마다 저장 지점(Checkpoint)이 있어서 이전 상태로 되돌릴 수 있음.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1193s" target="_blank" rel="noopener">19:53</a><span>Github에 배포하기</span></h4>
+<ul><li><span class="tag me">내 요구</span> Github에 <code>build_hangul-key</code> 저장소를 만들고 올려서 배포해 달라고 함.</li><li><span class="tag ai">AI가 한 일</span> Github Pages에 자동 배포하는 설정 파일(<code>.github/workflows/deploy.yml</code>)을 만듦. 그러나 저장소를 만들고 올리는 일은 직접 하지 못함.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1373s" target="_blank" rel="noopener">22:53</a><span>AI는 왜 직접 올리지 못하나 (AI가 어디까지 하는지 보여 주는 장면)</span></h4>
+<ul><li><span class="tag me">내 요구</span> "왜 저장소도 못 만들고 push도 못 하지?"</li><li><span class="tag ai">AI의 답</span> 보안 때문. AI가 내 Github 계정 열쇠(토큰)를 들고 마음대로 저장·배포하지 못하게 막혀 있고, 마지막 결정은 사람이 하도록(Human-in-the-loop) 되어 있음.</li><li><span class="tag key">정리</span> AI Studio는 코드를 만들고 고치는 데까지, 계정 권한이 필요한 일은 사람이 버튼을 누르거나 직접 해야 함.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1505s" target="_blank" rel="noopener">25:05</a><span>Github 연결 버튼으로 올리기</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 같은 이름의 빈 저장소가 이미 있어서 Github에서 직접 지움. AI Studio의 Github 버튼으로 새 저장소를 만들고 코드를 올림. Github Pages 설정을 Github Actions로 바꿈.</li><li><span class="tag ai">AI가 한 일</span> 순서를 안내하고, 올린 코드를 Github가 자동으로 빌드·배포하게 설정해 둠.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1637s" target="_blank" rel="noopener">27:17</a><span>배포 사이트에서 로그인이 안 될 때</span></h4>
+<ul><li><span class="tag key">원인</span> Firebase는 허락한 주소에서만 로그인을 받음. 새 주소(<code>…github.io</code>)를 Firebase의 승인된 도메인에 넣어야 함.</li><li><span class="tag me">내가 한 일</span> Gemini 채팅에서 방법을 묻고, Firebase 콘솔에 직접 주소를 등록. 등록 후 배포 사이트에서도 로그인과 기록 보기가 됨.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1713s" target="_blank" rel="noopener">28:33</a><span>마무리: 음악 경로 고치기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 배포 사이트에서 음악이 안 나오는 문제 등 세 가지를 고쳐 달라고 함.</li><li><span class="tag ai">AI가 한 일</span> 배포 주소에 맞게 음악 파일 경로를 고치고 오류 안내를 넣음. Github 버튼으로 다시 반영.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=29s" target="_blank" rel="noopener">0:29</a><span>요구 사항 파일 하나로 시작</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=173s" target="_blank" rel="noopener">2:53</a><span>미리보기에서 써 보기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=245s" target="_blank" rel="noopener">4:05</a><span>Shift 쌍자음 문제 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=365s" target="_blank" rel="noopener">6:05</a><span>언어 바꾸기와 Space 글쇠</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=437s" target="_blank" rel="noopener">7:17</a><span>로그인·순위표 요청문 다듬기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=497s" target="_blank" rel="noopener">8:17</a><span>Firebase를 AI가 스스로 연결</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=581s" target="_blank" rel="noopener">9:41</a><span>로그인해 보고 요구 덧붙이기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=797s" target="_blank" rel="noopener">13:17</a><span>순위표에서 학생 기록 보기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=869s" target="_blank" rel="noopener">14:29</a><span>Github 계정 연결</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=941s" target="_blank" rel="noopener">15:41</a><span>코드를 내 컴퓨터로 받기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1049s" target="_blank" rel="noopener">17:29</a><span>되돌리기로 흔들림 잡기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1193s" target="_blank" rel="noopener">19:53</a><span>Github에 배포 요청</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1373s" target="_blank" rel="noopener">22:53</a><span>AI는 왜 직접 올리지 못하나</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1505s" target="_blank" rel="noopener">25:05</a><span>Github 버튼으로 올리고 배포</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1637s" target="_blank" rel="noopener">27:17</a><span>배포 주소를 Firebase에 등록</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=zlpo840TKDU&t=1713s" target="_blank" rel="noopener">28:33</a><span>음악 경로 고치고 마무리</span></li></ol></details>
+</article><article class="video" id="typing1">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만든 앱이 실제로 배포되어 있습니다. 로그인하면 기록과 순위표도 볼 수 있습니다.</p><code>https://tonykks.github.io/hangul-key-start/</code></div><a class="play" href="https://tonykks.github.io/hangul-key-start/" target="_blank" rel="noopener">Claude Code로 만든 한글타자연습앱 써 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>바이브 코딩으로<br>한글타자연습앱 만들기</h3>
+<p class="sub">② Claude Code</p></div>
+<div class="meta"><span class=len>14:14</span><a class="play" href="https://www.youtube.com/watch?v=mtvfSvFh170" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">바이브 코딩으로 한글타자연습앱을 만드는 세 편 중 두 번째. 같은 요구 사항으로 AI Studio의 Playground에서 만든 HTML 파일 하나를 Claude Code에게 맡겨, 기능별 파일로 나누고 Github Pages에 배포한 뒤 Firebase로 Google 로그인과 순위표까지 붙여 수업용 사이트로 만든다.</p>
+<h4 class='sec'>이 편의 출발점</h4><ul><li>출발점: 같은 요구 사항으로 Google AI Studio의 Playground에서 만들어 내려받은 HTML 파일 하나(<a href="docs/playground-original-hangul-key.html" target="_blank" rel="noopener">원본 앱 열어 보기</a>).</li><li>요구 사항 문서: <a href="docs/claude-code-project-intent.html" target="_blank" rel="noopener"><code>project-intent.md</code></a>. Owner의 의도와 MVP 범위, 구현·검수 기준을 적은 문서.</li><li>일한 곳: 내 컴퓨터의 폴더. Claude 데스크톱 앱의 Claude Code가 파일을 직접 고치고 명령을 실행한다.</li><li>이 편의 특징: Github 설정은 Claude in Chrome으로 내 브라우저를 조작해 처리했고, 음악 변환 프로그램 설치처럼 내 컴퓨터에서 하는 일도 Claude Code가 직접 했다.</li></ul>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude Code)가 한 일</th></tr></thead><tbody><tr><td>이어받기</td><td>Playground에서 만든 앱 파일을 주고 요구 사항 설명</td><td>파일을 기능별로 나누기, 기록 저장·배경 음악 기능 추가</td></tr><tr><td>배포</td><td>Github 로그인, 저장소 공개 확인</td><td>비공개 저장소 문제 설명, Claude in Chrome으로 설정 화면 조작, Pages 배포</td></tr><tr><td>로그인·기록</td><td>Google 로그인 등 사람만 할 수 있는 단계</td><td>Firebase 프로젝트·웹 앱 등록, Authentication·Firestore·보안 규칙, 순위표 페이지</td></tr><tr><td>고치기</td><td>직접 연습해 보고 문제 알려 주기</td><td>오른쪽 Shift 구분, 화면 다듬기, MP3 변환 프로그램 설치와 음악 줄이기</td></tr><tr><td>수업 준비</td><td>주소 후보 고르기</td><td>짧은 주소 추천·생성, AI Studio와 비교 설명</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></h4>
+<ul><li>완성된 앱 화면 위에 제목이 나오고, 이 편에서 무엇을 하는지 먼저 설명한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=26s" target="_blank" rel="noopener">0:26</a><span>Playground 앱을 Claude Code에게 맡기기</span></h4>
+<ul><li><span class="tag me">내 요구</span> AI Studio Playground에서 만든 한 파일짜리 앱을 기능별로 나누고 Github에 배포해 달라.</li><li><span class="tag ai">AI가 한 일</span> 한글 글쇠 위치를 손가락별로 익히는 원래 앱을 화면·자판·연습 세트·언어 파일로 나누고, 연습 기록 저장과 배경 음악 기능을 붙임.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Claude Code</strong>는 내 컴퓨터의 폴더를 열어 파일을 직접 만들고 고치고 명령까지 실행하는 코딩 AI.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=61s" target="_blank" rel="noopener">1:01</a><span>기록 저장과 세 가지 언어 화면</span></h4>
+<ul><li>연습을 마치면 날짜·시간이 들어간 이름으로 기록 파일이 저장되는지 직접 시험. 베트남어·미얀마어로 바꿔 보며 세 언어가 같은 모양인지 확인하고, 제목·언어 버튼·로그인 버튼을 두 줄로 정리.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=122s" target="_blank" rel="noopener">2:02</a><span>사이트가 안 열린다: 비공개 저장소 문제</span></h4>
+<ul><li><span class="tag key">원인</span> 무료 계정은 비공개 저장소에서 Github Pages를 쓸 수 없음. 저장소를 공개로 바꿔야 함.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Github Pages</strong>는 Github 저장소의 파일을 그대로 웹사이트로 열어 주는 무료 서비스.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=158s" target="_blank" rel="noopener">2:38</a><span>Claude in Chrome으로 Github 설정하기 (핵심 장면 ①)</span></h4>
+<ul><li><span class="tag ai">AI의 답</span> 저장소 설정을 바꾸려면 Github 로그인이 필요하니 Chrome 확장 프로그램을 쓰자.</li><li><span class="tag me">내가 한 일</span> Github 로그인.</li><li><span class="tag ai">AI가 한 일</span> 내 Chrome을 대신 조작해 저장소를 공개로 바꾸는 확인 창을 띄우고 Pages 배포 설정까지 진행.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Claude in Chrome</strong>은 내 Chrome 브라우저를 Claude가 대신 클릭하고 입력하게 해 주는 도구. 로그인은 사람이 한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=254s" target="_blank" rel="noopener">4:14</a><span>Firebase로 Google 로그인과 데이터베이스 (핵심 장면 ②)</span></h4>
+<ul><li><span class="tag me">내 요구</span> 학생 기록을 모으고 순위표를 보여 주고 싶다.</li><li><span class="tag ai">AI가 한 일</span> Firebase 프로젝트를 만들고 웹 앱을 등록. Google 로그인을 켜고, 기록을 저장할 Firestore를 만들고, 다른 사람이 기록을 함부로 고치지 못하게 보안 규칙까지 적용. 순위표 페이지와 Readme도 정리해 Github에 올림.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>Firebase</strong>: Google의 앱 뒷단 서비스. 서버를 직접 만들지 않아도 로그인과 데이터 저장을 쓸 수 있음.</li><li><strong>Authentication</strong>: "누가 들어왔는지" 확인하는 로그인 장치.</li><li><strong>Firestore</strong>: 학생별 연습 기록을 모아 두는 인터넷 저장소.</li><li><strong>보안 규칙</strong>: 학생은 자기 기록만 쓰고, 남의 기록은 고치지 못하게 막는 약속.</li></ul><li><span class="tag key">왜 대단한가</span> 사람이 하면 Firebase 사이트에서 프로젝트 만들기, 로그인 켜기, 설정값을 코드에 옮기기, 규칙 쓰기를 하나씩 해야 하는 일. 사람은 로그인 같은 단계만 직접 했다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=386s" target="_blank" rel="noopener">6:26</a><span>실제 사이트에서 연습해 보기</span></h4>
+<ul><li>자리 연습 세트를 차례로 쳐 봄. 화면 아래 자판에 눌러야 할 글쇠와 손가락이 함께 표시되고, 연습을 마치면 기록이 파일로 저장됨.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=470s" target="_blank" rel="noopener">7:50</a><span>오른쪽 Shift 문제 고치기</span></h4>
+<ul><li><span class="tag key">증상</span> 오른쪽 Shift를 눌러도 화면에서 반응하지 않음.</li><li><span class="tag ai">AI가 한 일</span> 왼쪽과 오른쪽 Shift를 구분하도록 고치고, 로그인했을 때 별명과 로그아웃 버튼이 따로 보이게 화면을 다듬음. 학생 40명이 함께 써도 Firebase 무료 요금제 안이라는 설명도 함께.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=554s" target="_blank" rel="noopener">9:14</a><span>음악 파일을 MP3로 줄이기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 원본 음악 파일이 너무 크다. 변환 프로그램을 설치해 달라.</li><li><span class="tag ai">AI가 한 일</span> 변환 프로그램을 직접 설치하고 네 곡을 약 10분의 1 크기로 줄여 다시 배포. 완료한 기능을 표로 정리.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=638s" target="_blank" rel="noopener">10:38</a><span>학생용 짧은 주소 만들기</span></h4>
+<ul><li>학교 이름을 넣은 주소를 추천받고 이미 쓰는 이름은 피해서 고름. 한 서비스는 중간 확인 화면이 나와서 바로 연결되는 다른 서비스로 다시 만들고, 왜 차이가 나는지 설명받음.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=734s" target="_blank" rel="noopener">12:14</a><span>AI Studio에서도 만들 수 있을까</span></h4>
+<ul><li>같은 앱을 AI Studio에서도 만들 수 있는지, 음악·로그인·데이터베이스는 어떻게 되는지 정리. Claude Code는 내 컴퓨터에서 직접 일하고, AI Studio는 Google 클라우드 안에서 만든다는 차이.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=26s" target="_blank" rel="noopener">0:26</a><span>Playground 앱을 Claude Code에게 맡기기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=61s" target="_blank" rel="noopener">1:01</a><span>기록 저장과 세 가지 언어 화면</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=122s" target="_blank" rel="noopener">2:02</a><span>비공개 저장소라 사이트가 안 열리는 문제</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=158s" target="_blank" rel="noopener">2:38</a><span>Claude in Chrome으로 Github 설정하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=254s" target="_blank" rel="noopener">4:14</a><span>Firebase로 Google 로그인과 데이터베이스</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=386s" target="_blank" rel="noopener">6:26</a><span>실제 사이트에서 연습해 보기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=470s" target="_blank" rel="noopener">7:50</a><span>오른쪽 Shift 문제 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=554s" target="_blank" rel="noopener">9:14</a><span>음악 파일을 MP3로 줄이기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=638s" target="_blank" rel="noopener">10:38</a><span>학생용 짧은 주소 만들기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=734s" target="_blank" rel="noopener">12:14</a><span>AI Studio에서도 만들 수 있을까</span></li></ol></details>
+</article><article class="video" id="typing2">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만든 앱이 실제로 배포되어 있습니다. 로그인하면 기록과 순위표도 볼 수 있습니다.</p><code>https://tonykks.github.io/codex_hangul-key/</code></div><a class="play" href="https://tonykks.github.io/codex_hangul-key/" target="_blank" rel="noopener">Codex로 만든 한글타자연습앱 써 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>바이브 코딩으로<br>한글타자연습앱 만들기</h3>
+<p class="sub">③ Codex</p></div>
+<div class="meta"><span class=len>19:42</span><a class="play" href="https://www.youtube.com/watch?v=3rD49X_Cznk" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">바이브 코딩으로 한글타자연습앱을 만드는 세 편 중 마지막. 앞의 두 편에서 쓴 첫 요구 사항을 OpenAI의 Codex 데스크톱 앱에 넣고, 빈 폴더에서 시작해 앱 만들기, Shift 문제 진단, Google 로그인과 순위표, Github Pages 배포까지 진행한다.</p>
+<h4 class='sec'>이 편의 출발점</h4><ul><li>출발점: 앞의 두 편에서 쓴 첫 요구 사항을 ChatGPT로 정리한 시작 프롬프트(<a href="docs/codex-requirements.html" target="_blank" rel="noopener"><code>요구사항.md</code></a>)와 빈 폴더.</li><li>일한 곳: 내 컴퓨터의 폴더. OpenAI의 Codex 데스크톱 앱이 파일을 만들고 명령을 실행한다.</li><li>이 편의 특징: 오른쪽 Shift 문제를 키보드 신호 진단 페이지를 만들어 풀었고, Firebase 설정 화면 조작과 Github 배포까지 Codex가 직접 했다. 사람은 허용 버튼과 로그인만 했다.</li></ul>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Codex)가 한 일</th></tr></thead><tbody><tr><td>준비</td><td>ChatGPT로 Codex에 줄 시작 프롬프트 정리, MP3 음악 넣기, 구현 승인</td><td>빈 폴더 확인, 개발 계획과 파일 구조 짜기</td></tr><tr><td>앱 만들기·고치기</td><td>써 보고 문제 화면 캡처해 알려 주기</td><td>파일 만들기, 자동 테스트, 빈 화면·배치 고치기</td></tr><tr><td>Shift 문제</td><td>증상 알려 주기, 진단 페이지에서 키 눌러 보기</td><td>키보드 신호 진단 페이지 만들기, Shift 설정 기능 붙이기</td></tr><tr><td>로그인·기록</td><td>브라우저 조작 허용, Google 계정으로 로그인, 점수 방식 정하기</td><td>Firebase 설정 화면 찾아가 로그인 켜기, Firestore 기록·순위표·관리자 화면 만들기</td></tr><tr><td>배포</td><td>배포 지시, 결과 확인과 되묻기</td><td>Github에 올리기, Github Pages 배포 설정, 보안 경고 설명</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></h4>
+<ul><li>완성된 앱 화면 위에 제목이 나오고, 이 편에서 무엇을 하는지 먼저 설명한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=22s" target="_blank" rel="noopener">0:22</a><span>ChatGPT로 시작 프롬프트 만들기</span></h4>
+<ul><li><span class="tag me">내 요구</span> Codex가 사람 도움 없이 기획부터 완성까지 할 수 있는지 보려고, 앞의 두 편에서 쓴 첫 요구 사항을 ChatGPT에게 시작 프롬프트로 정리하게 함.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Codex 데스크톱 앱</strong>은 OpenAI가 만든 코딩 AI 프로그램. 내 컴퓨터의 폴더를 열어 파일을 만들고 명령을 실행한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=58s" target="_blank" rel="noopener">0:58</a><span>빈 폴더에서 계획 세우기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 폴더가 비어 있는지 확인하고, 화면 구성·연습 방식·기록 저장·파일 구조를 담은 개발 계획을 먼저 보여 줌.</li><li><span class="tag me">내가 한 일</span> 배경 음악 MP3 4곡을 폴더에 넣고 "구현해도 된다"고 승인.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=94s" target="_blank" rel="noopener">1:34</a><span>첫 구현과 빈 화면</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 파일을 만들고 자동 테스트까지 통과시킴. 단, 브라우저로 화면을 직접 확인하는 단계는 막혀서 하지 못함.</li><li><span class="tag me">내 요구</span> 열어 보니 화면이 비어 있어 캡처를 보내고 고쳐 달라고 함 → 원인을 찾아 고치자 연습 화면과 키보드가 나옴.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>자동 테스트</strong>는 AI가 짠 작은 확인 프로그램. 계산이 맞는지는 보지만, 화면이 제대로 보이는지는 사람이 열어 봐야 알 때가 많다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=202s" target="_blank" rel="noopener">3:22</a><span>화면 다듬기와 기록 확인</span></h4>
+<ul><li><span class="tag me">내 요구</span> 한 화면 안에 다 들어오게, 입력 기록 칸 위치와 줄 수를 바꾸게 함. 미얀마어로 바꿔 보고 TXT 기록 다운로드도 확인.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=310s" target="_blank" rel="noopener">5:10</a><span>오른쪽 Shift가 오답이 되는 문제 (이 편의 핵심 장면 ①)</span></h4>
+<ul><li><span class="tag key">증상</span> 쌍자음 연습에서 오른쪽 Shift로 바르게 쳐도 오답 처리.</li><li><span class="tag ai">AI가 한 일</span> 짐작으로 고치지 않고, 키보드가 보내는 신호를 그대로 보여 주는 <strong>진단 페이지</strong>를 따로 만듦. 확인해 보니 이 컴퓨터는 오른쪽 Shift를 구분하는 신호를 보내지 않았음. 그래서 사용자가 자기 키보드에 맞춰 Shift를 정해 두는 <strong>Shift 설정</strong> 기능을 붙임.</li><li><span class="tag key">왜 대단한가</span> 사람이 하면 개발자 도구를 열어 키 이벤트를 하나씩 찍어 봐야 하는 일. AI가 확인 도구까지 스스로 만들어 원인을 좁혔다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=502s" target="_blank" rel="noopener">8:22</a><span>Firebase로 Google 로그인 붙이기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 브라우저를 열어 Firebase 설정 화면을 찾아가 로그인 방식에 Google을 켜고, 로그인할 수 있는 주소를 등록함. 내 컴퓨터에 시험용 서버도 띄움.</li><li><span class="tag me">내가 한 일</span> AI가 브라우저를 조작해도 되는지 묻는 창에서 허용, Google 계정으로 로그인.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>Firebase</strong>: Google의 앱 뒷단 서비스. 서버 없이 로그인과 데이터 저장을 쓸 수 있음.</li><li><strong>Authentication</strong>: "누가 들어왔는지" 확인하는 로그인 장치.</li><li><strong>시험용 서버(localhost)</strong>: 내 컴퓨터 안에서만 열리는 임시 웹 주소. Google 로그인은 파일을 바로 열면 막히고 이런 주소에서만 된다.</li></ul></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=652s" target="_blank" rel="noopener">10:52</a><span>강연용으로 쉽게 설명받기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 로그인을 왜 만들었고 Firebase가 무엇인지 청중이 알아듣게 설명해 달라고 함. 설명을 강의 자료 파일(<code>LECTURE_LOGIN_GUIDE.md</code>)로 받아 저장.</li><li><span class="tag ai">AI의 비유</span> 로그인은 도서관 출입증처럼 학생을 구분하고, 기록을 그 학생 칸에 안전하게 쌓는 방법.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=730s" target="_blank" rel="noopener">12:10</a><span>순위표, 닉네임, 관리자 화면</span></h4>
+<ul><li><span class="tag me">내 요구</span> 학생별 누적 기록, 순위표, 닉네임, 관리자 전용 화면을 한 번에 요청. Codex가 점수 방식을 묻자 "정답 1점, 오타 1점 감점, 최소 0점"으로 정함.</li><li><span class="tag ai">AI가 한 일</span> 몇 분 동안 혼자 12개 파일을 고치고 시험함. 학생 기록을 <strong>Firestore</strong>에 쌓고, 학생은 자기 기록만, 관리자는 전체를 보게 규칙을 만듦.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Firestore</strong>는 학생 기록을 모아 두는 인터넷 저장소. 어느 컴퓨터에서 접속해도 같은 기록이 보인다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=840s" target="_blank" rel="noopener">14:00</a><span>로그인 버튼이 안 눌리는 문제</span></h4>
+<ul><li><span class="tag key">원인</span> 파일을 바로 연 화면이었음. 시험용 서버 주소로 열자 로그인, 순위표, 관리자 모드가 나옴.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=936s" target="_blank" rel="noopener">15:36</a><span>Shift 설정이 다시 안 될 때 (이 편의 핵심 장면 ②)</span></h4>
+<ul><li><span class="tag me">내 요구</span> "왜 안 되지? 이전에 성공한 코드와 비교해서 고쳐 줘."</li><li><span class="tag ai">AI가 한 일</span> 파일로 열 때와 서버 주소로 열 때 설정이 따로 저장된다는 원인을 찾고, 같은 설정을 쓰게 고침. 자동 테스트도 다시 통과.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1032s" target="_blank" rel="noopener">17:12</a><span>Github에 올리고 배포하기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 커밋·푸시하고 배포까지 마무리. 음악 4곡도 함께 올리기로 함.</li><li><span class="tag ai">AI가 한 일</span> Github 저장소에 올리고 Github Pages 배포까지 진행. 저장소에 파일이 안 보인다는 질문에는 올라간 위치를 확인해 주고, 메일로 온 보안 경고는 Firebase 설정값 때문이라고 설명. "Google로 배포한 거냐"는 되물음에는 사이트는 Github Pages, Google(Firebase)은 로그인과 기록 저장에만 쓴다고 정리.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Github Pages</strong>는 Github 저장소의 파일을 그대로 웹사이트로 열어 주는 무료 서비스.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1128s" target="_blank" rel="noopener">18:48</a><span>배포된 사이트에서 연습해 보기</span></h4>
+<ul><li>실제 주소에서 로그인, 쌍자음 연습, 관리자 모드, 기록 다운로드까지 확인.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=22s" target="_blank" rel="noopener">0:22</a><span>ChatGPT로 Codex 시험용 프롬프트 만들기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=58s" target="_blank" rel="noopener">0:58</a><span>빈 폴더에서 개발 계획 세우기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=94s" target="_blank" rel="noopener">1:34</a><span>첫 구현과 빈 화면 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=202s" target="_blank" rel="noopener">3:22</a><span>화면 다듬기와 TXT 기록 확인</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=310s" target="_blank" rel="noopener">5:10</a><span>오른쪽 Shift가 오답으로 나오는 문제</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=338s" target="_blank" rel="noopener">5:38</a><span>키보드 신호 진단 페이지</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=454s" target="_blank" rel="noopener">7:34</a><span>Shift 설정 기능으로 해결</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=500s" target="_blank" rel="noopener">8:20</a><span>Firebase로 Google 로그인 붙이기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=656s" target="_blank" rel="noopener">10:56</a><span>강연용으로 로그인 쉽게 설명받기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=730s" target="_blank" rel="noopener">12:10</a><span>순위표, 닉네임, 관리자 화면 요청</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=840s" target="_blank" rel="noopener">14:00</a><span>로그인 버튼이 안 눌리는 문제</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=931s" target="_blank" rel="noopener">15:31</a><span>Shift 설정 다시 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1032s" target="_blank" rel="noopener">17:12</a><span>Github에 올리고 배포하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=3rD49X_Cznk&t=1126s" target="_blank" rel="noopener">18:46</a><span>배포된 사이트에서 연습해 보기</span></li></ol></details>
+</article></section>
+<section class="group" id="g4"><h2>AI와 일하는 방법</h2><p class="gdesc">컴퓨터 이사, 에이전트 팀, 방식 비교처럼 AI와 일하는 방법을 실험합니다.</p><article class="video" id="solo1">
+
+
+<header class="vh">
+<div class="vt"><h3>Claude 안내로<br>프로그램 이사하기</h3>
+<p class="sub">노트북 → 데스크톱, 지식 도서관 편</p></div>
+<div class="meta"><span class=len>9:40</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">노트북에서 쓰던 "토니의 지식 도서관"(영상 요약 프로그램)을 데스크톱으로 옮긴다. Git·Python·Google Cloud 도구 설치부터 공개 사이트 게시 오류까지, Claude 데스크톱 앱이 명령을 만들어 주고 사람은 붙여 넣고 로그인한다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude 데스크톱)가 한 일</th></tr></thead><tbody><tr><td>도구 설치</td><td>명령 붙여 넣기, Github·Google 로그인</td><td>7단계 순서 정리, 설치·확인 명령 작성, 관리자 창 주의 안내</td></tr><tr><td>파일 옮기기</td><td>압축 파일 풀기</td><td>빠진 파일 점검, 줄 바꿈 차이 설명과 되돌리기</td></tr><tr><td>오류 해결</td><td>오류 화면 캡처</td><td>스크립트 실행 막힘(실행 정책) 설명, 게시 기록 엇갈림 원인과 해결 명령</td></tr><tr><td>규칙 정하기</td><td>"한 곳에서만 게시" 결정</td><td>두 컴퓨터에서 게시하면 생기는 문제 설명</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:00</span><span>이사 순서 받기</span></h4>
+<p>Claude가 7단계로 정리. Git, Python 설치 명령을 PowerShell에 붙여 넣음.</p>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>PowerShell</strong>은 Windows에서 글자로 명령을 치는 창. <strong>Git</strong>은 파일 변경 기록을 관리하는 도구.</li></ul>
+<h4 class="ch"><span class="ts">1:12</span><span>Github에서 내려받고 비공개 파일 풀기</span></h4>
+<p>Github에 올리지 않는 설정·데이터 파일은 압축 파일로 옮김. Claude가 파일이 다 왔는지 확인하고, 줄 바꿈 방식만 달라진 파일을 원래대로 되돌림.</p>
+<h4 class="ch"><span class="ts">2:36</span><span>부품 설치와 Google Cloud 도구</span></h4>
+<p>영상 요약에 Gemini를 쓰려면 Google 인증이 필요. 설치 후 빨간 오류가 나자, Claude는 Windows가 스크립트 실행을 막아 둔 것(실행 정책)이라며 내 계정에서만 허용하는 명령을 줌.</p>
+<h4 class="ch"><span class="ts">4:36</span><span>데스크톱에서 도서관 열기</span></h4>
+<p>서버를 띄우자 노트북과 같은 도서관이 열림. 새 영상을 등록해 시간대별 요약이 만들어지는 것 확인.</p>
+<h4 class="ch"><span class="ts">6:48</span><span>공개 사이트 게시 실패 (핵심 장면)</span></h4>
+<ul><li><span class="tag key">원인</span> 노트북과 데스크톱의 게시 기록이 서로 엇갈림.</li><li><span class="tag ai">AI가 한 일</span> Github의 공개 사이트 기록을 받아 맞추는 명령 제시. 대기 시간이 길어진 이유(실패할 때마다 두 배로 늘리는 규칙)는 요구 사항이 아니라 코드를 만든 에이전트가 정한 것이라고 짚고, 최대 대기 시간을 줄이자고 제안.</li><li><span class="tag me">내가 정한 것</span> 앞으로 영상 게시는 데스크톱 한 곳에서만.</li></ul></details>
+</article><article class="video" id="solo3">
+
+
+<header class="vh">
+<div class="vt"><h3>대화창은 계획, Code 탭은 실행<br>네 프로그램 이사 마무리</h3>
+<p class="sub">노트북 → 데스크톱, Skyview 편</p></div>
+<div class="meta"><span class=len>26:57</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">Skyview 웹 사이트와 연결된 내 컴퓨터 프로그램 네 개(지식 도서관, 투자 앱, 영어 쉐도잉, 이메일 에이전트)를 데스크톱으로 옮기고, 버튼 연결·IP 허용·수익 계산 오류·관리 종목 추가까지 처리한다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>대화창 Claude</th><th>Code 탭 Claude</th></tr></thead><tbody><tr><td>환경 맞추기</td><td>지시문 옮기기, 승인</td><td>다음 할 일과 지시문 작성</td><td>파일 상태 검사, 340개 되돌리기, 가상 환경·부품 설치</td></tr><tr><td>버튼 연결</td><td>버튼 눌러 보고 캡처</td><td>원인 추정, 진단 지시문</td><td>등록·진단, 일반 계정으로 재등록</td></tr><tr><td>IP 허용</td><td>증권사 사이트에 주소 등록</td><td>주소 확인 명령, 등록 순서 안내</td><td></td></tr><tr><td>수익 오류</td><td>이상한 숫자 짚기, 방식 결정</td><td>DB 읽고 원인 분석, 두 방법 비교</td><td>테스트 → 수정 → 재테스트, Github에 올리기</td></tr><tr><td>종목 추가</td><td>세 가지 질문에 답</td><td>관리 목록 조사, 범위 제시</td><td>추가, 주문 없는 미리 보기, 올리기</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:00</span><span>대화창과 Code 탭 나누기</span></h4>
+<p>대화창이 계획을 세우고 지시문을 쓰면, Code 탭이 실제 명령을 실행.</p>
+<h4 class="ch"><span class="ts">1:48</span><span>웹 버튼으로 내 프로그램 열기</span></h4>
+<p>Skyview 버튼이 내 컴퓨터 프로그램을 바로 열도록 Windows에 연결 주소(<code>tony-library://</code> 같은)를 등록.</p>
+<ul><li><span class="tag key">문제</span> 관리자 버튼만 열림. Claude가 고치기 전에 진단부터 하게 함 → Code 탭이 관리자 권한으로 등록해서 내 계정에는 등록이 안 된 것이 원인. 일반 창에서 다시 등록해 해결.</li></ul>
+<h4 class="ch"><span class="ts">3:24</span><span>IP 주소가 허용되지 않음</span></h4>
+<p>증권사 API가 노트북 인터넷 주소만 허용하고 있었음. Claude가 주소 확인 명령과 등록 순서를 알려 주고, 등록은 내가 증권사 사이트에서 직접.</p>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>API</strong>는 프로그램끼리 정보를 주고받는 창구. 증권사는 안전을 위해 허락한 주소에서만 받는다.</li></ul>
+<h4 class="ch"><span class="ts">7:24</span><span>협업 도구 새 버전 연결, 정리</span></h4>
+<p>에이전트 규칙 문서를 새 형식으로. 마감일·공개 여부·총괄 에이전트는 내가 결정. 옮길 때 쓴 압축 파일과 임시 폴더는 지울 목록을 확인한 뒤 삭제.</p>
+<h4 class="ch"><span class="ts">13:36</span><span>10월 수익이 이상하다 (핵심 장면)</span></h4>
+<ul><li><span class="tag me">내 요구</span> 원화와 달러가 섞인 것 같다.</li><li><span class="tag ai">AI가 한 일</span> 데이터베이스를 직접 읽어 9월은 확인값이 있고 10월은 원화만 들어간 차이를 찾음. 고칠 방법 두 가지를 비교 → 달러 수익은 그날 환율로 원화로 바꿔 합치기로.</li><li><span class="tag ai">Code 탭</span> 테스트를 먼저 돌려 두고 수정 → 같은 테스트 재확인. 실수로 만든 빈 DB 파일과 원래부터 실패하던 테스트 하나도 숨기지 않고 보고.</li></ul>
+<h4 class="ch"><span class="ts">20:48</span><span>관리 종목 추가</span></h4>
+<p>삼성전자우 추가. 목록 상한(44→50) 같은 결정은 질문으로 받고, 주문 없는 미리 보기로 다음 날 매매 계획까지 확인한 뒤 올림.</p></details>
+</article><article class="video" id="solo5">
+
+
+<header class="vh">
+<div class="vt"><h3>Notion 게시판으로<br>AI 넷이 협업하기</h3>
+<p class="sub">노트북·데스크톱 폴더 맞추기</p></div>
+<div class="meta"><span class=len>28:01</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">노트북과 데스크톱의 프로젝트 폴더를 맞추면서, 컴퓨터마다 대화창 Claude와 Code 탭 Claude, 모두 네 에이전트가 Notion "소통 게시판"에 메시지를 남기며 일을 나눈다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>역할</th><th>하는 일</th></tr></thead><tbody><tr><td>나</td><td>각 창에 "게시판 읽고 M7 처리해"처럼 한 줄 보내기, 삭제 결정, 비밀번호 입력, USB 옮기기</td></tr><tr><td>대화창 Claude (노트북·데스크톱)</td><td>계획 세우기, 결과 비교·검토, 다음 메시지 작성</td></tr><tr><td>Code 탭 Claude (노트북·데스크톱)</td><td>폴더 조사, Github 내려받기, 서버 실행 확인, USB 복사와 검증</td></tr><tr><td>Notion 소통 게시판</td><td>번호 붙은 메시지(M1, M2…)와 결과 표가 쌓이는 공용 칠판</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:48</span><span>소통 게시판 만들기 (핵심 장면 ①)</span></h4>
+<p>대화창끼리는 서로 볼 수 없어서 Notion에 게시판을 만들고 규칙을 정함. 사람은 각 창에 게시판을 읽으라고 한 줄만 보냄.</p>
+<h4 class="ch"><span class="ts">2:12</span><span>폴더 열두 개 조사와 비교</span></h4>
+<p>데스크톱 Code 탭이 상태를 조사해 게시판에 표로 적고, 노트북 결과와 비교해 내려받을 것·맞출 것 목록을 만듦. 지울지는 내가 결정.</p>
+<h4 class="ch"><span class="ts">3:24</span><span>"AI가 판단하는 건가, 앱이 정한 건가?" (핵심 장면 ②)</span></h4>
+<p>판단은 AI 모델(LLM)이 하고, 파일 읽기·명령 실행 같은 손발은 앱의 도구가 한다는 설명.</p>
+<h4 class="ch"><span class="ts">7:12</span><span>옮긴 프로그램 실제로 돌려 보기</span></h4>
+<p>Skyview 서버를 띄우고 관리자 로그인(비밀번호는 내가 입력). 영어 쉐도잉에서 노트북에 없던 창이 뜨자 두 컴퓨터의 Google 인증 방식 차이를 원인으로 추정. 공개 배포가 멈춘 이유(승인 파일이 Github에 올라가지 않는 위치)도 찾음. 시험한 서버 네 개는 모두 끔.</p>
+<h4 class="ch"><span class="ts">18:00</span><span>USB로 옮기기</span></h4>
+<p>노트북에만 있던 폴더를 USB로. Code 탭이 파일 수·용량을 목록과 비교하고 복사 후 다시 확인. 비밀 정보 설정 파일은 사람이 직접 옮기도록 따로 표시.</p>
+<h4 class="ch"><span class="ts">24:24</span><span>강의용 인포그래픽</span></h4>
+<p>만드는 방법 세 가지 중 선택. 완성된 그림은 이미지 모델이 아니라 코드(HTML)로 그린 것. 같은 Claude라도 연결된 도구에 따라 할 수 있는 일이 달라짐.</p></details>
+</article><article class="video" id="solo2">
+
+
+<header class="vh">
+<div class="vt"><h3>AI 에이전트 팀으로<br>강의 편집 도구 만들기</h3>
+<p class="sub">바이브 코딩, 기획에서 첫 시험까지</p></div>
+<div class="meta"><span class=len>51:30</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">강의 자료 HTML을 장면 단위로 고치고 버전을 쌓는 도구를 만든다. Claude 데스크톱 앱과 Notion으로 요구 사항을 다듬고, Antigravity IDE 안의 여러 에이전트(기획 검토, 구현, 검사)가 문서로 일을 주고받으며 구현과 테스트를 반복한다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI가 한 일</th></tr></thead><tbody><tr><td>기획</td><td>원하는 작업 흐름을 말로 설명, 선택지 결정</td><td>(Claude 데스크톱) Notion 요구 사항 정리, 구조 설명, 장단점 표, 빈 곳 질문</td></tr><tr><td>넘기기</td><td>승인</td><td>프로젝트 의도 문서와 첫 지시문 작성</td></tr><tr><td>구현</td><td>단계별 승인, 결과 보고 읽기</td><td>(IDE 에이전트들) 견본 페이지, 코드 작성, 자동 테스트, 상태 파일·인수인계 문서 갱신</td></tr><tr><td>검사</td><td>공개 여부 결정, 이상한 점 짚기</td><td>(검사 에이전트) 꼭 고칠 문제 목록, 다시 구현</td></tr><tr><td>실제 시험</td><td>원본 강의 자료 넣기</td><td>불러오기, 원본 보존 검사, 결과 보고</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:00</span><span>무엇을 만들까</span></h4>
+<p>Notion의 요구 사항을 Claude가 읽고 최소 범위부터 질문으로 정리.</p>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>바이브 코딩</strong>은 코드를 직접 쓰지 않고 AI에게 말로 원하는 것을 설명해 프로그램을 만드는 방식.</li></ul>
+<h4 class="ch"><span class="ts">0:42</span><span>저장 방식 정하기</span></h4>
+<p>기존 Skyview 데이터베이스를 같이 쓸지 비교. 결국 내 컴퓨터에서 Django + SQLite로 따로 만들기로 결정.</p>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>Django</strong>는 Python으로 웹 서비스를 만드는 틀. <strong>SQLite</strong>는 파일 하나로 된 작은 데이터베이스.</li></ul>
+<h4 class="ch"><span class="ts">3:51</span><span>내가 원하는 흐름 설명</span></h4>
+<p>장면 하나를 고치면 새 버전이 쌓이고 이전 버전과 비교할 수 있어야 한다. 원고는 발표용 요약과 자세히 읽기로 나눔. 이름·표어·공통 디자인도 함께 정함.</p>
+<h4 class="ch"><span class="ts">10:09</span><span>에이전트 팀에게 넘기기 (핵심 장면 ①)</span></h4>
+<ul><li>기획 검토, 구현, 검사 에이전트가 따로 있고, 일을 마칠 때마다 <strong>상태 파일(STATE.md)</strong>과 <strong>인수인계 문서(handoffs)</strong>를 남겨 다음 담당이 이어받음.</li><li><span class="tag me">사람이 할 일</span> 각 단계 끝의 승인, 기획서에 빈 곳이 있을 때 답하기.</li></ul>
+<h4 class="ch"><span class="ts">17:09</span><span>구현과 자동 테스트</span></h4>
+<p>Codex·Claude Code가 파일을 만들고 테스트를 반복. 실패하면 고치고 다시 테스트. 가상 환경과 부품 설치도 에이전트가 알아서 함.</p>
+<h4 class="ch"><span class="ts">23:06</span><span>사람이 짚어야 하는 지점</span></h4>
+<p>테스트는 통과해도 실제 강의 자료로 시험하지 않았다는 점이 드러남.</p>
+<h4 class="ch"><span class="ts">23:48</span><span>"AI는 내 말을 평균적인 뜻으로 알아듣는다" (핵심 장면 ②)</span></h4>
+<p>대화가 어떻게 요구 사항이 되었는지 페이지로 만들게 함. 같은 말을 서로 다른 뜻으로 쓴 사례를 카드로 정리.</p>
+<h4 class="ch"><span class="ts">36:24</span><span>공개 전 확인 단계</span></h4>
+<p>확정본을 바로 공개 사이트에 올릴지 묻자, 개인 정보가 섞일 수 있어 공개 전 확인 단계를 두자고 제안. 이 원칙을 모든 에이전트 규칙 문서에 반영.</p>
+<h4 class="ch"><span class="ts">46:54</span><span>모든 테스트 통과, 첫 실제 시험</span></h4>
+<p>원본 강의 자료를 넣자 장면 10개로 나뉘고 원본 보존 검사 결과가 나옴. 다만 원본 디자인이 빠져 보여 다음에 이어 가기로 함.</p></details>
+</article><article class="video" id="solo4">
+
+
+<header class="vh">
+<div class="vt"><h3>매번 AI에게 시킬까,<br>프로그램으로 남길까</h3>
+<p class="sub">같은 일, 두 가지 방식 비교</p></div>
+<div class="meta"><span class=len>19:13</span><span class="play off">영상 준비 중</span></div>
+</header>
+<p class="intro">같은 강의 페이지 만들기를 Claude 데스크톱 앱의 대화 방식과 Code 방식에 시켜 비교하고, "만드는 프로그램을 한 번 저장해 두면 토큰 없이 같은 결과를 반복할 수 있다"는 가설을 실험으로 확인한다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI가 한 일</th></tr></thead><tbody><tr><td>비교</td><td>같은 과제 주기, 두 결과 캡처</td><td>두 결과를 항목별 표로 비교, 시간 차이 계산</td></tr><tr><td>가설</td><td>"프로그램을 저장하면 어떨까" 질문</td><td>가설로 정리, 실험 방법과 두 방식용 프롬프트 작성</td></tr><tr><td>실험</td><td>프롬프트를 두 방식에 보내고 답 모으기</td><td>각자 실행 위치·도구 보고, 변환 프로그램 저장, 두 번 실행해 결과 동일 확인</td></tr><tr><td>판정</td><td>근거 붙여 넣기</td><td>종합 평가, 손익분기 계산, 다음 실험 설계</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><span class="ts">0:00</span><span>같은 과제, 두 방식</span></h4>
+<p>원고 파일과 디자인 견본을 주고 견본 모양의 강의 페이지를 만들게 함.</p>
+<ul><li>대화 방식: 원고를 빠짐없이 옮김. Code 방식: 내 컴퓨터 폴더에서 바로 읽고 쓰며 휴대폰 화면까지 직접 확인.</li></ul>
+<h4 class="ch"><span class="ts">4:00</span><span>결국 둘 다 클라우드에서 생각하는데 왜 다를까 (핵심 장면 ①)</span></h4>
+<ul><li><span class="tag key">답</span> 생각(AI 모델)은 둘 다 클라우드. 실행은 대화 방식이 클라우드의 임시 작업 공간(리눅스), Code 방식이 내 Windows 컴퓨터.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>샌드박스</strong>는 클라우드에 잠깐 만들어지는 격리된 작업 공간. 작업이 끝나면 사라진다.</li></ul>
+<h4 class="ch"><span class="ts">5:24</span><span>프로그램을 저장해 두면? (핵심 장면 ②)</span></h4>
+<ul><li><span class="tag key">내 가설</span> 매번 AI에게 다시 만들게 하지 말고, 만드는 프로그램을 저장해 두고 돌리기만 하면 된다.</li><li><span class="tag key">실험 결과</span> 두 방식 모두 Python 변환 프로그램을 만들었고, 저장한 프로그램은 실행할 때 토큰 0, 두 번 돌려도 한 글자도 다르지 않음.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>토큰</strong>은 AI가 읽고 쓰는 글자 조각 단위. 사용량과 비용의 기준.</li></ul>
+<h4 class="ch"><span class="ts">13:36</span><span>반복 작업이면 프로그램을 키우자</span></h4>
+<p>같은 형식 작업이 두세 번만 반복돼도 프로그램 방식이 손익분기를 넘는다는 계산. 강의 10개로 확인할 실험 설계.</p>
+<h4 class="ch"><span class="ts">18:12</span><span>효율의 기준을 내 말로 정하기</span></h4>
+<p>처음 비용이 들어도 반복할수록 비용이 줄고 같은 결과가 나오는 것이 효율. 이 내용을 요구 사항 문서로 남김.</p></details>
+</article></section></main></div>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>

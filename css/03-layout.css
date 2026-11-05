@@ -1,0 +1,99 @@
+/* 왼쪽 목차와 본문 틀 */
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar);
+  padding: 30px 22px;
+  border-right: 1px solid var(--line);
+  background: rgba(6, 15, 24, .94);
+  backdrop-filter: blur(18px);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.brand {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 28px;
+}
+
+.brand strong {
+  font-size: 1.08rem;
+  letter-spacing: -.02em;
+}
+
+.brand span {
+  color: var(--muted);
+  font-size: .79rem;
+}
+
+.nav-title {
+  margin: 0 0 9px;
+  color: var(--muted-2);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+nav ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: .83rem;
+  text-decoration: none;
+  transition: .18s ease;
+}
+
+nav a::before {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #52687c;
+  content: "";
+  flex: 0 0 auto;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  background: var(--purple-soft);
+  color: white;
+  outline: none;
+}
+
+nav a:hover::before,
+nav a:focus-visible::before { background: var(--purple); }
+
+.side-note {
+  margin-top: 28px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: .76rem;
+}
+
+.side-note strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--teal);
+  font-size: .78rem;
+}
+
+main {
+  width: min(var(--content), calc(100% - var(--sidebar) - 72px));
+  margin-left: calc(var(--sidebar) + 48px);
+  padding: 58px 0 96px;
+}

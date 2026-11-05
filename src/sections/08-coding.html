@@ -1,0 +1,32 @@
+    <section id="coding">
+      <p class="section-kicker">Coding Agent Team</p>
+      <h2>같은 Agent라도 Extension과 CLI는 서로 다른 작업 좌석이 됩니다</h2>
+      <p class="section-intro">강연에서는 VS Code에 두 개의 Extension, Terminal에 두 개의 CLI를 배치한 예를 통해 한 Agent에게 모든 일을 몰아주지 않고 구현과 검증을 분담하는 구성을 설명합니다.</p>
+      <div class="agent-lab">
+        <div class="workspace">
+          <div class="workspace-title"><span>VS Code</span><span>Extension · 대화형 작업</span></div>
+          <div class="seat-grid">
+            <div class="seat"><strong>Codex Extension</strong><span>Editor 문맥과 변경 내용을 보며 Owner와 대화</span><span class="assignment">역할 예시 · Orchestrator</span></div>
+            <div class="seat"><strong>Antigravity Extension</strong><span>별도의 관점으로 설계 또는 Review 수행</span><span class="assignment">역할 예시 · 설계 / Review</span></div>
+          </div>
+        </div>
+        <div class="workspace">
+          <div class="workspace-title"><span>Terminal</span><span>CLI · 독립 실행 작업</span></div>
+          <div class="seat-grid">
+            <div class="seat"><strong>Codex CLI</strong><span>명확한 작업 지시를 받아 구현, Test, 수정 실행</span><span class="assignment">역할 예시 · 구현 담당</span></div>
+            <div class="seat"><strong>Antigravity CLI</strong><span>완성 Code와 Test 결과를 독립적으로 점검</span><span class="assignment">역할 예시 · 검증 담당</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>구분</th><th>Extension</th><th>CLI</th></tr></thead>
+          <tbody>
+            <tr><td>작업 위치</td><td>VS Code의 대화 Panel과 Editor</td><td>VS Code 안의 Terminal</td></tr>
+            <tr><td>강점</td><td>현재 화면, 파일 변경, Owner의 피드백을 보며 대화형으로 조정</td><td>정해진 명령과 파일을 기준으로 구현·Test·검증을 독립적으로 실행</td></tr>
+            <tr><td>강연의 역할 예시</td><td>기획 조정, Orchestration, 중간 Review</td><td>구현 담당과 검증 담당을 분리하여 결과를 상호 확인</td></tr>
+            <tr><td>핵심 차이</td><td colspan="2">지능의 우열보다 Interface, 문맥, 권한, 작업 방식이 다르므로 서로 다른 좌석으로 활용할 수 있습니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>

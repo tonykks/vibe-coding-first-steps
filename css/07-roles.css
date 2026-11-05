@@ -1,0 +1,126 @@
+/* Harness 틀·역할 상자·인계·처리 순서 */
+.harness-frame {
+  position: relative;
+  padding: 56px 20px 20px;
+  border: 2px solid #315475;
+  border-radius: 24px;
+  background: rgba(10, 23, 35, .62);
+}
+
+.harness-label {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: .78rem;
+  font-weight: 850;
+  letter-spacing: .06em;
+}
+
+.harness-label::before {
+  width: 28px;
+  height: 2px;
+  background: var(--blue);
+  content: "";
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.role {
+  position: relative;
+  min-height: 248px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.role::after {
+  position: absolute;
+  top: 50%;
+  right: -13px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #567796;
+  border-right: 2px solid #567796;
+  transform: rotate(45deg);
+  content: "";
+}
+
+.role:last-child::after { display: none; }
+.role.vibe { background: var(--teal-soft); }
+.role.owner { background: var(--orange-soft); }
+.role.coding { background: var(--blue-soft); }
+
+.role-tag {
+  display: inline-block;
+  margin-bottom: 11px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+}
+
+.vibe .role-tag { background: rgba(50, 197, 179, .18); color: #8ee8dc; }
+.owner .role-tag { background: rgba(255, 180, 74, .2); color: #ffd28f; }
+.coding .role-tag { background: rgba(98, 166, 255, .19); color: #b0d1ff; }
+
+.role ul,
+.compact-list {
+  margin: 13px 0 0;
+  padding-left: 1.15rem;
+}
+
+.role li,
+.compact-list li {
+  margin: 6px 0;
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.handoff {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 13px;
+  align-items: center;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px dashed #3e607e;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.handoff strong {
+  color: white;
+  white-space: nowrap;
+}
+
+.process {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  counter-reset: process;
+}
+
+.process .card { counter-increment: process; }
+.process .card::before {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--teal-soft);
+  color: var(--teal);
+  content: counter(process);
+  font-size: .74rem;
+  font-weight: 900;
+}

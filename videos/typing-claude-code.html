@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브 코딩으로 한글타자연습앱 만들기 ② Claude Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero one"><p class="series">바이브 코딩으로 한글타자연습앱 만들기</p>
+<nav class="tabs"><a class="tab" href="typing-ai-studio.html">① AI Studio</a><a class="tab on" href="typing-claude-code.html">② Claude Code</a><a class="tab" href="typing-codex.html">③ Codex</a><a class="tab sum" href="typing-summary.html">세 편 한눈에</a></nav><h1>바이브 코딩으로<br>한글타자연습앱 만들기<span class="h1sub">② Claude Code</span></h1><p>같은 요구 사항에서 출발해 한글타자연습앱을 세 가지 AI 도구로 만들고 배포까지 간 과정입니다. 편마다 출발점과 작업 환경이 다르니, 각 편에서 내가 요구한 것과 AI가 한 일을 따로 보세요.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
+</header>
+<main class="single"><article class="video" id="typing1">
+<div class="app"><div><strong>직접 써 보기</strong><p>영상 속에서 만든 앱이 실제로 배포되어 있습니다. 로그인하면 기록과 순위표도 볼 수 있습니다.</p><code>https://tonykks.github.io/hangul-key-start/</code></div><a class="play" href="https://tonykks.github.io/hangul-key-start/" target="_blank" rel="noopener">Claude Code로 만든 한글타자연습앱 써 보기 ↗</a></div>
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>바이브 코딩으로<br>한글타자연습앱 만들기</h3>
+<p class="sub">② Claude Code</p></div>
+<div class="meta"><span class=len>14:14</span><a class="play" href="https://www.youtube.com/watch?v=mtvfSvFh170" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">바이브 코딩으로 한글타자연습앱을 만드는 세 편 중 두 번째. 같은 요구 사항으로 AI Studio의 Playground에서 만든 HTML 파일 하나를 Claude Code에게 맡겨, 기능별 파일로 나누고 Github Pages에 배포한 뒤 Firebase로 Google 로그인과 순위표까지 붙여 수업용 사이트로 만든다.</p>
+<h4 class='sec'>이 편의 출발점</h4><ul><li>출발점: 같은 요구 사항으로 Google AI Studio의 Playground에서 만들어 내려받은 HTML 파일 하나(<a href="docs/playground-original-hangul-key.html" target="_blank" rel="noopener">원본 앱 열어 보기</a>).</li><li>요구 사항 문서: <a href="docs/claude-code-project-intent.html" target="_blank" rel="noopener"><code>project-intent.md</code></a>. Owner의 의도와 MVP 범위, 구현·검수 기준을 적은 문서.</li><li>일한 곳: 내 컴퓨터의 폴더. Claude 데스크톱 앱의 Claude Code가 파일을 직접 고치고 명령을 실행한다.</li><li>이 편의 특징: Github 설정은 Claude in Chrome으로 내 브라우저를 조작해 처리했고, 음악 변환 프로그램 설치처럼 내 컴퓨터에서 하는 일도 Claude Code가 직접 했다.</li></ul>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude Code)가 한 일</th></tr></thead><tbody><tr><td>이어받기</td><td>Playground에서 만든 앱 파일을 주고 요구 사항 설명</td><td>파일을 기능별로 나누기, 기록 저장·배경 음악 기능 추가</td></tr><tr><td>배포</td><td>Github 로그인, 저장소 공개 확인</td><td>비공개 저장소 문제 설명, Claude in Chrome으로 설정 화면 조작, Pages 배포</td></tr><tr><td>로그인·기록</td><td>Google 로그인 등 사람만 할 수 있는 단계</td><td>Firebase 프로젝트·웹 앱 등록, Authentication·Firestore·보안 규칙, 순위표 페이지</td></tr><tr><td>고치기</td><td>직접 연습해 보고 문제 알려 주기</td><td>오른쪽 Shift 구분, 화면 다듬기, MP3 변환 프로그램 설치와 음악 줄이기</td></tr><tr><td>수업 준비</td><td>주소 후보 고르기</td><td>짧은 주소 추천·생성, AI Studio와 비교 설명</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></h4>
+<ul><li>완성된 앱 화면 위에 제목이 나오고, 이 편에서 무엇을 하는지 먼저 설명한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=26s" target="_blank" rel="noopener">0:26</a><span>Playground 앱을 Claude Code에게 맡기기</span></h4>
+<ul><li><span class="tag me">내 요구</span> AI Studio Playground에서 만든 한 파일짜리 앱을 기능별로 나누고 Github에 배포해 달라.</li><li><span class="tag ai">AI가 한 일</span> 한글 글쇠 위치를 손가락별로 익히는 원래 앱을 화면·자판·연습 세트·언어 파일로 나누고, 연습 기록 저장과 배경 음악 기능을 붙임.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Claude Code</strong>는 내 컴퓨터의 폴더를 열어 파일을 직접 만들고 고치고 명령까지 실행하는 코딩 AI.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=61s" target="_blank" rel="noopener">1:01</a><span>기록 저장과 세 가지 언어 화면</span></h4>
+<ul><li>연습을 마치면 날짜·시간이 들어간 이름으로 기록 파일이 저장되는지 직접 시험. 베트남어·미얀마어로 바꿔 보며 세 언어가 같은 모양인지 확인하고, 제목·언어 버튼·로그인 버튼을 두 줄로 정리.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=122s" target="_blank" rel="noopener">2:02</a><span>사이트가 안 열린다: 비공개 저장소 문제</span></h4>
+<ul><li><span class="tag key">원인</span> 무료 계정은 비공개 저장소에서 Github Pages를 쓸 수 없음. 저장소를 공개로 바꿔야 함.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Github Pages</strong>는 Github 저장소의 파일을 그대로 웹사이트로 열어 주는 무료 서비스.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=158s" target="_blank" rel="noopener">2:38</a><span>Claude in Chrome으로 Github 설정하기 (핵심 장면 ①)</span></h4>
+<ul><li><span class="tag ai">AI의 답</span> 저장소 설정을 바꾸려면 Github 로그인이 필요하니 Chrome 확장 프로그램을 쓰자.</li><li><span class="tag me">내가 한 일</span> Github 로그인.</li><li><span class="tag ai">AI가 한 일</span> 내 Chrome을 대신 조작해 저장소를 공개로 바꾸는 확인 창을 띄우고 Pages 배포 설정까지 진행.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Claude in Chrome</strong>은 내 Chrome 브라우저를 Claude가 대신 클릭하고 입력하게 해 주는 도구. 로그인은 사람이 한다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=254s" target="_blank" rel="noopener">4:14</a><span>Firebase로 Google 로그인과 데이터베이스 (핵심 장면 ②)</span></h4>
+<ul><li><span class="tag me">내 요구</span> 학생 기록을 모으고 순위표를 보여 주고 싶다.</li><li><span class="tag ai">AI가 한 일</span> Firebase 프로젝트를 만들고 웹 앱을 등록. Google 로그인을 켜고, 기록을 저장할 Firestore를 만들고, 다른 사람이 기록을 함부로 고치지 못하게 보안 규칙까지 적용. 순위표 페이지와 Readme도 정리해 Github에 올림.</li><li><span class="tag word">알아 두면 좋은 말</span></li><ul><li><strong>Firebase</strong>: Google의 앱 뒷단 서비스. 서버를 직접 만들지 않아도 로그인과 데이터 저장을 쓸 수 있음.</li><li><strong>Authentication</strong>: "누가 들어왔는지" 확인하는 로그인 장치.</li><li><strong>Firestore</strong>: 학생별 연습 기록을 모아 두는 인터넷 저장소.</li><li><strong>보안 규칙</strong>: 학생은 자기 기록만 쓰고, 남의 기록은 고치지 못하게 막는 약속.</li></ul><li><span class="tag key">왜 대단한가</span> 사람이 하면 Firebase 사이트에서 프로젝트 만들기, 로그인 켜기, 설정값을 코드에 옮기기, 규칙 쓰기를 하나씩 해야 하는 일. 사람은 로그인 같은 단계만 직접 했다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=386s" target="_blank" rel="noopener">6:26</a><span>실제 사이트에서 연습해 보기</span></h4>
+<ul><li>자리 연습 세트를 차례로 쳐 봄. 화면 아래 자판에 눌러야 할 글쇠와 손가락이 함께 표시되고, 연습을 마치면 기록이 파일로 저장됨.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=470s" target="_blank" rel="noopener">7:50</a><span>오른쪽 Shift 문제 고치기</span></h4>
+<ul><li><span class="tag key">증상</span> 오른쪽 Shift를 눌러도 화면에서 반응하지 않음.</li><li><span class="tag ai">AI가 한 일</span> 왼쪽과 오른쪽 Shift를 구분하도록 고치고, 로그인했을 때 별명과 로그아웃 버튼이 따로 보이게 화면을 다듬음. 학생 40명이 함께 써도 Firebase 무료 요금제 안이라는 설명도 함께.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=554s" target="_blank" rel="noopener">9:14</a><span>음악 파일을 MP3로 줄이기</span></h4>
+<ul><li><span class="tag me">내 요구</span> 원본 음악 파일이 너무 크다. 변환 프로그램을 설치해 달라.</li><li><span class="tag ai">AI가 한 일</span> 변환 프로그램을 직접 설치하고 네 곡을 약 10분의 1 크기로 줄여 다시 배포. 완료한 기능을 표로 정리.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=638s" target="_blank" rel="noopener">10:38</a><span>학생용 짧은 주소 만들기</span></h4>
+<ul><li>학교 이름을 넣은 주소를 추천받고 이미 쓰는 이름은 피해서 고름. 한 서비스는 중간 확인 화면이 나와서 바로 연결되는 다른 서비스로 다시 만들고, 왜 차이가 나는지 설명받음.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=734s" target="_blank" rel="noopener">12:14</a><span>AI Studio에서도 만들 수 있을까</span></h4>
+<ul><li>같은 앱을 AI Studio에서도 만들 수 있는지, 음악·로그인·데이터베이스는 어떻게 되는지 정리. Claude Code는 내 컴퓨터에서 직접 일하고, AI Studio는 Google 클라우드 안에서 만든다는 차이.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=0s" target="_blank" rel="noopener">0:00</a><span>소개</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=26s" target="_blank" rel="noopener">0:26</a><span>Playground 앱을 Claude Code에게 맡기기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=61s" target="_blank" rel="noopener">1:01</a><span>기록 저장과 세 가지 언어 화면</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=122s" target="_blank" rel="noopener">2:02</a><span>비공개 저장소라 사이트가 안 열리는 문제</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=158s" target="_blank" rel="noopener">2:38</a><span>Claude in Chrome으로 Github 설정하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=254s" target="_blank" rel="noopener">4:14</a><span>Firebase로 Google 로그인과 데이터베이스</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=386s" target="_blank" rel="noopener">6:26</a><span>실제 사이트에서 연습해 보기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=470s" target="_blank" rel="noopener">7:50</a><span>오른쪽 Shift 문제 고치기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=554s" target="_blank" rel="noopener">9:14</a><span>음악 파일을 MP3로 줄이기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=638s" target="_blank" rel="noopener">10:38</a><span>학생용 짧은 주소 만들기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=mtvfSvFh170&t=734s" target="_blank" rel="noopener">12:14</a><span>AI Studio에서도 만들 수 있을까</span></li></ol></details>
+</article></main>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>

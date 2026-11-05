@@ -1,0 +1,33 @@
+/* 기본 글자·링크·바로가기 */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at 78% 4%, rgba(98, 166, 255, .08), transparent 28rem),
+    radial-gradient(circle at 28% 30%, rgba(139, 124, 255, .055), transparent 32rem),
+    var(--bg);
+  color: var(--text);
+  font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  line-height: 1.68;
+  word-break: keep-all;
+}
+
+a { color: inherit; }
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 99;
+  padding: .75rem 1rem;
+  background: white;
+  color: #07111b;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.skip-link:focus { top: 1rem; }

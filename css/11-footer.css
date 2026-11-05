@@ -1,0 +1,7 @@
+/* 맨 아래 */
+footer {
+  padding-top: 42px;
+  color: var(--muted-2);
+  font-size: .74rem;
+  text-align: center;
+}

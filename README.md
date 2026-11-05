@@ -1,9 +1,29 @@
 # 바이브코딩의 첫걸음 — 강연 보충자료
 
 「바이브코딩의 첫걸음: 나만의 코딩 에이전트 만들기」 강연의 웹 보충자료입니다.
+GitHub Pages 주소에서 `index.html`을 엽니다. 별도 설치는 필요 없습니다.
 
-## 구성
-- `index.html` : 보충자료 본문 (질문, 세 회사 서비스, 일이 커지는 길, 웹의 벽, 역할 구조, Harness, 사례, 업무 적용과 보안)
+## 첫 화면(index.html) 고치는 방법
+
+`index.html`은 조립 결과입니다. 직접 고치지 말고 아래 조각을 고친 뒤 `python build.py`를 실행합니다.
+
+| 고칠 것 | 파일 |
+|---|---|
+| 구역 글 | `src/sections/NN-이름.html` (앞 번호 순서대로 본문에 들어갑니다) |
+| 왼쪽 목차 | `src/partials/sidebar.html` (구역을 더하거나 빼면 같이 고칩니다) |
+| 머리글, CSS 연결 | `src/page.html` |
+| 색, 글꼴 | `css/01-tokens.css` |
+| 그 밖의 디자인 | `css/02-base.css` ~ `css/12-responsive.css` (조립 없이 바로 반영) |
+
+```
+python build.py          # src/ → index.html
+python build.py --check  # index.html이 src/와 같은지 확인
+```
+
+구역 파일: 00 hero(맨 위), 01 question, 02 services, 03 ladder, 04 limits, 05 model, 06 vibe, 07 owner,
+08 coding, 09 harness, 10 case(SkyView), 11 videos(화면 녹화), 12 security, 13 knowledge(마무리)
+
+## 하위 페이지 (주소를 바꾸지 않으려고 맨 위 폴더에 둡니다)
 - `infographic-prompt.html` : 인포그래픽과 Prompt 전문 (11개 부분, 55개 문장 쌍)
 - `requirements-dialogue.html` : 요구사항을 확정한 이틀의 대화 기록 (22개 사례와 자세히 읽기)
 - `agent-collaboration.html` : 두 PC와 Claude 탭·Code 탭이 노션 게시판 하나로 협업한 기록 (그림은 `agent-collaboration.png`)
@@ -17,5 +37,11 @@
 - `guide-openai.html`, `guide-google.html`, `guide-claude.html` : 세 회사 바이브코딩 사용설명서
 - `concept-openai.jpg`, `concept-google.jpg`, `concept-claude.jpg` : 세 회사 서비스 개념도
 
-## 보는 방법
-GitHub Pages 주소에서 `index.html`을 엽니다. 별도 설치나 빌드는 필요 없습니다.
+## 화면 녹화 사례 (`videos/`)
+- `videos/index.html` : 화면 녹화 사례 모음 (영상마다 "내 요구"와 "AI가 한 일")
+- `videos/coding-agent-antigravity.html` : 나만의 Coding Agent 만들기 [Antigravity IDE 활용]
+- `videos/typing-*.html`, `videos/typing-summary.html` : 한글타자연습앱 세 편과 요약
+- `videos/jtu-*.html` : 관광대 강의 준비 ①②③
+- `videos/docs/` : 영상에서 쓴 요구 사항 문서와 원본 앱
+
+`videos/`는 다른 저장소(screen-autocut)의 `tools/build_page.py --out <이 저장소>/videos`로 만듭니다. 여기서 직접 고치면 다음 생성 때 덮어써집니다.
