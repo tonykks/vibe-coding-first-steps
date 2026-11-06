@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브코딩 작업장 이사하기 [GitHub로 옮길 것, 직접 옮길 것]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero one"><p class="series">AI와 일하는 방법</p>
+<nav class="tabs"><a class="tab on" href="solo-workspace-move.html">지식 도서관 작업장</a><a class="tab" href="solo-my-agents.html">Skyview 연동 작업장</a></nav><h1>바이브코딩 작업장 이사하기<span class="h1sub">[GitHub로 옮길 것, 직접 옮길 것]</span></h1><p>컴퓨터 이사, 에이전트 팀, 방식 비교처럼 AI와 일하는 방법을 실험합니다.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
+</header>
+<main class="single"><article class="video" id="solo1">
+
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>바이브코딩 작업장 이사하기</h3>
+<p class="sub">[GitHub로 옮길 것, 직접 옮길 것]</p></div>
+<div class="meta"><span class=len>10:01</span><a class="play" href="https://www.youtube.com/watch?v=6v29Vzv5T2M" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">바이브코딩 작업장은 폴더를 복사해 붙여 넣는 것으로 옮겨지지 않습니다. 노트북에서 쓰던 "토니의 지식 도서관"을 데스크톱으로 옮기며, 코드는 GitHub로 받고 GitHub에 없는 설정·데이터는 직접 옮기고 도구 설치부터 순서대로 확인합니다. 순서를 짜고 오류를 풀어 준 것은 Claude, 사람은 붙여 넣고 로그인하고 결정만 합니다. 중간에는 이 도서관이 영상 주소 하나로 스크립트를 읽고 Vertex AI로 요약해 웹페이지를 만드는 "에이전트 안의 에이전트" 구조도 소개합니다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI(Claude 데스크톱)가 한 일</th></tr></thead><tbody><tr><td>도구 설치</td><td>명령 붙여 넣기, Github·Google 로그인</td><td>7단계 순서 정리, 설치·확인 명령 작성, 관리자 창 주의 안내</td></tr><tr><td>파일 옮기기</td><td>압축 파일 풀기</td><td>빠진 파일 점검, 줄 바꿈 차이 설명과 되돌리기</td></tr><tr><td>오류 해결</td><td>오류 화면 캡처</td><td>스크립트 실행 막힘(실행 정책) 설명, 게시 기록 엇갈림 원인과 해결 명령</td></tr><tr><td>규칙 정하기</td><td>"한 곳에서만 게시" 결정</td><td>두 컴퓨터에서 게시하면 생기는 문제 설명</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=0s" target="_blank" rel="noopener">0:00</a><span>이사 순서 받기</span></h4>
+<p>Claude가 7단계로 정리. Git, Python 설치 명령을 PowerShell에 붙여 넣음.</p>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>PowerShell</strong>은 Windows에서 글자로 명령을 치는 창. <strong>Git</strong>은 파일 변경 기록을 관리하는 도구.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=72s" target="_blank" rel="noopener">1:12</a><span>Github에서 내려받고 비공개 파일 풀기</span></h4>
+<p>Github에 올리지 않는 설정·데이터 파일은 압축 파일로 옮김. Claude가 파일이 다 왔는지 확인하고, 줄 바꿈 방식만 달라진 파일을 원래대로 되돌림.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=156s" target="_blank" rel="noopener">2:36</a><span>부품 설치와 Google Cloud 도구</span></h4>
+<p>영상 요약에 Gemini를 쓰려면 Google 인증이 필요. 설치 후 빨간 오류가 나자, Claude는 Windows가 스크립트 실행을 막아 둔 것(실행 정책)이라며 내 계정에서만 허용하는 명령을 줌.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=276s" target="_blank" rel="noopener">4:36</a><span>데스크톱에서 도서관 열기</span></h4>
+<p>서버를 띄우자 노트북과 같은 도서관이 열림.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=345s" target="_blank" rel="noopener">5:45</a><span>에이전트 안의 에이전트 (핵심 장면 ①)</span></h4>
+<ul><li>영상 주소를 넣고 시작을 누르면: 프로그램이 자막과 시간 표시를 읽어 전체 스크립트를 파일 하나로 저장 → Vertex AI가 시간 표시 기준으로 같은 주제끼리 묶어 구간별 요약 → 전체를 다시 읽고 핵심 정리, 분야·태그 같은 메타데이터까지 채워 저장 → 자동화 프로그램이 저장된 결과로 웹페이지를 보여 줌.</li><li>세 겹 구조: 나만의 코딩 에이전트(내 의도대로 코딩) → 그 도움으로 만든 자동화 에이전트 → 그 안에서 일하는 AI(Vertex AI).</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>에이전틱 AI</strong>는 판단은 AI가, 반복은 프로그램이 맡아 사람 없이도 일을 이어 가는 방식.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=408s" target="_blank" rel="noopener">6:48</a><span>공개 사이트 게시 실패 (핵심 장면 ②)</span></h4>
+<ul><li><span class="tag key">원인</span> 노트북과 데스크톱의 게시 기록이 서로 엇갈림.</li><li><span class="tag ai">AI가 한 일</span> Github의 공개 사이트 기록을 받아 맞추는 명령 제시. 대기 시간이 길어진 이유(실패할 때마다 두 배로 늘리는 규칙)는 요구 사항이 아니라 코드를 만든 에이전트가 정한 것이라고 짚고, 최대 대기 시간을 줄이자고 제안.</li><li><span class="tag me">내가 정한 것</span> 앞으로 영상 게시는 데스크톱 한 곳에서만.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=558s" target="_blank" rel="noopener">9:18</a><span>작업장 이사 3원칙</span></h4>
+<p>코드는 GitHub로 받고, GitHub에 없는 설정·데이터는 직접 옮기고, 도구 설치부터 순서대로 확인한다. 같은 방법으로 사진 중복 정리나 영상 분류도 할 수 있다.</p></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=0s" target="_blank" rel="noopener">0:00</a><span>이사 순서 받기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=72s" target="_blank" rel="noopener">1:12</a><span>Github에서 내려받고 비공개 파일 풀기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=156s" target="_blank" rel="noopener">2:36</a><span>부품 설치와 Google Cloud 도구</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=276s" target="_blank" rel="noopener">4:36</a><span>데스크톱에서 도서관 열기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=345s" target="_blank" rel="noopener">5:45</a><span>에이전트 안의 에이전트</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=408s" target="_blank" rel="noopener">6:48</a><span>공개 사이트 게시 실패</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=526s" target="_blank" rel="noopener">8:46</a><span>한 곳에서만 게시하기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=6v29Vzv5T2M&t=558s" target="_blank" rel="noopener">9:18</a><span>작업장 이사 3원칙</span></li></ol></details>
+</article></main>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>
