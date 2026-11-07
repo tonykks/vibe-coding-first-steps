@@ -1038,7 +1038,6 @@
     <div class="actions" style="margin-top:22px">
       <button class="btn" id="copy-en" type="button">영어 Prompt 복사</button>
       <button class="btn" id="copy-ko" type="button">한국어 뜻 복사</button>
-      <button class="btn" id="print" type="button">인쇄 / PDF</button>
     </div>
     <p class="status" id="status" role="status" aria-live="polite"></p>
 
@@ -1576,7 +1575,6 @@ AI가 수행한 결과를 검증하며,
       }
       document.getElementById('copy-en').addEventListener('click', function () { copy(data.en, '영어 Prompt'); });
       document.getElementById('copy-ko').addEventListener('click', function () { copy(data.ko, '한국어 뜻'); });
-      document.getElementById('print').addEventListener('click', function () { window.print(); });
     })();
   </script>
 </body>

@@ -1,0 +1,18 @@
+<script>
+(function(){
+  /* 기본은 항상 밝은 화면(빔프로젝터·녹화용). 어두운 화면은 버튼으로만 바꾸고, 이 브라우저에 기억한다. */
+  var root=document.documentElement, btn=document.getElementById('mode');
+  function isDark(){return root.getAttribute('data-theme')==='dark';}
+  function paint(){var d=isDark();root.classList.toggle('is-dark',d);if(btn)btn.setAttribute('aria-label',d?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+  try{var s=localStorage.getItem('vcfs-theme');if(s==='dark')root.setAttribute('data-theme','dark');}catch(e){}
+  paint();
+  if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
+  /* 목차: 지금 보고 있는 장면 표시 */
+  var links=[].slice.call(document.querySelectorAll('aside a'));
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
+    document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>

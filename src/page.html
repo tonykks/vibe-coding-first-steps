@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="바이브코딩의 첫걸음: 나만의 코딩 Agent 만들기 강연의 보충자료. 강연의 흐름, 역할 구조, 사례, 업무 적용과 보안을 정리했습니다.">
-  <title>바이브코딩의 첫걸음 | 보충자료</title>
-  <link rel="stylesheet" href="css/01-tokens.css">
-  <link rel="stylesheet" href="css/02-base.css">
-  <link rel="stylesheet" href="css/03-layout.css">
-  <link rel="stylesheet" href="css/04-hero.css">
-  <link rel="stylesheet" href="css/05-sections.css">
-  <link rel="stylesheet" href="css/06-cards.css">
-  <link rel="stylesheet" href="css/07-roles.css">
-  <link rel="stylesheet" href="css/08-owner-seats.css">
-  <link rel="stylesheet" href="css/09-tables.css">
-  <link rel="stylesheet" href="css/10-links-closing.css">
-  <link rel="stylesheet" href="css/11-footer.css">
-  <link rel="stylesheet" href="css/12-responsive.css">
+  <meta name="description" content="바이브코딩의 첫걸음: 나만의 코딩 Agent 만들기 — 2026 제3회 통계아카데미 강연 화면과 보충자료. 장면마다 펼쳐 보기와 스크립트가 있습니다.">
+  <title>바이브코딩의 첫걸음 | 강연과 보충자료</title>
+  <link rel="stylesheet" href="css/lecture.css">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
-
-  <!-- @include partials/sidebar.html -->
-
-  <main id="main">
-    <!-- @sections -->
-  </main>
+  <!-- @include partials/sprite.html -->
+  <header class="topbar">
+    <img class="face" alt="강연자 캐리커처" src="images/face.png">
+    <h1><a href="#top">바이브코딩의 첫걸음: 나만의 코딩 Agent 만들기!</a></h1>
+    <span class="where">2026 제3회 통계아카데미 · 11월 10일</span>
+    <!-- @include partials/mode-button.html -->
+  </header>
+  <div class="shell">
+    <aside><nav aria-label="목차">
+<!-- @toc -->
+    </nav></aside>
+    <main class="deck" id="main">
+<!-- @sections -->
+      <footer><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer>
+    </main>
+  </div>
+  <!-- @include partials/script.html -->
 </body>
 </html>

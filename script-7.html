@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<!-- 이 파일은 build.py가 src/에서 만듭니다. 직접 고치지 마세요. -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="바이브코딩의 첫걸음 강연 스크립트: 7부 덧붙임 — 회사 컴퓨터 안에서 AI 쓰기">
+  <title>7부 덧붙임 — 회사 컴퓨터 안에서 AI 쓰기 | 바이브코딩의 첫걸음 스크립트</title>
+  <link rel="stylesheet" href="css/lecture.css">
+</head>
+<body class="book">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/>
+<g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g>
+<g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g>
+<path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg>
+  <header class="topbar">
+    <img class="face" alt="강연자 캐리커처" src="images/face.png">
+    <h1><a href="index.html">바이브코딩의 첫걸음 · 스크립트</a></h1>
+<button class="mode" id="mode" type="button" aria-label="어두운 화면으로 보기">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+    </button>
+  </header>
+  <article class="bookwrap">
+    <a class="back" href="index.html#p7">← 강연 화면으로 돌아가기</a>
+    <div class="kicker">발표 스크립트 · 7부</div>
+    <h1>덧붙임 — 회사 컴퓨터 안에서 AI 쓰기</h1>
+
+    <div class="kicker">1 · 데이터의 길</div>
+    <h2 id="data">업무에 쓰기 전에 데이터의 길을 나눕니다</h2>
+    <p>회사 내부 자료나 개인정보를 코딩 에이전트가 직접 읽게 하면, 사용하는 제품과 계약과 설정에 따라 그 데이터가 외부 AI 서버로 보내질 수 있습니다. 3부에서 본 것처럼, 에이전트가 내 컴퓨터 폴더에서 일해도 생각하는 두뇌(모델)는 클라우드에 있기 때문입니다.</p>
+    <p>그래서 오늘의 사례들도 업무 데이터 대신 가상 데이터와 제 개인 취미 자료로 만들었습니다. 업무에 적용하기 전에 두 가지를 나누어 보십시오. 하나는 가상 데이터로 프로그램을 개발하는 길입니다. 다른 하나는 완성된 프로그램이 실제 데이터를 처리하는 경우와, AI가 실제 데이터를 직접 읽는 경우의 차이입니다. 실제 데이터는 완성된 프로그램이 처리하게 하고, AI는 가상 데이터로 개발하게 하는 길이 가장 안전합니다.</p>
+
+    <div class="kicker">2 · 로컬 AI</div>
+    <h2 id="local-ai">두뇌까지 내 컴퓨터 안으로 — LM Studio와 Cline</h2>
+    <p>그래도 AI가 실제 데이터를 봐야 하는 일이 있습니다. 기밀 문서를 클라우드에 올리기 어려운 회사나 개인이라면, AI의 두뇌까지 내 컴퓨터 안으로 들여오는 방법이 있습니다. 순서는 네 단계입니다.</p>
+    <ol>
+      <li><b>LM Studio 설치</b>: 내 컴퓨터에서 AI 모델을 내려받아 돌리는 무료 프로그램입니다.</li>
+      <li><b>모델 받기</b>: LM Studio 안에서 공개 모델 저장소인 Hugging Face의 모델을 고릅니다. 내 컴퓨터의 그래픽카드와 메모리에 맞는 크기여야 합니다. 큰 모델일수록 똑똑하지만 더 좋은 사양이 필요합니다.</li>
+      <li><b>Cline 설치</b>: Antigravity IDE에 코딩 에이전트 확장인 Cline을 설치합니다.</li>
+      <li><b>연결</b>: Cline의 설정에서 두뇌를 클라우드 모델 대신 LM Studio에서 돌리는 내 컴퓨터의 모델로 정합니다.</li>
+    </ol>
+    <p>이렇게 하면 두뇌와 손발과 작업 공간이 모두 내 컴퓨터 안에 있습니다. 데이터가 회사 밖으로 나가지 않는 방식으로 AI를 쓸 수 있습니다.</p>
+    <p>다만 알아 두실 것이 있습니다. 내 컴퓨터에서 돌리는 모델은 사양에 따라 속도와 성능이 크게 다릅니다. 클라우드의 큰 모델만큼 해내기를 기대하기는 어렵습니다. 그리고 프로그램을 설치하기 전에 회사의 보안 규정을 먼저 확인하십시오. 오늘은 이런 길이 있다는 것을 안내해 드리는 정도로 하겠습니다.</p>
+    <p class="note">시연 영상은 만들어지면 이 자리에 넣습니다.</p>
+    <footer><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer>
+  </article>
+<script>
+(function(){
+  /* 기본은 항상 밝은 화면(빔프로젝터·녹화용). 어두운 화면은 버튼으로만 바꾸고, 이 브라우저에 기억한다. */
+  var root=document.documentElement, btn=document.getElementById('mode');
+  function isDark(){return root.getAttribute('data-theme')==='dark';}
+  function paint(){var d=isDark();root.classList.toggle('is-dark',d);if(btn)btn.setAttribute('aria-label',d?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+  try{var s=localStorage.getItem('vcfs-theme');if(s==='dark')root.setAttribute('data-theme','dark');}catch(e){}
+  paint();
+  if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
+  /* 목차: 지금 보고 있는 장면 표시 */
+  var links=[].slice.call(document.querySelectorAll('aside a'));
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
+    document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>

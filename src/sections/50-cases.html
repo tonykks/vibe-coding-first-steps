@@ -1,0 +1,139 @@
+      <div class="part" id="p5">
+        <span class="tag">5부</span>
+        <h2>일의 크기만큼 맡긴다 — 사례와 연령분석</h2>
+        <p>제가 바이브코딩으로 만든 것들을 크기별로 보여 드립니다. 여러분 분야의 일은 어느 칸일지 그려 보십시오.</p>
+      </div>
+
+      <section class="scene" id="s5-1">
+        <div class="no">5부 · 01 크기를 재는 자</div>
+        <h2>같은 "자동"이라도 세 가지가 다릅니다</h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>칸</th><th>돌아갈 때 하는 일</th><th>예</th></tr></thead>
+          <tbody>
+            <tr><td>규칙 프로그램</td><td>정해 둔 조건과 계산대로만 움직임</td><td>자동 계산 표, 타자 연습 앱</td></tr>
+            <tr><td>AI 작업 흐름</td><td>정해 둔 단계에서 AI에게 요약·분석을 맡김</td><td>영상 장면을 읽고 설명 자막 쓰기</td></tr>
+            <tr><td>에이전트</td><td>AI가 상황을 보고 다음 할 일과 도구를 골라 여러 단계를 이어 감</td><td>드론 영상 편집부터 서비스 등록까지</td></tr>
+          </tbody>
+        </table></div>
+        <p class="key">"만드는 데 AI를 썼나"와 "돌아가는 동안 AI가 일하나"는 다른 질문입니다.</p>
+        <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
+          <div class="fold">
+            <p>AI가 만들어 준 프로그램이라고 그 프로그램이 다 AI인 것은 아닙니다. 정해 둔 수식으로 계산하는 표를 AI가 만들어 줬다면, 그 표는 계산할 때마다 AI에게 묻지 않습니다. 모든 일을 복잡한 에이전트로 만들 필요는 없습니다. 규칙으로 충분한 일은 규칙으로 만드는 것이 가장 빠르고 쌉니다.</p>
+            <dl><dt>Agentic AI</dt><dd>목표를 받아 상황에 따라 작업을 고르고, 연결된 도구를 써서 실행하고 결과를 확인하는 체계. API 키를 넣는다고 저절로 되는 것이 아닙니다.</dd></dl>
+            <a class="more" href="script-5.html#ruler" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
+          </div>
+        </details>
+      </section>
+
+      <section class="scene" id="s5-2">
+        <div class="no">5부 · 02 규칙 프로그램</div>
+        <h2>작은 일 — 한 번에, 혼자서</h2>
+        <div class="case-line"><span class="tag">규칙</span><span><b>한글타자연습앱</b>: 외국인 학생이 한컴타자 전에 글쇠 자리를 몸에 익히는 연습. 안에 Google 로그인(Firebase)과 기록 저장소(Firestore)까지</span></div>
+        <div class="case-line"><span class="tag">일회성</span><span><b>관광대 강의 자료 웹사이트</b>: 한 번 만들고 마는 일을 작업 폴더에서 데스크톱 앱 Claude Code로</span></div>
+        <div class="links">
+          <a class="video" href="videos/typing-summary.html" target="_blank" rel="noopener">한글타자연습앱 세 편</a>
+          <a class="video" href="videos/jtu-website.html" target="_blank" rel="noopener">관광대 ① 강의 자료를 웹사이트로</a>
+          <a class="video" href="videos/jtu-site-fix.html" target="_blank" rel="noopener">관광대 ③ Claude 둘이 나눠 맡은 사이트 고치기</a>
+        </div>
+        <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
+          <div class="fold">
+            <p>로그인과 데이터베이스가 붙어 있어도, 돌아갈 때 AI가 판단하지 않으면 규칙 프로그램입니다. 이런 일은 에이전트 하나, 데스크톱 앱 하나로 충분합니다.</p>
+            <a class="more" href="script-5.html#small" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
+          </div>
+        </details>
+      </section>
+
+      <section class="scene" id="s5-3">
+        <div class="no">5부 · 03 AI 작업 흐름</div>
+        <h2>44시간 녹화를 4시간 28분으로 — 오늘 영상은 이렇게 만들었습니다</h2>
+        <figure class="fig"><img src="images/screen-autocut-folder.png" alt="screen-autocut 폴더를 연 Antigravity IDE. 왼쪽 tools 폴더에 add_intro.py, build_page.py, make_srt.py, make_upload.py, srt_tts.py, youtube_upload.py 등 도구 파일이 보인다." loading="lazy"><figcaption>screen-autocut 폴더: 에이전트와 함께 만든 도구들</figcaption></figure>
+        <ul>
+          <li><b>자동 컷편집</b> — 멈춘 화면은 자르고, AI가 생각하는 동안은 12배속, 글자 출력은 4배속</li>
+          <li><b>장면 고르기</b> — 실수·반복은 빼고 "제거 구간" 표에 기록, 사람이 확인</li>
+          <li><b>영상 이해와 나레이션 자막</b> — 장면을 AI가 보고 지금 하는 일을 문장으로</li>
+          <li><b>음성 만들기</b> — 자막을 무료 남성 음성으로 읽혀 제 시각에</li>
+          <li><b>소리 크기·4K</b> — YouTube 기준 소리 크기, 글씨가 읽히는 화질</li>
+          <li><b>업로드와 설명 페이지</b> — 13편을 같은 설정으로 올리고 설명 페이지까지</li>
+          <li>사람 몫: 녹화, 계획 승인, 장면 확인, 목소리 선택, 제목·배경음악·썸네일, 공개 여부</li>
+        </ul>
+        <p class="key">규칙으로 될 일은 규칙으로, 판단이 필요한 곳만 AI로.</p>
+        <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
+          <div class="fold">
+            <dl>
+              <dt>자동 컷편집</dt><dd>0.5초마다 화면이 얼마나 바뀌는지 재서 구간마다 처리를 정합니다. 3초 넘게 멈춘 곳은 자르고(10초 넘으면 멈춘 화면을 2초 보여 줌), 이어지는 빨리 감기는 결과에서 8초를 넘지 않게 합니다. 먼저 길이표를 보고 승인한 뒤 만듭니다.</dd>
+              <dt>ffmpeg</dt><dd>영상과 소리를 자르고 붙이고 바꾸는 무료 프로그램. 컷편집은 이것과 Python 기본 기능만으로 만들었습니다.</dd>
+              <dt>srt</dt><dd>자막 파일 형식. 몇 초부터 몇 초까지 어떤 글을 띄울지 적습니다. 한 줄 27자, 1초에 5자 이하로 썼습니다.</dd>
+              <dt>TTS</dt><dd>글을 읽어 주는 음성 합성(Text To Speech). Microsoft의 무료 음성 '인준'을 썼고, 다음 자막 전에 못 끝나면 그 문장만 최대 1.3배 빠르게 읽힙니다.</dd>
+              <dt>LUFS</dt><dd>사람 귀에 들리는 소리 크기 단위. 편집 앱에서 나온 약 -23을 YouTube 기준 -14로 맞췄습니다.</dd>
+              <dt>4K</dt><dd>3840×2160 화질. 글씨가 더 선명해지지는 않지만, YouTube가 자동 화질을 1080p로 잡아 줘 보는 사람이 설정을 바꾸지 않아도 화면 글씨가 읽힙니다.</dd>
+              <dt>OAuth</dt><dd>비밀번호를 주지 않고 "이 프로그램이 내 YouTube에 올려도 된다"고 허락하는 열쇠. 확인 표시 없이는 아무것도 올리지 않게 만들었습니다.</dd>
+            </dl>
+            <a class="more" href="script-5.html#autocut" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
+          </div>
+        </details>
+      </section>
+
+      <section class="scene" id="s5-4">
+        <div class="no">5부 · 04 에이전트</div>
+        <h2>큰 일 — 여러 단계를 스스로 이어 가는 에이전트</h2>
+        <div class="case-line"><span class="tag">에이전트</span><span><b>드론 영상 → YouTube → SkyView</b>(정방폭포): 소리 없는 드론 영상을 훑어보고 감정이 담긴 캡처 10여 장과 편집 방향만 주면, 에이전트가 컷 편집·스토리·자막·음악 프롬프트를 만들고, 올리고, SkyView에 장소와 영상을 등록하고 소개 페이지까지 만든다</span></div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>단계</th><th>하는 일</th><th>담당</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>영상 폴더에 넣고 그때의 느낌과 원하는 장면을 알려 줌</td><td>나</td></tr>
+            <tr><td>2</td><td>장면 고르기, 시나리오, 컷 편집(ffmpeg)</td><td>에이전트</td></tr>
+            <tr><td>3</td><td>자막 파일 만들기</td><td>에이전트</td></tr>
+            <tr><td>4</td><td>자막 붙이기, 배경음악, 제목·썸네일, 내보내기</td><td>나</td></tr>
+            <tr><td>5~7</td><td>YouTube 업로드 → 확인·공개 → SkyView DB 등록과 소개 페이지</td><td>에이전트 · 나 · 에이전트</td></tr>
+          </tbody>
+        </table></div>
+        <div class="case-line"><span class="tag">설명 자료</span><span><b>토니의 지식 도서관</b>: 유튜브에서 본 좋은 내용을 다시 찾으려고 만든 서재. 작업장을 옮기며 만드는 과정이 담겨 Agentic AI 설명 자료로 둡니다(SkyView 전체 자동화가 완성되면 바꿈)</span></div>
+        <div class="links">
+          <a class="video" href="videos/solo-my-agents.html" target="_blank" rel="noopener">SkyView 연동 작업장 이동</a>
+          <a class="video" href="videos/solo-workspace-move.html" target="_blank" rel="noopener">지식 도서관 작업장 이사하기</a>
+          <a class="video" href="https://tonykks.github.io/skyview/places/jeongbang-waterfall.html" target="_blank" rel="noopener">SkyView 정방폭포 소개 페이지</a>
+        </div>
+        <p class="say">다음 목표: 나레이션 음성까지 에이전트가 만들고, 나는 배경음악·제목·썸네일만.</p>
+        <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
+          <div class="fold">
+            <p>드론으로 찍을 때는 즐거운데, 편집하고 올리기까지가 길어 밀린 영상이 쌓이니 촬영 가는 것조차 꺼려졌습니다. 취미 안에도 하고 싶은 일과 하기 싫은 일이 있습니다. 하기 싫은 반복을 에이전트에게 맡기면 남은 시간에 하고 싶은 일이 더 즐거워집니다.</p>
+            <dl>
+              <dt>SkyView</dt><dd>제주 드론 영상을 장소별로 모아 보여 주는 제 웹 서비스입니다.</dd>
+              <dt>DB 등록</dt><dd>서비스의 관리자 화면에 장소(위도·경도)와 영상 정보를 입력하는 일. 에이전트가 브라우저를 조작해 해냈습니다.</dd>
+            </dl>
+            <a class="more" href="script-5.html#agent" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
+          </div>
+        </details>
+      </section>
+
+      <section class="scene" id="s5-5">
+        <div class="no">5부 · 05 업무 시연</div>
+        <h2>잔액의 나이 — 기술 하나로 세 업무를 꿰다</h2>
+        <p class="lead">먼저 생긴 것부터 먼저 나간다(선입선출)고 보고, 남은 잔액마다 <b>나이</b>를 매긴다. 오래될수록 위험하다.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th>업무</th><th>생김 → 사라짐</th><th>오래되면 위험</th></tr></thead>
+          <tbody>
+            <tr><td>매출채권</td><td>판매 → 수금</td><td>못 받는 돈(대손)</td></tr>
+            <tr><td>재고</td><td>입고 → 출고</td><td>쓸모없어짐(진부화)</td></tr>
+            <tr><td>공매도</td><td>신규 공매도 → 상환</td><td>갚아야 하는 압력</td></tr>
+          </tbody>
+        </table></div>
+        <ul>
+          <li>25년 전 제가 쓰던 매출채권 연령 표를 AI에게 보여 주는 데서 시작(이름은 가짜로 바꿈)</li>
+          <li>폴더에 월별 판매·수금 파일만 넣으면 연령분석 표가 나오는 자동화 에이전트</li>
+          <li>같은 기술을 재고로, 그리고 누구나 아는 종목의 공매도 잔고로</li>
+        </ul>
+        <p class="key">업무지식이 있으니, 하나의 기술이 다른 문제를 푸는 열쇠가 됩니다.</p>
+        <p class="ph">시연 영상 자리 — 만들어지면 여기에 넣습니다. 없으면 이 표로 말씀드립니다.</p>
+        <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
+          <div class="fold">
+            <dl>
+              <dt>연령분석</dt><dd>남아 있는 잔액이 생긴 지 얼마나 되었는지 기간별(30일 이내, 31~60일…)로 나누어 보는 분석. 회계에서 오래된 채권과 재고를 찾는 데 씁니다.</dd>
+              <dt>선입선출(FIFO)</dt><dd>먼저 들어온 것이 먼저 나간다고 보는 방법. 수금이 들어오면 가장 오래된 판매분부터 갚은 것으로 칩니다.</dd>
+              <dt>공매도</dt><dd>주식을 빌려서 먼저 판 뒤 나중에 사서 갚는 거래. 갚지 않은 수량이 오래 쌓일수록 상환 압력이 커집니다.</dd>
+            </dl>
+            <p>공매도 분석은 투자 추천이 아니라 분석 도구 시연입니다.</p>
+            <a class="more" href="script-5.html#aging" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
+          </div>
+        </details>
+      </section>

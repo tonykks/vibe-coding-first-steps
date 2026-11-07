@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko">
+<!-- 이 파일은 build.py가 src/에서 만듭니다. 직접 고치지 마세요. -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="바이브코딩의 첫걸음 강연 스크립트: 1부 오프닝 — 코드는 AI가 읽고, 결과는 내가 읽습니다">
+  <title>1부 오프닝 — 코드는 AI가 읽고, 결과는 내가 읽습니다 | 바이브코딩의 첫걸음 스크립트</title>
+  <link rel="stylesheet" href="css/lecture.css">
+</head>
+<body class="book">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/>
+<g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g>
+<g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g>
+<path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg>
+  <header class="topbar">
+    <img class="face" alt="강연자 캐리커처" src="images/face.png">
+    <h1><a href="index.html">바이브코딩의 첫걸음 · 스크립트</a></h1>
+<button class="mode" id="mode" type="button" aria-label="어두운 화면으로 보기">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+    </button>
+  </header>
+  <article class="bookwrap">
+    <a class="back" href="index.html#p1">← 강연 화면으로 돌아가기</a>
+    <div class="kicker">발표 스크립트 · 1부</div>
+    <h1>코드는 AI가 읽고, 결과는 내가 읽습니다</h1>
+    <p>강연에서는 짧게 말씀드린 이야기를 처음부터 끝까지 풀어 쓴 글입니다. 바이브코딩이라는 말이 태어난 자리에서 시작해, 그 말을 만든 사람이 1년 만에 생각을 바꾼 이유를 따라가 보면, 이 시대에 우리에게 남는 능력이 무엇인지가 보입니다.</p>
+    <p class="takeaway">바이브코딩은 코드를 몰라도 되게 해 주지만, 일을 몰라도 되게 해 주지는 않습니다.</p>
+<div class="kicker">1 · 출발점</div>
+<h2 id="origin">어느 주말, 한 전문가의 실험</h2>
+  <p>이야기는 2025년 2월 2일, X(옛 트위터)에 올라온 짧은 글 하나에서 시작합니다. 글을 쓴 사람은 Andrej Karpathy. OpenAI를 함께 세웠고, Tesla에서 자율주행 AI를 이끌었던 사람입니다. 세계에서 손꼽히게 코드를 잘 읽는 사람이라고 해도 지나치지 않습니다.</p>
+  <p>그가 그날 털어놓은 것은 이런 주말이었습니다. 개발자용 프로그램인 Cursor를 열어 두고, 키보드 대신 마이크에 대고 말로 시킵니다. "사이드바 여백을 절반으로 줄여 줘" 같은 사소한 것까지요. AI가 코드를 바꾸면 무엇이 바뀌었는지 읽지 않고 전부 수락합니다. 오류가 나면 오류 메시지를 그대로 복사해 붙여 넣습니다. 그러면 대체로 돌아간다고 했습니다.</p>
+  <p>그는 이 방식에 이름을 붙였습니다. 분위기(vibe)에 몸을 맡기고, 코드가 있다는 사실조차 잊어버리는 코딩. <b>바이브코딩</b>(vibe coding)입니다.</p>
+  <p>그런데 이 글을 자세히 읽으면 그가 마냥 즐거워하지만은 않았다는 것이 보입니다. 코드가 어느새 자기가 평소 이해하는 범위를 넘어 자라 버렸고, 제대로 알려면 한참 읽어야 한다고 했습니다. AI가 버그를 못 고치면 우회하거나, 버그가 사라질 때까지 이것저것 바꿔 달라고 한다고도 했습니다. 그리고 스스로 선을 그었습니다. <b>한 번 쓰고 버릴 주말 프로젝트에는 나쁘지 않다</b>고요.</p>
+  <p>코드를 누구보다 잘 아는 사람이, 주말에 일부러 손을 놓아 본 실험. 바이브코딩은 그렇게 태어났습니다.</p>
+  <p class="takeaway">바이브코딩을 처음 말한 사람은, 언제든 코드를 직접 읽고 고칠 수 있는 전문가였습니다.</p>
+<div class="kicker">2 · 퍼져 나간 말</div>
+<h2 id="heard">같은 말이, 다른 사람에게는 다르게 들렸습니다</h2>
+  <p>전문가의 귀에 이 말은 반반으로 들렸을 것입니다. 지루한 일, 생각하기 귀찮은 일을 AI가 대신해 주니 편합니다. 하지만 AI가 내가 모르는 방식으로 코드를 짜 놓으면 이야기가 달라집니다. 그 코드가 맞는지 결국 내가 다시 읽고, 고민하고, 책임져야 합니다. 프로그램에 문제가 생기면 "AI가 짰다"는 말은 핑계가 되지 못하니까요. 나쁘지는 않지만, 그렇다고 마냥 좋다고도 할 수 없는 말. 그래서 개발자들 사이에서는 "검토도 안 하고 맡기는 코딩"을 꼬집는 뜻으로 자주 쓰였습니다.</p>
+  <p>그런데 코드를 읽지 못하는 사람에게는 전혀 다른 말로 들렸습니다. 그들에게는 처음부터 코드가 보이지 않습니다. 보이는 것은 몇 분 만에 완성된 화면, 눌러 보면 움직이는 버튼뿐입니다. 그 결과가 놀라웠습니다. 그래서 바이브코딩은 <b>"말만 하면 필요한 것은 다 만들어 준다"</b>는 뜻으로 빠르게 퍼졌습니다. 그해 영국의 Collins 사전은 이 말을 올해의 단어로 골랐습니다.</p>
+  <div class="pair">
+    <div>
+      <h3>코드를 읽는 사람에게 들린 말</h3>
+      <ul>
+        <li>귀찮은 일을 대신해 주니 편하다</li>
+        <li>하지만 모르게 짠 코드도 내가 책임진다</li>
+        <li>버리는 주말 프로젝트에나 쓸 만하다</li>
+      </ul>
+    </div>
+    <div class="gain">
+      <h3>코드를 읽지 못하는 사람에게 들린 말</h3>
+      <ul>
+        <li>말만 하면 다 만들어 준다</li>
+        <li>결과 화면이 놀랍다</li>
+        <li>나도 이제 프로그램을 만들 수 있다</li>
+      </ul>
+    </div>
+  </div>
+  <p>둘 중 누가 틀렸다고 하기는 어렵습니다. 두 사람은 같은 말을 들었지만, <b>서 있는 자리가 달라서 보이는 것이 달랐을</b> 뿐입니다. 한 사람은 코드를 보았고, 한 사람은 결과를 보았습니다.</p>
+  <p class="takeaway">전문가는 코드를 보며 반반이라 했고, 코드를 못 보는 사람은 결과에 매료되었습니다.</p>
+<div class="kicker">3 · 1년 뒤</div>
+<h2 id="year">1년 뒤, 말을 만든 사람이 새 말을 만들었습니다</h2>
+  <p>사실 Karpathy는 이 변화를 훨씬 전부터 보고 있었습니다. ChatGPT가 나온 지 두 달 만인 2023년 1월, 그는 이렇게 썼습니다.</p>
+  <blockquote>"The hottest new programming language is English."<cite>가장 뜨는 새 프로그래밍 언어는 영어다 · Andrej Karpathy, 2023년 1월 24일</cite></blockquote>
+  <p>사람의 말이 곧 프로그래밍 언어가 되리라는 예감이었습니다. 2년 뒤 그는 그 예감을 직접 해 보고 바이브코딩이라는 이름을 붙였습니다. 그리고 다시 1년이 지난 2026년 2월, 바이브코딩 1주년에 그는 이 말이 이미 낡았다며 새 이름을 꺼냅니다. <b>Agentic Engineering</b>입니다.</p>
+  <figure class="figure">
+    <div class="scroll">
+      <svg viewBox="0 0 900 230" role="img" aria-label="2022년 11월 ChatGPT 출시부터 2026년 2월 Agentic Engineering까지의 흐름">
+        <line class="ln" x1="60" y1="70" x2="840" y2="70" stroke-width="2"/>
+        <g>
+          <circle class="dot" cx="90" cy="70" r="9" stroke-width="2"/>
+          <text class="ta" x="90" y="40" text-anchor="middle" font-size="13">2022.11</text>
+          <text class="t" x="90" y="108" text-anchor="middle" font-size="15" font-weight="600">ChatGPT 출시</text>
+          <text class="tm" x="90" y="130" text-anchor="middle" font-size="13">누구나 AI에게</text>
+          <text class="tm" x="90" y="148" text-anchor="middle" font-size="13">말을 걸게 됨</text>
+        </g>
+        <g>
+          <circle class="dot" cx="270" cy="70" r="9" stroke-width="2"/>
+          <text class="ta" x="270" y="40" text-anchor="middle" font-size="13">2023.01</text>
+          <text class="t" x="270" y="108" text-anchor="middle" font-size="15" font-weight="600">"영어가 프로그래밍 언어"</text>
+          <text class="tm" x="270" y="130" text-anchor="middle" font-size="13">예감</text>
+        </g>
+        <g>
+          <circle class="dot" cx="450" cy="70" r="9" stroke-width="2"/>
+          <text class="ta" x="450" y="40" text-anchor="middle" font-size="13">2025.02</text>
+          <text class="t" x="450" y="108" text-anchor="middle" font-size="15" font-weight="600">바이브코딩</text>
+          <text class="tm" x="450" y="130" text-anchor="middle" font-size="13">주말 실험,</text>
+          <text class="tm" x="450" y="148" text-anchor="middle" font-size="13">그냥 맡기기</text>
+        </g>
+        <g>
+          <circle class="dot" cx="630" cy="70" r="9" stroke-width="2"/>
+          <text class="ta" x="630" y="40" text-anchor="middle" font-size="13">2025</text>
+          <text class="t" x="630" y="108" text-anchor="middle" font-size="15" font-weight="600">모델과 도구의 발전</text>
+          <text class="tm" x="630" y="130" text-anchor="middle" font-size="13">여러 Agent를</text>
+          <text class="tm" x="630" y="148" text-anchor="middle" font-size="13">함께 부리게 됨</text>
+        </g>
+        <g>
+          <circle class="dot-a" cx="810" cy="70" r="11" stroke-width="2"/>
+          <text class="ta" x="810" y="40" text-anchor="middle" font-size="13">2026.02</text>
+          <text class="t" x="810" y="108" text-anchor="middle" font-size="15" font-weight="700">Agentic Engineering</text>
+          <text class="tm" x="810" y="130" text-anchor="middle" font-size="13">지휘하고</text>
+          <text class="tm" x="810" y="148" text-anchor="middle" font-size="13">감독하기</text>
+        </g>
+        <text class="tm" x="450" y="205" text-anchor="middle" font-size="13">예감 → 그냥 맡기기 → 지휘하고 감독하기</text>
+      </svg>
+    </div>
+    <figcaption>바이브코딩이라는 이름 앞뒤의 흐름</figcaption>
+  </figure>
+  <p>그 1년 사이 AI 모델은 눈에 띄게 좋아졌습니다. 이제 그의 하루는 코드를 직접 쓰는 시간보다, 여러 AI Agent에게 일을 나눠 주고 지휘하고 감독하는 시간이 대부분이 되었다고 합니다. 오케스트라 단원 여럿을 이끄는 지휘자, 곧 <b>오케스트레이터</b>(orchestrator)가 된 셈입니다.</p>
+  <p>이름이 바뀐 자리를 눈여겨볼 필요가 있습니다. "코딩"이 "엔지니어링"으로 바뀌었습니다. 제가 읽기에 이것은, 그냥 맡기고 잊어버리는 일에서 <b>설계하고, 맡기고, 확인하고, 책임지는 일</b>로 돌아왔다는 뜻입니다. 1년 전에는 주말에나 쓸 만하다던 방식이, 이제는 그의 본업을 몇 배로 늘려 주는 도구가 된 것입니다.</p>
+  <p class="takeaway">말로 시키는 방식은 그대로 두고, 설계하고 맡기고 확인하고 책임지는 방식을 그는 따로 Agentic Engineering이라 부르기 시작했습니다.</p>
+<div class="kicker">4 · 전환점</div>
+<h2 id="who">그런데 그것은 누구의 평가였을까요</h2>
+  <p>여기서 잠깐 멈춰서 질문 하나를 던져 보겠습니다. "AI에게 맡기니 사람이 짤 때보다 낫더라." 이 평가는 <b>누가</b> 내린 것일까요?</p>
+  <p>코드를 누구보다 잘 읽는 사람입니다. 그는 AI가 짠 코드를 들여다보고 "잘 짰네"라고 판단할 수 있습니다. 틀린 곳이 보이면 짚어서 고치게 할 수 있습니다. 그러니 처음부터 혼자 짜는 것보다 AI에게 맡기고 검토하는 편이 훨씬 빠릅니다. 효율이 몇 배가 되는 이유는 AI가 똑똑해서만이 아닙니다. <b>결과를 검증할 수 있는 사람이 쓰기 때문</b>입니다.</p>
+  <p>같은 AI를, 코드를 전혀 읽지 못하는 사람이 같은 방식으로 쓰면 어떻게 될까요? 결과가 그럴듯해 보이면 그냥 믿을 수밖에 없습니다. 맞는지 틀린지 판단할 근거가 없으니까요. 운이 좋으면 잘 돌아가고, 운이 나쁘면 어디가 틀렸는지도 모른 채 틀린 결과를 씁니다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>결과를 검증할 수 있는 사람</th><th>결과를 검증할 수 없는 사람</th></tr></thead>
+      <tbody>
+        <tr><td>AI가 잘 해 왔을 때</td><td>"잘했네" 하고 바로 씁니다. 시간이 크게 줄어듭니다.</td><td>잘된 것인지 모른 채 씁니다.</td></tr>
+        <tr><td>AI가 틀렸을 때</td><td>틀린 곳을 찾아 고치게 합니다.</td><td>틀린 줄 모르고 씁니다.</td></tr>
+        <tr><td>결과적으로</td><td>효율이 배가됩니다.</td><td>결과를 장담할 수 없습니다.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="takeaway">AI가 일을 잘하게 된 것이 아니라, 검증할 수 있는 사람의 손에서 AI가 일을 잘하게 된 것입니다.</p>
+<div class="kicker">5 · 우리에게 대입하면</div>
+<h2 id="domain">그 자리에 코드 전문가 대신 여러분을 넣어 보십시오</h2>
+  <p>"그럼 코드를 모르는 우리는 안 되겠네." 이렇게 생각하셨다면, 조금만 더 따라와 주십시오. 앞의 표에서 "코드를 읽을 수 있는 사람"이라는 말을 지우고, 그 자리에 <b>"업무를 잘 아는 사람"</b>을 넣어 보겠습니다.</p>
+  <p>여러분은 코드를 읽지 못할 수 있습니다. 하지만 자기 업무의 결과는 읽을 줄 압니다. 그것도 아주 잘 압니다. 오랫동안 그 일을 해 왔기 때문입니다.</p>
+  <div class="ask">
+    <p>AI가 만들어 온 민원 안내문에서 틀린 규정 조항을 바로 찾아낼 수 있는 분이 계실 겁니다.</p>
+    <p>AI가 정리한 예산 집계표를 보고 "이 합계는 이상한데" 하고 몇 초 만에 알아차리는 분도 계실 겁니다.</p>
+    <p>그 순간 여러분은 그 결과물의 <b>검증자</b>입니다. 코드는 한 줄도 몰라도 됩니다.</p>
+  </div>
+  <p>공공 기관에서 일하시는 분들께는 이미 익숙한 장면이 하나 있습니다. <b>결재</b>입니다. 담당자가 기안을 올리면, 그 일을 아는 사람이 읽고 맞는지 판단해 결재합니다. 결재는 내용을 아는 사람만 할 수 있습니다. 내용을 모르고 도장만 찍으면, 책임은 남는데 판단은 없는 결재가 됩니다.</p>
+  <p>바이브코딩 시대의 일이 바로 이렇습니다. AI가 기안하고, 여러분이 결재합니다. 이때 결재의 근거는 코드가 아니라 <b>결과</b>입니다. 그래서 코드를 모르는 사람에게 가장 확실한 검증 통로는, 결과가 어떻게 나와야 하는지 알고 그것을 <b>꼼꼼히 시험해 보는 능력</b>입니다. 숫자를 넣어 보고, 예외 경우를 넣어 보고, 실제 자료로 돌려 보는 일입니다.</p>
+  <div class="tablewrap">
+    <table class="pair">
+      <thead><tr><th>Karpathy의 자리</th><th>여러분의 자리</th></tr></thead>
+      <tbody>
+        <tr><td>코드를 읽고 맞는지 판단한다</td><td>AI가 만든 결과물을 써 보고, 내가 요구한 대로 나왔는지 판단한다</td></tr>
+        <tr><td>틀린 코드를 짚어 고치게 한다</td><td>시험해 보며 찾은 오류를 짚어 고치게 한다</td></tr>
+        <tr><td>여러 Agent를 지휘한다</td><td>대표 Agent에게 요구사항을 말하고, 기획·코딩·검증을 각 Agent의 능력에 맞게 나눠 맡기게 한다</td></tr>
+        <tr><td>코드를 알기에, 맡겨도 품질을 지키며 더 많이 만든다</td><td>업무를 알기에, 되풀이하는 업무는 에이전트에게 맡기고 더 나은 업무에 힘을 쏟는다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="takeaway">코드 전문가가 코드를 알아서 에이전트를 부렸듯, 업무 전문가는 업무를 알아서 에이전트를 부릴 수 있습니다. 바이브코딩의 시대에는 업무를 아는 사람이 살아남습니다.</p>
+<div class="kicker">6 · 일의 세계</div>
+<h2 id="jobs">먼저 사라진 자리를 보면 이유가 보입니다</h2>
+  <p>이 이야기가 막연한 짐작이 아니라는 것은 일자리 통계에서도 보입니다. Stanford 연구진이 미국의 급여 자료를 분석했더니, 22~25세 소프트웨어 개발자 고용이 2025년 7월 기준으로 2022년 정점보다 20% 가까이 줄었습니다. 그런데 같은 직종의 경력자 고용은 유지되거나 오히려 늘었습니다.</p>
+  <p>원인이 AI 하나만은 아닙니다. 2022년 제로 금리가 끝나고 팬데믹 때 과하게 뽑은 인원을 줄이면서 문이 먼저 닫혔습니다. 다만 그 뒤 경력자 채용은 회복되었는데 신입 채용만 돌아오지 않았습니다. 금리만으로는 이 차이를 다 설명하지 못한다는 분석이 나옵니다. AI가 유일한 원인이라는 결론은 아직 아니고, 반론도 있습니다.</p>
+  <p>Karpathy가 말로 시킨 "사이드바 여백을 절반으로 줄여 줘"를 다시 떠올려 보십시오. 업무 지시 하나를 받아 화면 하나를 고치는 일. 바로 신입 개발자가 맡던 일입니다. 왜 하필 신입이 먼저 밀렸을까요? 앞의 이야기에 비추어 보면 답이 보입니다. 신입은 <b>아직 결과를 검증할 경험이 쌓이지 않은 사람</b>입니다. 시키는 일을 해내는 능력은 AI가 따라잡았지만, 결과가 맞는지 판단하는 경험은 아직 경력자에게 있습니다.</p>
+  <p>한편 AWS의 CEO Matt Garman은 주니어를 AI로 대체하겠다는 생각을 자신이 들은 가장 어리석은 생각이라고 했습니다. 주니어가 배우지 못하면 10년 뒤 회사에 경험 있는 사람이 남지 않는다는 이유였습니다. 이 말은 거꾸로, <b>경험이야말로 AI가 대신 쌓아 줄 수 없는 것</b>이라는 뜻이기도 합니다.</p>
+  <p class="takeaway">AI가 먼저 대신한 것은 시키는 일을 해내는 능력이고, 아직 대신하지 못하는 것은 결과를 판단하는 경험입니다.</p>
+<div class="kicker">7 · 사람에게 남는 것</div>
+<h2 id="learn">AI는 우리가 배울 기회까지 가져갈 수 있습니다</h2>
+  <p>여기에 불편한 진실이 하나 있습니다. 예전에는 일을 하다 보면 저절로 배웠습니다. 직접 계산하고, 직접 문서를 쓰고, 틀려서 혼나면서 감각이 생겼습니다. 그런데 이제는 AI가 그 일을 먼저 해 줍니다. 편해진 만큼, 배울 기회도 줄어듭니다.</p>
+  <p>앞의 Stanford 연구진은 왜 신입이 먼저 영향을 받는지를 이렇게 설명했습니다. AI가 주로 대신하는 것은 책으로 배울 수 있는 명시적 지식이고, 경험으로 쌓인 그 사람만의 요령, 곧 <b>암묵지</b>(暗默知)는 대신하기 어렵다는 것입니다. 실제로 AI가 일을 통째로 대신하는 직종에서는 신입 고용이 줄었지만, AI가 사람을 돕는 방식으로 쓰이는 직종에서는 유지되거나 늘었습니다.</p>
+  <p>과학철학자 장하석 교수는 최재천 교수와의 대담(2026년 10월)에서 같은 이야기를 교육의 언어로 했습니다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>장하석 교수의 말</th><th>우리에게 주는 의미</th></tr></thead>
+      <tbody>
+        <tr><td>AI에 너무 의존하면 사람이 하는 경험을 빼앗긴다</td><td>결과만 받으면 판단할 힘이 자라지 않는다</td></tr>
+        <tr><td>계산기를 써도 계산 원리는 알아야 한다</td><td>결과가 어떻게 나와야 하는지는 내가 알아야 한다</td></tr>
+        <tr><td>AI는 조수이고, 판단과 책임은 사람에게 있다</td><td>AI가 기안하고, 사람이 결재한다</td></tr>
+        <tr><td>AI가 잘하는 것은 맡기고, 사람이 경험해야 할 최소한을 찾아라</td><td>코드는 맡기되, 시킬 일 정하기와 결과 시험하기는 직접 한다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>그렇다면 사람이 꼭 경험해야 할 최소한은 무엇일까요? 저는 세 가지라고 생각합니다.</p>
+  <div class="pair">
+    <div class="gain">
+      <h3>사람이 꼭 해야 할 세 가지</h3>
+      <ul>
+        <li><b>무엇을 시킬지</b> 내 말로 정하기</li>
+        <li>결과가 <b>어떻게 나와야 하는지</b> 기준 세우기</li>
+        <li>결과를 <b>실제로 시험해</b> 맞는지 확인하기</li>
+      </ul>
+    </div>
+    <div>
+      <h3>AI에게 맡겨도 되는 것</h3>
+      <ul>
+        <li>코드를 입력하는 일</li>
+        <li>여러 번 고치고 다시 해 보는 일</li>
+        <li>정해진 형식으로 정리하는 일</li>
+      </ul>
+    </div>
+  </div>
+  <p>모르면서 AI의 결과를 받아들이는 사람은 AI의 <b>사용자</b>에 머뭅니다. 무엇을 시킬지, 결과가 어떻게 나와야 하는지 아는 사람은 AI의 <b>협력자</b>가 됩니다. 그리고 그냥 다 맡겨 버리려는 사람은, 안타깝지만 조금씩 밀려날 수밖에 없습니다.</p>
+  <p class="takeaway">AI 시대에 사람이 지켜야 할 경험은 시킬 일을 정하고, 기준을 세우고, 결과를 시험하는 일입니다.</p>
+<div class="kicker">8 · 강연자의 경험</div>
+<h2 id="me">코드를 못 쓰는 저는 이렇게 확인합니다</h2>
+  <p>고백하자면 저는 지금도 코드를 쓰지 못합니다. 올해 1월부터 10월까지 각종 교육을 받으면서 AI로 웹 서비스를 만드는 과정을 들었습니다. 대부분의 강의가 코드를 직접 입력하는 프로그래머를 위한 것이었습니다. 처음 2~3일은 열심히 따라 쳤지만, 쌓여 가는 코드를 외우지 못해 결국 화면만 바라보는 날이 많았습니다.</p>
+  <p>그래도 과정마다 무엇을 배웠는지 보고서를 내야 했습니다. 그래서 과정 목차를 통째로 생성형 AI에게 붙여 넣고 이렇게 물었습니다.</p>
+  <div class="prompt">
+    <div class="prompt-head"><span>그때 쓴 질문을 다듬은 틀</span></div>
+<pre id="promptText">아래는 제가 들은 강의의 목차입니다.
+저는 Code를 직접 입력하지 않고 AI에게 시켜서 만드는 바이브코더입니다.
+명령어나 사용법은 필요 없습니다.
+이 과정에서 바이브코더가 "무엇을 알았어야 했는지"만,
+핵심 용어와 그 용어가 하는 역할 중심으로 알려 주세요.
+
+[목차 붙여넣기]</pre>
+  </div>
+  <p>답이 오면 그 용어가 무엇인지 하나씩 익혀 보고서를 냈습니다. 돌아보면 그 시간이 저를 바꿔 놓았습니다. 코드는 못 쓰지만, 지금 무엇을 하고 있는지, 어디에서 하고 있는지, 다음 절차가 무엇인지는 압니다. 그래서 <b>내가 할 일과 시킬 일</b>을 구분할 수 있게 되었습니다.</p>
+  <blockquote>장하석 교수는 테니스를 배우다 실패했지만, 그 경험 덕분에 프로 선수의 경기를 훨씬 깊이 이해하고 즐기게 되었다고 했습니다.<cite>장하석 · 최재천 대담, 「최재천의 아마존」 2026년 10월</cite></blockquote>
+  <p>그 열 달이 바로 제 테니스였습니다. 공을 제대로 치지는 못했지만, 경기를 보는 눈이 생겼습니다.</p>
+  <h3>82개의 "통과"를 보고도 멈춘 이유</h3>
+  <p>그 눈이 실제로 어떻게 쓰이는지 장면 하나를 소개하겠습니다. 저는 강의자료를 고칠 때마다 그 결과가 내 지식으로 쌓이게 하는 도구를 AI Agent 팀에게 만들게 했습니다. 기획을 검토하는 Agent, 코드를 짜는 Agent, 검사하는 Agent가 서로 일을 넘기며 만들었고, 마침내 자동 테스트 82개가 모두 통과했습니다. 화면에는 초록색 "통과"만 가득했습니다.</p>
+  <p>저는 코드를 한 줄도 읽지 못합니다. 그래도 그 자리에서 멈췄습니다. 이 도구가 해야 할 일은 <b>제 실제 강의자료</b>를 받아 장면별로 나누는 것인데, 아직 실제 자료로는 한 번도 돌려 보지 않았기 때문입니다. 실제 자료를 넣어 보자, 장면은 잘 나뉘었지만 화면이 원본보다 훨씬 밋밋하게 나왔습니다. 테스트가 미처 보지 못한 문제였습니다.</p>
+  <p>이것을 찾아낸 것은 코드 실력이 아니었습니다. 이 도구로 무엇을 하려는지, 결과가 어떻게 나와야 하는지 아는 것, 곧 <b>제 업무에 대한 앎</b>이었습니다. <a class="link" href="https://tonykks.github.io/vibe-coding-first-steps/videos/solo-html-agent.html" target="_blank" rel="noopener noreferrer">이 장면은 영상과 설명 페이지로 볼 수 있습니다 →</a></p>
+  <p>그리고 모르는 것을 복사해 붙여 넣는 일을 부끄러워할 필요는 없습니다. 바이브코딩이라는 말을 만든 Karpathy도 처음 그 글에서 자신이 하는 일을 보고, 말하고, 실행하고, <b>복사해 붙여 넣는 것</b>이라고 했습니다.</p>
+  <p class="takeaway">코드를 몰라도, 결과가 어떻게 나와야 하는지 알면 AI의 "통과"를 의심할 수 있습니다.</p>
+<div class="kicker">9 · 권유</div>
+<h2 id="one">작아도 좋으니, 내 일 하나를 끝까지</h2>
+  <p>요즘은 AI Studio의 Build Mode처럼 웹페이지를 몇 분 만에 만들어 주는 도구가 많습니다. 2026년 3월부터는 로그인과 데이터베이스까지 말로 붙일 수 있게 되었습니다. 빠르게 결과를 만드는 능력은 분명히 존중받아야 할 능력입니다.</p>
+  <p>그래서 구분의 기준은 "어떤 기능이 되느냐"가 아닙니다. 기능은 도구가 발전할 때마다 바뀝니다. 바뀌지 않는 기준은 <b>만든 뒤에 나에게 무엇이 남느냐</b>입니다.</p>
+  <div class="pair">
+    <div>
+      <h3>결과물만 받으면 남는 것</h3>
+      <ul>
+        <li>파일 한 장, 화면 한 장</li>
+        <li>다음에 고칠 때 다시 처음부터</li>
+        <li>맞는지 설명하기 어려운 프로그램</li>
+      </ul>
+    </div>
+    <div class="gain">
+      <h3>내 일 하나를 끝까지 만들면 남는 것</h3>
+      <ul>
+        <li>왜 이렇게 만들었는지 적힌 요구사항</li>
+        <li>내 업무 규칙이 담긴 프로그램과 그 기록</li>
+        <li>결과를 시험해 보는 눈</li>
+      </ul>
+    </div>
+  </div>
+  <p>그래서 권합니다. 남의 일이 아니라 <b>여러분이 가장 잘 아는 업무</b> 하나를 고르십시오. 결과가 맞는지 틀린지 가장 빨리 알아볼 수 있는 일이어야 합니다. 그리고 화면, 데이터, 배포까지 작아도 좋으니 처음부터 끝까지 이어 매듭지어 보십시오. 완벽할 필요는 없습니다. 모르는 것이 나오면 복사해 붙여 넣는 연습이라 생각하고, 꼭 궁금한 것부터 하나씩 알아 가시면 됩니다.</p>
+  <p class="takeaway">업무를 아는 사람이 AI를 협력자로 삼으면, AI 시대는 나의 잠재력을 끝까지 끌어내는 시대가 됩니다.</p>
+<div class="next"><div class="kicker">다음 순서로</div>
+  <p class="big">그래서, 이 강연에서 말하는 바이브코딩이란 무엇일까요?</p>
+  <p class="takeaway">업무를 아는 내가 무엇을 시킬지 정하고, AI가 만든 결과를 직접 시험해 확인하며, 여러 AI를 지휘해 내 일을 해내는 방식입니다.</p>
+  <p>이제 그 한 바퀴를 어디에서, 누구와, 어떤 순서로 도는지, 나만의 AI 전산실을 차리는 방법으로 넘어갑니다.</p></div>
+<h2 id="sources">출처</h2>
+  <ol>
+    <li>Karpathy의 2025년 2월 2일 바이브코딩 원문 소개: <a href="https://thenewstack.io/?p=22814879" target="_blank" rel="noopener noreferrer">The New Stack, "Vibe coding is passé"</a> (2026.2.10), <a href="https://martinfowler.com/bliki/VibeCoding.html" target="_blank" rel="noopener noreferrer">Martin Fowler, VibeCoding</a></li>
+    <li>Cursor가 VS Code 기반이라는 점: <a href="https://www.morphllm.com/cursor-vibe-coding" target="_blank" rel="noopener noreferrer">Morph, Cursor Vibe Coding</a></li>
+    <li>Collins 사전 2025년 올해의 단어: <a href="https://uxcel.com/glossary/vibe-coding" target="_blank" rel="noopener noreferrer">Uxcel, What is vibe coding?</a></li>
+    <li>"The hottest new programming language is English" (2023.1.24): <a href="https://quoteinvestigator.com/2024/10/20/hottest-program/" target="_blank" rel="noopener noreferrer">Quote Investigator</a></li>
+    <li>Agentic Engineering 제안(2026.2): <a href="https://thenewstack.io/?p=22814879" target="_blank" rel="noopener noreferrer">The New Stack</a></li>
+    <li>22~25세 개발자 고용 감소와 암묵지 설명: <a href="https://www.constellationr.com/insights/news/stanford-study-ai-eating-entry-level-jobs" target="_blank" rel="noopener noreferrer">Constellation Research, Stanford 연구 요약</a>, <a href="https://getcoai.com/news/ai-automation-hits-younger-workers-12x-harder-than-older-ones" target="_blank" rel="noopener noreferrer">CO/AI</a></li>
+    <li>금리 요인과 후속 분석: <a href="https://newsletter.pragmaticengineer.com/p/software-engineering-job-openings" target="_blank" rel="noopener noreferrer">The Pragmatic Engineer</a>, <a href="https://workrisenetwork.org/research-summary/interest-rates-alone-do-not-explain-hiring-declines-ai-exposed-occupations" target="_blank" rel="noopener noreferrer">WorkRise, Stanford Digital Economy Lab 후속 분석 요약</a>, <a href="https://techstrong.ai/?p=61466" target="_blank" rel="noopener noreferrer">Techstrong.ai</a></li>
+    <li>Matt Garman 발언: <a href="https://www.techradar.com/pro/the-dumbest-thing-ive-ever-heard-aws-ceo-slams-plans-for-ai-to-replace-junior-human-workers" target="_blank" rel="noopener noreferrer">TechRadar</a>, <a href="https://gigazine.net/gsc_news/en/20250822-aws-ceo-ai-replacing-staff-dumbest-idea" target="_blank" rel="noopener noreferrer">GIGAZINE</a></li>
+    <li>AI Studio Build Mode의 Firebase 통합: <a href="https://firebase.google.com/docs/ai-assistance/ai-studio-integration?hl=en" target="_blank" rel="noopener noreferrer">Firebase 공식 문서</a></li>
+    <li>장하석 · 최재천 대담: <a href="https://www.youtube.com/watch?v=HYkXmBCHtTE" target="_blank" rel="noopener noreferrer">「최재천의 아마존」 AI와 교육의 미래</a></li>
+    <li>82개 테스트와 첫 실제 자료 시험 장면: <a href="https://tonykks.github.io/vibe-coding-first-steps/videos/solo-html-agent.html" target="_blank" rel="noopener noreferrer">「고칠수록 내 것이 되는 강의자료」 설명 페이지</a></li>
+  </ol>
+    <footer><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer>
+  </article>
+<script>
+(function(){
+  /* 기본은 항상 밝은 화면(빔프로젝터·녹화용). 어두운 화면은 버튼으로만 바꾸고, 이 브라우저에 기억한다. */
+  var root=document.documentElement, btn=document.getElementById('mode');
+  function isDark(){return root.getAttribute('data-theme')==='dark';}
+  function paint(){var d=isDark();root.classList.toggle('is-dark',d);if(btn)btn.setAttribute('aria-label',d?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+  try{var s=localStorage.getItem('vcfs-theme');if(s==='dark')root.setAttribute('data-theme','dark');}catch(e){}
+  paint();
+  if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
+  /* 목차: 지금 보고 있는 장면 표시 */
+  var links=[].slice.call(document.querySelectorAll('aside a'));
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
+    document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>

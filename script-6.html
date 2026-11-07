@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<!-- 이 파일은 build.py가 src/에서 만듭니다. 직접 고치지 마세요. -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="바이브코딩의 첫걸음 강연 스크립트: 6부 되새김 — 필요할 때 오케스트레이터가 되려면">
+  <title>6부 되새김 — 필요할 때 오케스트레이터가 되려면 | 바이브코딩의 첫걸음 스크립트</title>
+  <link rel="stylesheet" href="css/lecture.css">
+</head>
+<body class="book">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/>
+<g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g>
+<g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g>
+<path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg>
+  <header class="topbar">
+    <img class="face" alt="강연자 캐리커처" src="images/face.png">
+    <h1><a href="index.html">바이브코딩의 첫걸음 · 스크립트</a></h1>
+<button class="mode" id="mode" type="button" aria-label="어두운 화면으로 보기">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+    </button>
+  </header>
+  <article class="bookwrap">
+    <a class="back" href="index.html#p6">← 강연 화면으로 돌아가기</a>
+    <div class="kicker">발표 스크립트 · 6부</div>
+    <h1>되새김 — 필요할 때 오케스트레이터가 되려면</h1>
+
+    <div class="kicker">1 · 화두로 돌아가기</div>
+    <h2 id="back">바이브코딩은 코드를 몰라도 되게 해 주지만, 일을 몰라도 되게 해 주지는 않습니다</h2>
+    <p>처음에 이 문장으로 시작했습니다. 이제 오늘 본 장면들을 이 문장에 다시 대어 보겠습니다.</p>
+    <p>3부에서 같은 앱을 세 가지 도구로 만들었습니다. 어느 도구가 더 잘 만들었는지 판단한 것은 그 앱으로 수업할 사람이었습니다. 4부에서 여섯 에이전트가 기획하고, 구현하고, 검증했습니다. 그래도 마지막에 하나하나 직접 시험한 것은 사람이었습니다. 자동 테스트 82개가 모두 통과했는데도 "실제 강의자료로는 한 번도 돌려 보지 않았다"며 멈춘 것은 코드 실력이 아니라 그 도구로 무엇을 하려는지 아는 마음이었습니다. 5부에서 25년 전 매출채권 표로 연령분석을 시킬 수 있었던 것도, 같은 기술을 재고와 공매도로 옮길 생각을 한 것도 업무에 대한 앎이었습니다.</p>
+    <p>1부에서 장하석 교수의 말을 들었습니다. 계산기를 써도 계산의 원리는 알아야 한다. 오늘 장면들이 그 말의 실제 모습입니다. 업무를 모르면서 AI로 결과만 뽑는 것은, 사칙연산을 모르면서 계산기만 쓰는 것과 같습니다. 계산기가 있을 때는 그럭저럭 되는 것 같지만, 계산기가 없는 자리, 결과가 이상한 자리에서는 아무것도 할 수 없습니다. 코드는 AI가 읽고, 결과는 내가 읽습니다. 결과를 읽을 수 있으려면 일을 알아야 합니다.</p>
+
+    <div class="kicker">2 · 필요할 때</div>
+    <h2 id="size">작은 일은 작게, 중간 일은 중간으로, 큰일은 크게</h2>
+    <p>그렇다고 모든 일을 여섯 에이전트로 할 필요는 없습니다. 채팅창에서 바이브코딩을 잘하시는 분들은 대부분 원하는 것을 아주 구체적으로 알고 있습니다. 한두 번 고쳐 쓰고 버릴 결과물이라면 지금의 방식이 맞습니다. 같은 것을 계속 고치고 키워야 한다면 내 컴퓨터로 내려받아 데스크톱 앱으로 이어 갑니다. 기획과 구현과 검증을 나눠야 할 만큼 일이 크다면, 그때 IDE에 여러 에이전트를 앉히고 하네스로 잇습니다.</p>
+    <p>어느 계단에서 일할지는 일의 크기가 정합니다. 그것을 고르는 데 네 가지 질문이 도움이 됩니다. 이 일이 얼마나 자주 되풀이되는가. 얼마나 오래 고치고 키워야 하는가. 여기서 얻은 경험을 다음에 다시 쓸 것인가. 검토하고 나눠 맡길 AI가 여럿 필요한가.</p>
+    <p>카파시가 말한 오케스트레이터는 언제나 여럿을 지휘하는 사람이 아니라, 필요할 때 여럿을 불러 지휘할 줄 아는 사람이라고 저는 생각합니다. 혼자 맡겨도 될 일은 혼자 맡기고, 나눠야 할 일은 나눠 맡기는 판단. 그 판단이 오케스트레이터의 일입니다.</p>
+
+    <div class="kicker">3 · 지금부터</div>
+    <h2 id="now">먼저 IDE에서 사칙연산을 익히고, 그다음 계산기를 쓰십시오</h2>
+    <p>Claude Code의 능력은 정말 상상을 넘습니다. 승인 한 번에 로그인과 데이터베이스 설정을 끝내는 것을 보면 감탄이 나옵니다. 그런데 어떻게 돌아가는지 모르는 채 결과만 받으면, AI가 다 해 준다는 편리함이 사람이 알아야 할 기회를 가져갑니다. 시간이 갈수록 AI에 기대게 됩니다.</p>
+    <p>그래서 권합니다. 지금부터라도 IDE에서 작아도 끝까지 이어지는 일 하나를 직접 해 보십시오. 사람이 할 세 가지, 무엇을 시킬지 내 말로 정하기, 결과가 어떻게 나와야 하는지 기준 세우기, 결과를 실제로 시험하기를 내 일 하나에서 몸으로 해 보는 것입니다. 일이 돌아가는 방향을 경험으로 알게 되면, 그다음에 Claude나 Genspark 같은 서비스의 개발 템플릿으로 기간을 줄이는 것도 아주 좋은 선택이 됩니다. 사칙연산을 알고 쓰는 계산기가 가장 강력합니다.</p>
+    <p>시작은 네 문장이면 됩니다.</p>
+    <ol>
+      <li>나는 반복해서 ______ 하는 일이 불편하다.</li>
+      <li>내가 넣어 줄 자료는 ______ 이다.</li>
+      <li>작업이 끝나면 ______ 이 나왔으면 좋겠다.</li>
+      <li>제대로 되었는지는 ______ 로 확인하겠다.</li>
+    </ol>
+    <p>저라면 이렇게 적겠습니다. 나는 전에 본 영상에서 필요한 내용을 다시 찾는 일이 불편하다. 내가 넣어 줄 자료는 영상 링크다. 끝나면 구간별 요약과 전체 요약, 검색할 수 있는 목록이 나왔으면 좋겠다. 제대로 되었는지는 요약에서 찾은 내용을 원래 영상의 그 장면과 비교해서 확인하겠다. 이 정도만 적어도 코딩 에이전트에게 무엇을 부탁할지 출발점이 생깁니다. 처음부터 모든 기능을 넣지 말고, 자료 하나를 넣어 원하는 결과 하나가 나오는지부터 보십시오.</p>
+    <p>그리고 이 말씀을 드리고 싶습니다. 정년이 되면 일을 내려놓습니다. 그러나 업무지식까지 내려놓을 필요는 없습니다. 오래 해 온 일에서 쌓인 그 앎이, 이제는 코딩 에이전트를 지휘하는 가장 확실한 힘이 됩니다. 그 지식을 좋아하는 일에 다시 쓰는 시대입니다.</p>
+    <p class="takeaway">업무를 아는 사람이 AI를 협력자로 삼으면, AI 시대는 나의 잠재력을 끝까지 끌어내는 시대가 됩니다.</p>
+    <footer><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer>
+  </article>
+<script>
+(function(){
+  /* 기본은 항상 밝은 화면(빔프로젝터·녹화용). 어두운 화면은 버튼으로만 바꾸고, 이 브라우저에 기억한다. */
+  var root=document.documentElement, btn=document.getElementById('mode');
+  function isDark(){return root.getAttribute('data-theme')==='dark';}
+  function paint(){var d=isDark();root.classList.toggle('is-dark',d);if(btn)btn.setAttribute('aria-label',d?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+  try{var s=localStorage.getItem('vcfs-theme');if(s==='dark')root.setAttribute('data-theme','dark');}catch(e){}
+  paint();
+  if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
+  /* 목차: 지금 보고 있는 장면 표시 */
+  var links=[].slice.call(document.querySelectorAll('aside a'));
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
+    document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<!-- 이 파일은 build.py가 src/에서 만듭니다. 직접 고치지 마세요. -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="바이브코딩의 첫걸음 강연 스크립트: 2부 맡기기에서 책임지기로 — 바이브코딩과 Agentic Engineering">
+  <title>2부 맡기기에서 책임지기로 — 바이브코딩과 Agentic Engineering | 바이브코딩의 첫걸음 스크립트</title>
+  <link rel="stylesheet" href="css/lecture.css">
+</head>
+<body class="book">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/>
+<g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g>
+<g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g>
+<path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg>
+  <header class="topbar">
+    <img class="face" alt="강연자 캐리커처" src="images/face.png">
+    <h1><a href="index.html">바이브코딩의 첫걸음 · 스크립트</a></h1>
+<button class="mode" id="mode" type="button" aria-label="어두운 화면으로 보기">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+    </button>
+  </header>
+  <article class="bookwrap">
+    <a class="back" href="index.html#p2">← 강연 화면으로 돌아가기</a>
+    <div class="kicker">발표 스크립트 · 2부</div>
+    <h1>맡기기에서 책임지기로 — 바이브코딩과 Agentic Engineering</h1>
+    <p>1부에서 바이브코딩이라는 말을 만든 사람이 1년 만에 Agentic Engineering이라는 새 이름을 꺼내는 장면을 보았습니다. 그렇다면 무엇이 그를 1년 만에 바꾸게 했을까요. 저는 그 답이 AI가 할 수 있는 일의 변화에 있다고 봅니다. 이 장에서는 AI를 쓰는 방식을 세 단계로 나누어 놓고, 그 위에 바이브코딩의 두 시점을 올려 보겠습니다.</p>
+
+    <div class="kicker">1 · AI 활용 3단계</div>
+    <h2 id="stages">답을 알려 주는 AI에서, 실제 일을 하는 AI로</h2>
+    <p>인류는 농업사회에서 산업사회로, 다시 정보화사회로 왔습니다. 그리고 지금 우리는 인공지능이 사회 전반을 바꾸는 전환기를 지나고 있습니다. 그 변화가 일반인에게 성큼 다가온 사건은 2022년 11월 30일, OpenAI가 ChatGPT를 공개한 날이었습니다. 생성형 AI는 그전에도 있었지만, ChatGPT는 그것을 연구실에서 우리의 일상으로 끌어냈습니다.</p>
+    <p>그 뒤 불과 몇 년 사이에 AI에게 맡길 수 있는 일의 범위가 계속 넓어졌습니다. 이 변화를 이해하기 쉽게 세 가지로 나누어 보겠습니다.</p>
+    <p><b>첫째는 대화형 AI입니다.</b> 사람이 묻고 AI가 답합니다. "제주도 2박 3일 여행 일정을 짜 줘"라고 하면 일정표를 보여 줍니다.</p>
+    <p><b>둘째는 추론형 AI입니다.</b> 문제를 여러 단계로 나누어 따져 보고 해결책을 찾는 능력이 강해졌습니다. 예산이 50만 원이고, 동행자의 나이와 이동 수단, 숙소 위치까지 생각해야 한다면 여러 조건을 비교하고 계산해 더 알맞은 계획을 내놓습니다.</p>
+    <p><b>셋째는 에이전틱 AI입니다.</b> 계획에서 그치지 않고, 연결된 도구와 서비스를 써서 실제로 일을 합니다. 도구와 권한이 연결되어 있다면 항공편과 숙소를 검색하고, 예약할 수 있는 상품을 비교하고, 내 승인을 받아 예약까지 진행합니다.</p>
+    <p>답을 알려 주는 AI에서, 문제를 해결하는 AI로, 그리고 실제 일을 하는 AI로 쓰임새가 넓어진 것입니다. 다만 이것은 학계가 합의한 시대 구분이 아닙니다. 지금도 세 가지는 함께 쓰입니다. AI가 할 수 있는 일이 어떻게 넓어졌는지 보기 위한 구분입니다.</p>
+    <p>여러분은 지금 AI를 어느 단계까지 쓰고 계십니까? 질문하고 답을 얻는 단계입니까, 복잡한 문제의 해결책을 함께 찾는 단계입니까, 아니면 실제 업무를 맡기고 계십니까?</p>
+    <p>한 가지 더 생각해 볼 것이 있습니다. 우리는 지금까지 다른 사람이 만들어 놓은 AI 서비스를 주로 써 왔습니다. 누군가 차려 놓은 밥상을 먹은 셈입니다. 그렇다면 이제는 내가 가장 잘 아는 업무, 매일 되풀이하는 일, 해결하고 싶은 문제를 AI에게 설명해서 내게 필요한 요리를 직접 만들어 볼 수는 없을까요. 그 방법 가운데 하나가 오늘의 바이브코딩입니다.</p>
+
+    <div class="kicker">2 · 두 시점</div>
+    <h2 id="two-points">AI가 할 수 있는 일이 달라지자, 사람이 할 일도 달라졌습니다</h2>
+    <p>이 세 단계 위에 바이브코딩의 두 시점을 올려놓아 보겠습니다.</p>
+    <p>2025년 2월, 카파시가 바이브코딩이라는 이름을 붙였을 때는 AI가 문제를 따져 보고 코드를 써내는 능력이 한창 강해지던 때였습니다. 말로 시키면 코드는 나왔습니다. 그러나 고치다 보면 깨지고, AI가 끝내 못 고치는 버그는 돌아가거나 이것저것 바꿔 보게 해야 했습니다. 그래서 그는 스스로 "한 번 쓰고 버릴 주말 프로젝트에 어울린다"고 선을 그었습니다. 맡기고 받아들이는 방식, 그것이 처음의 바이브코딩이었습니다.</p>
+    <p>그해 10월, 카파시는 자기가 공을 들인 프로젝트에서 Claude Code나 Codex 같은 코딩 에이전트의 도움을 받아 보려 했지만 "순수익으로 보면 도움이 안 됐다"고 말했습니다. 빡빡하게 맞물려야 하는 코드에서는 에이전트가 오히려 방해가 되었다는 것입니다. 같은 무렵 그는 지금은 "에이전트의 해"가 아니라 "에이전트의 10년"이라고도 했습니다.</p>
+    <p>그런데 두 달 남짓 지난 12월 26일, 그는 전혀 다른 글을 올립니다. "프로그래머로서 이렇게까지 뒤처졌다고 느낀 적이 없다." 그는 이 직업이 극적으로 재편되고 있다고 했고, 지금 배워야 할 것으로 에이전트, 서브에이전트, 프롬프트, 메모리, 권한, 도구 같은 낱말을 꼽았습니다. 10월에 본 것이 "아직 안 되는 에이전트"였다면, 12월에 느낀 것은 "그새 되어 버린 에이전트"였습니다. 두 달 사이에 무엇인가가 넘어간 것입니다.</p>
+    <p>그리고 2026년 2월, 바이브코딩 1주년에 그는 새 이름을 꺼냅니다. Agentic Engineering. 이제 대부분의 시간에 코드를 직접 쓰지 않고 에이전트를 지휘하고 감독한다는 뜻의 agentic, 그리고 거기에는 배울 수 있는 기술과 전문성이 있다는 뜻의 engineering입니다. 3월의 한 대담에서는 코드의 약 80퍼센트를 에이전트가 쓴다고 했습니다.</p>
+    <p>세 단계에 비추어 보면 이렇게 읽힙니다. AI가 따져 보고 코드를 써내던 시기의 이름이 바이브코딩이었고, AI가 도구를 쥐고 실제로 일을 해내는 시기의 이름이 Agentic Engineering입니다. 바이브코딩이 틀렸던 것이 아닙니다. AI가 한 계단 올라서자, 사람의 자리도 "맡기고 받아들이기"에서 "지휘하고 감독하기"로 한 계단 올라간 것입니다.</p>
+    <p>여기서 하나 짚어 둘 것이 있습니다. 카파시는 바이브코딩이라는 말의 뜻을 바꾼 것이 아닙니다. 바이브코딩은 지금도 처음 뜻 그대로, 코드를 읽지 않고 AI에게 맡기고 받아들이는 방식을 가리킵니다. 그는 그 말을 그대로 두고, 설계하고, 맡기고, 확인하고, 책임지는 방식에 새 이름을 붙였습니다. 사람들이 AI로 만든 것이면 무엇이든 바이브코딩이라고 부르게 되자, 가볍게 맡기는 일과 꼼꼼하게 지휘하는 일을 나누어 부를 필요가 생겼던 것이라고 저는 봅니다.</p>
+    <p class="note">덧붙임: 3단계와 두 시점을 겹쳐 놓은 것은 강연자의 해석입니다. 카파시의 10월·12월·2월·3월 발언은 1부 읽을거리 「이름을 붙인 사람」의 출처에 정리되어 있습니다.</p>
+
+    <div class="kicker">3 · 같은 말, 세 사람</div>
+    <h2 id="three-people">같은 바이브코딩, 서 있는 자리에 따라 뜻이 다릅니다</h2>
+    <p>1부에서 같은 말이 코드를 읽는 사람과 못 읽는 사람에게 다르게 들렸다고 했습니다. 여기에 한 사람을 더해 보겠습니다.</p>
+    <p><b>전문 개발자</b>에게 바이브코딩은 편리하지만 조심스러운 말입니다. 결과에 책임을 져야 하기 때문입니다. 그래서 AI에게 맡기되 코드를 다 봅니다. 고칠 곳이 보이면 짚어서 고치게 합니다. 그가 "AI에게 맡기니 낫더라"고 말할 수 있는 것은, 그 결과를 검증할 수 있기 때문입니다.</p>
+    <p><b>처음 듣는 비개발자</b>에게 바이브코딩은 "말만 하면 다 만들어 준다"로 들립니다. 몇 분 만에 화면이 생기고 버튼이 움직이니 놀랍습니다. 그런데 맞는지 틀린지 판단할 근거가 없으면 그럴듯한 결과를 그냥 믿을 수밖에 없습니다.</p>
+    <p><b>업무 전문가</b>는 다릅니다. 코드는 한 줄도 몰라도, 결과가 어떻게 나와야 하는지는 압니다. 오랫동안 그 일을 해 왔기 때문입니다. 그래서 바이브코딩으로 만든 결과물을 보고 이해하고, 시험하고, 고칠 곳을 찾아냅니다. 숫자를 넣어 보고, 예외 경우를 넣어 보고, 실제 자료로 돌려 봅니다. 그리고 거기서 멈추지 않고, 코딩 에이전트의 도움을 받아 다음에는 무엇을 더할지 정해 더 나은 방향으로 키워 갑니다.</p>
+    <p>전문 개발자가 코드를 보고 하는 일을, 업무 전문가는 결과를 보고 합니다.</p>
+    <p>이제 두 이름을 이 세 사람 위에 겹쳐 보겠습니다. 바이브코딩은 지금도 처음 뜻 그대로, 코드를 읽지 않고 AI에게 맡기고 받아들이는 방식입니다. 여기에 "설계하고, 맡기고, 확인하고, 책임진다"를 더한 것이 Agentic Engineering입니다.</p>
+    <p>우리는 코드를 모릅니다. 그래서 코드는 AI를 믿고 맡깁니다. 그러나 업무는 압니다. 그래서 결과는 내가 확인하고 책임집니다. 코드를 다 보는 전문 개발자처럼은 못 하더라도, 결과를 보고 확인하고 책임지는 자리에는 설 수 있습니다. 이 강연에서 말하는 업무 전문가의 바이브코딩은 그 자리에서 시작합니다.</p>
+    <p>바이브코딩에서 Agentic Engineering으로 가는 길, 우리는 지금 그 첫걸음에 서 있습니다. 오늘 강연의 제목이 「바이브코딩의 첫걸음」인 까닭입니다.</p>
+    <p class="takeaway">그렇다면 업무 전문가는 어디에서, 어떻게 이 일을 시작하면 될까요? 3부에서는 많은 분들이 이미 해 본 웹의 바이브코딩에서 출발해, 내 컴퓨터로 옮겨 오는 길을 따라가 보겠습니다.</p>
+    <footer><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer>
+  </article>
+<script>
+(function(){
+  /* 기본은 항상 밝은 화면(빔프로젝터·녹화용). 어두운 화면은 버튼으로만 바꾸고, 이 브라우저에 기억한다. */
+  var root=document.documentElement, btn=document.getElementById('mode');
+  function isDark(){return root.getAttribute('data-theme')==='dark';}
+  function paint(){var d=isDark();root.classList.toggle('is-dark',d);if(btn)btn.setAttribute('aria-label',d?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+  try{var s=localStorage.getItem('vcfs-theme');if(s==='dark')root.setAttribute('data-theme','dark');}catch(e){}
+  paint();
+  if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
+  /* 목차: 지금 보고 있는 장면 표시 */
+  var links=[].slice.call(document.querySelectorAll('aside a'));
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
+    document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>
