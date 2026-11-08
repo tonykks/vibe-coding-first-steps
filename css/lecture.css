@@ -170,7 +170,7 @@ footer .mark{width:16px;height:16px;opacity:.9}
 .topbar .where~.mode{margin-left:0}
 .bookwrap>.kicker{margin-top:22px}
 .bookwrap>.back+.kicker{margin-top:0}
-.bookwrap .kicker+h2{margin-top:-12px}
+.bookwrap .kicker+h2{margin-top:-12px;scroll-margin-top:calc(var(--barh) + 44px)}
 
 .scene>*{min-width:0}
 .shot{overflow:hidden;border-radius:10px}
