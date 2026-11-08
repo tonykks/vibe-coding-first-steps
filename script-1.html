@@ -285,7 +285,7 @@
   function mark(id){links.forEach(function(a){if(a.hash==='#'+id){a.setAttribute('aria-current','location');follow(a);}else a.removeAttribute('aria-current');});}
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
-    document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
+    document.querySelectorAll('.scene,.part,.shell .bookwrap h2[id]').forEach(function(s){io.observe(s);});
   }
 })();
 </script>

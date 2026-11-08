@@ -64,11 +64,17 @@ def build():
     shell = includes(read(SRC / "script-page.html"))
     for p in sorted((SRC / "scripts").glob("*.html")):
         text = read(p)
-        head = re.match(r"<!-- title: (.*?) \| back: (\S*) -->\n", text)
+        head = re.match(r"<!-- title: (.*?) \| back: (\S*?)( \| toc)? -->\n", text)
         if not head:
             raise SystemExit(f"[중지] {p.name} 첫 줄에 <!-- title: … | back: … --> 이 없습니다.")
         title, back = head.group(1), head.group(2)
         page = shell.replace("@title", title).replace("@back", back)
+        if head.group(3):  # 왼쪽 목차가 있는 읽을거리: h2 제목으로 목차를 만든다
+            nav = "\n".join(f'      <a class="part-link" href="#{i}">{strip_tags(t)}</a>'
+                            for i, t in re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', text))
+            page = page.replace('<article class="bookwrap">',
+                                f'<div class="shell">\n    <aside><nav aria-label="목차">\n{nav}\n    </nav></aside>\n    <main>\n  <article class="bookwrap">', 1)
+            page = page.replace("</article>", "</article>\n    </main>\n  </div>", 1)
         page = re.sub(r"^[ \t]*<!-- @body -->", lambda m: text[head.end():], page, flags=re.M)
         outs[p.name] = finish(page)
     return outs, len(sections)
