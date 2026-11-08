@@ -9,8 +9,8 @@
         <h2>"10분 타이머 만들어 줘" — 한 문장이면 시작됩니다</h2>
         <div class="flow"><span>10분 타이머</span><i>→</i><span>숫자를 크게</span><i>→</i><span>검은 바탕에 노란 숫자</span><i>→</i><span>마지막 10초는 빨간색</span><i>→</i><span>5분·20분도, 알림음도…</span></div>
         <ul>
-          <li>써 보면서 새 요구가 계속 생김 = <b>반복 개발</b>(작게 만들고 써 보고 고치기)</li>
-          <li>그런데 배경음악을 넣었더니 일시정지가 고장, 고쳤더니 알림음이 사라짐 = <b>회귀 결함</b></li>
+          <li>써 보면서 새 요구가 계속 생기니, 작게 만들고 써 보고 고치기를 되풀이하는 것이 <b>반복 개발</b></li>
+          <li>그런데 배경음악을 넣었더니 일시정지가 고장 나고, 그걸 고쳤더니 알림음이 사라짐. 이렇게 멀쩡하던 기능이 고장 나는 것이 <b>회귀 결함</b></li>
           <li>그래서 "만들어 줘"에서 <b>"기존 기능은 그대로 두고 고쳐 줘, 고친 뒤 모두 검사해 줘"</b>로 말이 바뀜</li>
         </ul>
         <p class="key">프로그램을 만드는 것과, 원하는 프로그램을 제대로 완성하는 것은 다른 문제입니다.</p>
@@ -62,15 +62,15 @@
         <div class="no">3부 · 03 웹의 벽</div>
         <h2>수정이 쌓이면 웹 환경의 한계가 먼저 보입니다</h2>
         <ol>
-          <li><b>통째로 다시 쓰기</b>: 두 줄만 고쳐 달라 해도 파일 전체를 다시 쓰다 이전 조건이 빠짐</li>
-          <li><b>내 파일에 닿지 못함</b>: 내 컴퓨터의 음악·이미지를 다루기 어려움</li>
-          <li><b>미리보기 ≠ 배포</b>: 미리보기에서 되던 앱이 배포하면 멈춤(음악 버튼 먹통, 로그인 창 0.1초)</li>
-          <li><b>코드 밖 설정</b>: GitHub 배포 설정, Firebase 승인 도메인은 웹 속 AI가 못 만짐</li>
-          <li><b>토큰과 맥락</b>: 대화가 길어질수록 읽을 양이 늘어 비용이 늘고 앞의 조건을 놓침</li>
+          <li>두 줄만 고쳐 달라 해도 파일 전체를 <b>통째로 다시 쓰다가</b> 이전 조건이 빠짐</li>
+          <li>웹 속 AI는 <b>내 파일에 닿지 못해</b> 내 컴퓨터의 음악·이미지를 다루기 어려움</li>
+          <li><b>미리보기와 배포는 달라서</b> 미리보기에서 되던 앱이 배포하면 멈춤(음악 버튼 먹통, 로그인 창 0.1초)</li>
+          <li>GitHub 배포 설정, Firebase 승인 도메인 같은 <b>코드 밖 설정</b>은 웹 속 AI가 못 만짐</li>
+          <li>대화가 길어질수록 AI가 읽을 <b>토큰과 맥락</b>이 늘어 비용이 늘고 앞의 조건을 놓침</li>
         </ol>
         <div class="cols">
           <div class="box"><h3>전체 다시 쓰기</h3><p>전구 하나 갈려고 집 전체 배선을 다시 깔기</p></div>
-          <div class="box hl"><h3>차이만 고치기(Diff Patch)</h3><p>나간 전구 하나만 갈기 — 내 컴퓨터의 파일이면 AI가 필요한 줄만 고침</p></div>
+          <div class="box hl"><h3>차이만 고치기(Diff Patch)</h3><p>나간 전구 하나만 갈기. 내 컴퓨터의 파일이면 AI가 필요한 줄만 고침</p></div>
         </div>
         <p class="key">웹은 가능성을 열어 주고, 내 컴퓨터는 통제권을 줍니다.</p>
         <a class="more" href="chat-to-ide.html" target="_blank" rel="noopener">왜 웹에서 내 PC로 옮겨 가는가 — 채팅에서 IDE로 →</a>
@@ -96,9 +96,9 @@
         <div class="flow"><span>① 웹에서 요구사항으로 화면과 구조 만들기</span><i>→</i><span>② 내 컴퓨터로 내려받기</span><i>→</i><span>③ 데스크톱 앱의 Codex·Claude Code로 이어서 고치기</span></div>
         <ul>
           <li>단순하지 않은 일일수록 이 순서. 한두 번 쓰고 버릴 결과물은 웹(채팅창·AI Studio)으로 충분</li>
-          <li>세 회사 모두 같은 길: OpenAI(ChatGPT·Codex), Google(Gemini·AI Studio·Antigravity), Anthropic(Claude·Claude Code)</li>
-          <li>데스크톱 앱 = 웹과 IDE 사이의 다리. 웹과 같은 채팅창 모양으로 <b>내 폴더 안의 파일</b>을 직접 읽고 고침</li>
-          <li>"현재 프로젝트를 보고 종료 알림음 부분만 고쳐 줘. 나머지는 그대로." — 이렇게 말할 수 있게 됨</li>
+          <li>OpenAI(ChatGPT·Codex), Google(Gemini·AI Studio·Antigravity), Anthropic(Claude·Claude Code) 세 회사 모두 같은 길</li>
+          <li>데스크톱 앱은 웹과 IDE 사이의 다리. 웹과 같은 채팅창 모양으로 <b>내 폴더 안의 파일</b>을 직접 읽고 고침</li>
+          <li>"현재 프로젝트를 보고 종료 알림음 부분만 고쳐 줘. 나머지는 그대로."라고 말할 수 있게 됨</li>
         </ul>
         <a class="video" href="videos/jtu-claude-desktop.html" target="_blank" rel="noopener">관광대 강의 준비 ② Claude 데스크톱 앱 이해하기</a>
         <p class="key">클라우드에서는 빠르게 시작하고, 내 컴퓨터에서는 꾸준히 고치고 키웁니다.</p>
@@ -125,14 +125,14 @@
         <div class="no">3부 · 05 구조 한 장</div>
         <h2>두뇌는 클라우드에, 손발은 앱에, 작업 공간은 내 폴더에</h2>
         <div class="cols">
-          <div class="box"><h3>두뇌 — AI 모델(LLM)</h3><p>인터넷 너머 회사의 컴퓨터(클라우드)에서 생각함</p></div>
-          <div class="box"><h3>손발 — 도구</h3><p>파일 읽기·쓰기, 명령 실행. 앱 안에 들어 있음</p></div>
-          <div class="box hl"><h3>작업 공간 — 내 폴더</h3><p>내가 허락한 폴더 안에서만 일함</p></div>
+          <div class="box"><h3>두뇌는 AI 모델(LLM)</h3><p>인터넷 너머 회사의 컴퓨터(클라우드)에서 생각함</p></div>
+          <div class="box"><h3>손발은 도구</h3><p>파일 읽기·쓰기, 명령 실행. 앱 안에 들어 있음</p></div>
+          <div class="box hl"><h3>작업 공간은 내 폴더</h3><p>내가 허락한 폴더 안에서만 일함</p></div>
         </div>
         <ul>
-          <li>웹 브라우저: 클라우드의 두뇌가 클라우드의 손발로 <b>클라우드 안 가상 공간</b>에 결과물을 만듦</li>
-          <li>데스크톱 앱·IDE: 클라우드의 두뇌가 <b>내 컴퓨터 폴더</b>에 결과물을 만듦</li>
-          <li>망가지면? 어제 상태로 되돌리는 기록 = <b><a href="git-github.html" target="_blank" rel="noopener">Git</a></b>, 그 기록을 온라인에 두는 곳 = <b>GitHub</b></li>
+          <li>웹 브라우저에서는 클라우드의 두뇌가 클라우드의 손발로 <b>클라우드 안 가상 공간</b>에 결과물을 만듦</li>
+          <li>데스크톱 앱·IDE에서는 클라우드의 두뇌가 <b>내 컴퓨터 폴더</b>에 결과물을 만듦</li>
+          <li>망가지면 어제 상태로 되돌릴 수 있게 기록해 두는 것이 <b><a href="git-github.html" target="_blank" rel="noopener">Git</a></b>, 그 기록을 온라인에 두는 곳이 <b>GitHub</b></li>
         </ul>
         <p class="key">AI가 내 컴퓨터에서 일한다고 두뇌까지 내 컴퓨터에 있는 것은 아닙니다. (7부에서 두뇌까지 들여오는 방법을 봅니다)</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
@@ -156,14 +156,14 @@
             <tr><td>왼쪽</td><td>파일 탐색기</td><td>프로젝트의 폴더와 파일 보기</td></tr>
             <tr><td>가운데</td><td>메모장</td><td>파일(소스코드) 열어 보기·고치기</td></tr>
             <tr><td>옆 대화창</td><td>ChatGPT 채팅창</td><td>AI 코딩 에이전트에게 우리말로 시키기</td></tr>
-            <tr><td>아래</td><td>명령 프롬프트</td><td>터미널: 문자로 명령을 내리고 결과 보기</td></tr>
+            <tr><td>아래</td><td>명령 프롬프트</td><td>터미널에서 문자로 명령을 내리고 결과 보기</td></tr>
           </tbody>
         </table></div>
         <ul>
           <li><b>실제로 쓰는 것은 채팅창 하나.</b> 나머지는 에이전트가 일하는 모습을 보는 곳</li>
           <li>대신 AI가 어느 폴더에 어떤 파일을 만드는지 눈으로 볼 수 있어 나쁘지 않음</li>
           <li>Antigravity IDE의 기본 에이전트에게 시켜도 데스크톱 앱과 같은 결과를 얻음</li>
-          <li>요즘 흐름: IDE 안에 AI 대화창(Agent)을 넣음 — VS Code(Copilot), Cursor, Antigravity(Gemini)</li>
+          <li>요즘은 VS Code(Copilot), Cursor, Antigravity(Gemini)처럼 IDE 안에 AI 대화창(Agent)을 넣는 흐름</li>
         </ul>
         <p class="say">그런데 일이 더 커지면, 에이전트 하나로 충분할까요? → 4부</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
