@@ -275,7 +275,14 @@
   if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
   /* 목차: 지금 보고 있는 장면 표시 */
   var links=[].slice.call(document.querySelectorAll('aside a'));
-  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  var nav=document.querySelector('aside nav');
+  function follow(a){ /* 표시된 목차 줄이 목차 칸 밖이면 목차를 함께 굴림 */
+    if(!nav||!a.offsetParent)return;
+    var n=nav.getBoundingClientRect(),r=a.getBoundingClientRect();
+    if(r.top<n.top||r.bottom>n.bottom)nav.scrollTop+=r.top-n.top-n.height/3;
+    if(r.left<n.left||r.right>n.right)nav.scrollLeft+=r.left-n.left-12;
+  }
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id){a.setAttribute('aria-current','location');follow(a);}else a.removeAttribute('aria-current');});}
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
     document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});

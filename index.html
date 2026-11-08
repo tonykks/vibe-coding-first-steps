@@ -137,7 +137,7 @@
           <div class="fold">
             <dl>
               <dt>Andrej Karpathy</dt><dd>안드레이 카파시. OpenAI 창립 멤버, Tesla 자율주행(Autopilot) AI 책임자를 지냈고, 스탠퍼드 딥러닝 강의 CS231n을 만든 사람입니다. 2024년 AI 교육 회사 Eureka Labs를 세웠고, 2026년 5월에는 Anthropic(Claude를 만든 회사)의 사전학습팀에 들어가 다시 연구 현장으로 돌아갔습니다.</dd>
-              <dt>Cursor</dt><dd><a href="images/cursor-ide.png" target="_blank" rel="noopener">개발자가 코드를 쓰는 프로그램(IDE)</a>에 AI 비서를 넣은 도구입니다. <a href="images/vscode-ide.png" target="_blank" rel="noopener">VS Code</a>를 바탕으로 만들었습니다. 바이브코딩은 이 IDE 안에서 태어났습니다.</dd>
+              <dt><a href="images/cursor-ide.png" target="_blank" rel="noopener">Cursor</a></dt><dd>개발자가 코드를 쓰는 프로그램(IDE)에 AI 비서를 넣은 도구입니다. <a href="images/vscode-ide.png" target="_blank" rel="noopener">VS Code</a>를 바탕으로 만들었습니다. 바이브코딩은 이 IDE 안에서 태어났습니다.</dd>
               <dt>전부 수락</dt><dd>AI가 코드를 고치면 무엇이 바뀌었는지 보여 주는 화면이 뜹니다. 보통은 읽고 받아들이는데, 그는 읽지 않고 "Accept All"을 눌렀습니다.</dd>
             </dl>
             <a class="more" href="script-1.html#origin" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
@@ -1109,7 +1109,14 @@
   if(btn)btn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}paint();});
   /* 목차: 지금 보고 있는 장면 표시 */
   var links=[].slice.call(document.querySelectorAll('aside a'));
-  function mark(id){links.forEach(function(a){if(a.hash==='#'+id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+  var nav=document.querySelector('aside nav');
+  function follow(a){ /* 표시된 목차 줄이 목차 칸 밖이면 목차를 함께 굴림 */
+    if(!nav||!a.offsetParent)return;
+    var n=nav.getBoundingClientRect(),r=a.getBoundingClientRect();
+    if(r.top<n.top||r.bottom>n.bottom)nav.scrollTop+=r.top-n.top-n.height/3;
+    if(r.left<n.left||r.right>n.right)nav.scrollLeft+=r.left-n.left-12;
+  }
+  function mark(id){links.forEach(function(a){if(a.hash==='#'+id){a.setAttribute('aria-current','location');follow(a);}else a.removeAttribute('aria-current');});}
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id);});},{rootMargin:'-15% 0px -75% 0px'});
     document.querySelectorAll('.scene,.part').forEach(function(s){io.observe(s);});
