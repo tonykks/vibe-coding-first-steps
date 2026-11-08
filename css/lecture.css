@@ -183,3 +183,4 @@ table.pair th:first-child,table.pair td:first-child{width:39%}
 table.pair th+th,table.pair td+td{border-left:1px solid var(--line)}
 @media (max-width:700px){table.pair th,table.pair td{padding:10px 12px}}
 .list-groups h3{margin:1.4em 0 .3em}.list-groups>div:first-child h3{margin-top:.4em}.list-groups ul{margin:0}
+@media (min-width:700px){table.fit th,table.fit td{white-space:nowrap}}
