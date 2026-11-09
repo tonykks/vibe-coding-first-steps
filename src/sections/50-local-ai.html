@@ -30,7 +30,7 @@
       <section class="scene" id="s5-2">
         <div class="no">5부 · 02 로컬 AI</div>
         <h2>두뇌까지 내 컴퓨터 안으로 — LM Studio와 Cline</h2>
-        <div class="flow"><span>① LM Studio 설치</span><i>→</i><span>② Hugging Face에서 내 PC 사양에 맞는 모델 받기</span><i>→</i><span>③ Antigravity IDE에 Cline 확장 설치</span><i>→</i><span>④ Cline에 LM Studio 모델 연결</span></div>
+        <div class="flow"><span>① LM Studio 설치</span><i>→</i><span>② Hugging Face에서 내 PC 사양에 맞는 모델 받기</span><i>→</i><span>③ VS Code에 Cline 확장 설치</span><i>→</i><span>④ Cline에 LM Studio 모델 연결</span></div>
         <div class="cols">
           <div class="box"><h3>데스크톱 앱의 구조</h3><p>두뇌는 클라우드, 손발과 작업 공간은 내 컴퓨터</p></div>
           <div class="box hl"><h3>로컬 AI</h3><p>두뇌·손발·작업 공간이 모두 내 컴퓨터. 그래서 자료가 밖으로 나가지 않음</p></div>
@@ -40,7 +40,7 @@
           <li>클라우드의 큰 모델보다 느리고 약하니, 작게 나눠 시키고 결과를 더 꼼꼼히 시험함</li>
           <li>설치 전에 회사 보안 규정부터 확인</li>
         </ul>
-        <p class="ph">시연 영상 자리. LM Studio 설치부터 Cline 연결까지(새 녹화 ② 앞부분)</p>
+        <a class="video" href="videos/lmstudio-local-ai.html" target="_blank" rel="noopener">내 컴퓨터 안의 AI 두뇌 [LM Studio 설치부터 Cline 연결까지]</a>
         <p class="key">두뇌까지 내 컴퓨터에 두면, 자료는 내 책상을 떠나지 않습니다.</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
           <div class="fold">
@@ -48,7 +48,7 @@
               <dt>로컬 AI</dt><dd>인터넷 너머 회사의 컴퓨터가 아니라 내 컴퓨터에서 돌아가는 AI 모델입니다. 공개된 모델을 내려받아 씁니다.</dd>
               <dt>LM Studio</dt><dd>내 컴퓨터에서 AI 모델을 내려받아 돌리는 무료 프로그램. 내려받은 모델을 다른 프로그램이 쓸 수 있게 열어 줍니다.</dd>
               <dt>Hugging Face</dt><dd>공개된 AI 모델이 모여 있는 곳. LM Studio 안에서 바로 찾아 내려받을 수 있습니다.</dd>
-              <dt>Cline</dt><dd>IDE에 설치하는 코딩 에이전트 확장. 4부의 확장처럼 IDE 안 대화창에서 일하는데, 두뇌로 클라우드 모델 대신 LM Studio에서 돌리는 내 컴퓨터의 모델을 쓸 수 있습니다.</dd>
+              <dt>Cline</dt><dd>IDE에 설치하는 코딩 에이전트 확장. 4부의 확장처럼 IDE 안 대화창에서 일하는데, 두뇌로 클라우드 모델 대신 LM Studio에서 돌리는 내 컴퓨터의 모델을 쓸 수 있습니다. 이번 시연에서는 VS Code에 설치했습니다.</dd>
             </dl>
             <p>설치하다 막히면 3부에서처럼 화면을 캡처해 아무 채팅창에 보여 주며 안내해 달라고 하면 됩니다. 이때 캡처에 회사 자료가 보이지 않게 합니다.</p>
             <a class="more" href="script-5.html#local-ai" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
@@ -69,12 +69,11 @@
           </tbody>
         </table></div>
         <ul>
-          <li>로컬 AI에게 연령분석 프로그램을 만들게 하고, 실제 자료는 그 프로그램이 처리</li>
-          <li>폴더에 월별 판매·수금 파일만 넣으면 연령분석 표가 나오게 함. 매번 프롬프트를 붙여 넣고 파일을 올리지 않아도 됨</li>
-          <li>결과가 맞는지는 거래처별 합계를 매출채권 잔액과 맞춰 보고, 몇 곳은 손으로 셈해 봄. 어디가 이상한지 알아보는 것은 그 일을 해 본 사람</li>
+          <li>로컬 AI로 연령분석 프로그램을 만들게 했지만, 그래픽 메모리 8GB로는 완성하지 못함</li>
+          <li>거래처별이 아니라 회사 전체 판매로 계산한 잘못을 알아본 것은 연령분석을 해 본 눈</li>
+          <li>현실적인 길은 둘. 클라우드 에이전트에게 자료 없이 규칙만 주고 만들게 하기, 회사라면 사내 AI 서버에 Cline을 연결하기</li>
           <li>같은 기술은 재고에도, 누구나 아는 종목의 공매도 잔고에도 그대로 쓰임</li>
         </ul>
-        <p class="ph">시연 영상 자리. 로컬 AI가 연령분석 프로그램을 만들고, 프로그램이 월별 파일을 처리하는 장면(새 녹화 ② 뒷부분)</p>
         <p class="key">업무를 알면, 하나의 기술이 다른 문제를 푸는 열쇠가 됩니다.</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
           <div class="fold">
@@ -82,6 +81,7 @@
               <dt>연령분석</dt><dd>남아 있는 잔액이 생긴 지 얼마나 되었는지 기간별(30일 이내, 31~60일…)로 나누어 보는 분석. 회계에서 오래된 채권과 재고를 찾는 데 씁니다.</dd>
               <dt>선입선출(FIFO)</dt><dd>먼저 들어온 것이 먼저 나간다고 보는 방법. 수금이 들어오면 가장 오래된 판매분부터 갚은 것으로 칩니다.</dd>
               <dt>공매도</dt><dd>주식을 빌려서 먼저 판 뒤 나중에 사서 갚는 거래. 갚지 않은 수량이 오래 쌓일수록 상환 압력이 커집니다.</dd>
+              <dt>로컬 AI에 필요한 사양</dt><dd>업무에 쓰려면 그래픽 메모리 16GB, 넉넉하게는 24GB 이상. 이번 시연의 8GB로는 큰 모델이 1초에 몇 글자밖에 만들지 못했습니다.</dd>
             </dl>
             <p>시연 자료의 거래처 이름은 모두 가짜입니다. 공매도 분석은 투자 추천이 아니라 분석 도구 시연입니다.</p>
             <p>채팅창에 자료 두 개를 주고 시켜도 분석은 나옵니다. 그런데 매달 같은 일을 하려면 프로그램으로 만들어 두는 편이 낫습니다. 프로그램은 매번 같은 규칙으로 계산하고, 규칙이 틀리면 한 곳만 고치면 되기 때문입니다.</p>

@@ -40,7 +40,7 @@
         <ul>
           <li><b>실제로 쓰는 것은 채팅창 하나.</b> 나머지는 에이전트가 일하는 모습을 보는 곳</li>
           <li>AI가 어느 폴더에 어떤 파일을 만들고 고치는지 눈으로 볼 수 있음</li>
-          <li>요즘 IDE는 안에 AI 대화창을 품음. VS Code에는 Copilot, Cursor에는 자체 AI, Antigravity에는 Gemini 기반 기본 에이전트</li>
+          <li>요즘 IDE는 안에 AI 대화창을 품음. <a href="images/vscode-ide.png" target="_blank" rel="noopener">VS Code</a>에는 Copilot, <a href="images/cursor-ide.png" target="_blank" rel="noopener">Cursor</a>에는 자체 AI, <a href="images/antigravity-ide.png" target="_blank" rel="noopener">Antigravity</a>에는 Gemini 기반 기본 에이전트</li>
           <li>다른 회사의 에이전트도 확장으로 설치하면, 한 화면에 여럿이 함께 앉음</li>
         </ul>
         <div class="cols">
@@ -66,18 +66,18 @@
       <section class="scene" id="s4-3">
         <div class="no">4부 · 03 교차 검토</div>
         <h2>다른 회사의 에이전트에게 검토를 맡기면 무엇이 달라질까요</h2>
-        <div class="flow"><span>① A사 에이전트가 만듦</span><i>→</i><span>② B사 에이전트가 요구사항과 대조해 검토</span><i>→</i><span>③ 지적을 만든 쪽에 전달</span><i>→</i><span>④ 받아들일지는 사람이 정함</span></div>
+        <div class="flow row3"><span>① A사 에이전트가 만듦</span><i>→</i><span>② B사 에이전트가 요구사항과 대조해 테스트</span><i>→</i><span>③ A사 에이전트가 검토 의견을 따져 보고 수정</span></div>
         <ul>
           <li>결과물이 내 폴더에 있으니, 다른 회사의 에이전트도 같은 파일을 읽을 수 있음</li>
           <li>처음 요구사항을 함께 읽게 하면 코드의 실수뿐 아니라 요구한 대로 만들었는지까지 봄</li>
-          <li>대부분 더 나은 대안이 하나 이상 나오고, 만든 쪽도 맞는 지적이라고 인정하는 부분이 나옴</li>
-          <li>만든 쪽이 반대하는 지적도 있음. 두 의견을 나란히 놓고 사람이 고름</li>
+          <li>대부분 더 나은 대안이 하나 이상 나오고, A사 에이전트도 맞는 의견이라고 인정하는 부분이 나옴</li>
+          <li>A사 에이전트가 반대하는 의견도 있음. 두 의견을 나란히 놓고 사람이 고름</li>
         </ul>
-        <p class="key">에이전트 하나보다, 역할을 나눈 여럿이 더 나은 결과를 만듭니다.</p>
+        <p class="key">만드는 회사와 테스트하는 회사를 나누면, 한 회사가 놓친 곳이 보입니다.</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
           <div class="fold">
             <dl><dt>교차 검토</dt><dd>한 AI가 만든 결과를 다른 AI가 독립된 눈으로 다시 보는 것입니다. 사람의 일에서 작성자와 검토자를 다른 사람으로 두는 것과 같은 까닭입니다. 같은 회사의 AI끼리는 놓치는 곳이 겹치기 쉬워, 다른 회사의 AI를 검토자로 앉히면 다른 곳이 보입니다.</dd></dl>
-            <p>이렇게 말하면 됩니다. 검토를 맡길 때는 "요구사항 파일과 이 코드를 대조해서 문제와 더 나은 방법을 찾아 줘. 아직 고치지 말고 목록으로만 알려 줘." 만든 쪽에 전할 때는 "다른 에이전트의 검토 의견이야. 하나씩 맞는지 네 의견을 말해 줘."</p>
+            <p>이렇게 말하면 됩니다. 검토를 맡길 때는 "요구사항 파일과 이 코드를 대조해서 문제와 더 나은 방법을 찾아 줘. 아직 고치지 말고 목록으로만 알려 줘." A사 에이전트에게 전할 때는 "다른 에이전트의 검토 의견이야. 하나씩 맞는지 네 의견을 말해 줘."</p>
             <p>검토 의견이 많다고 모두 받아들일 필요는 없습니다. 내 요구사항과 내 일에 비추어 고를 것을 고르는 일이 사람의 몫입니다.</p>
             <a class="more" href="script-4.html#cross" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
           </div>
@@ -91,8 +91,8 @@
           <thead><tr><th></th><th>확장(Extension)</th><th>CLI</th></tr></thead>
           <tbody>
             <tr><td>일하는 곳</td><td>IDE 안 대화창</td><td>IDE 아래 터미널</td></tr>
-            <tr><td>방식</td><td>화면과 파일 변경을 보며 나와 대화하며 조정</td><td>정해진 지시와 파일을 기준으로 혼자 실행</td></tr>
-            <tr><td>맡기기 좋은 일</td><td>기획 조정, 중간 검토</td><td>구현 담당, 검증 담당</td></tr>
+            <tr><td>방식</td><td>나와 이야기하며 요구사항을 받음</td><td>지시서를 받아 코딩에 집중함</td></tr>
+            <tr><td>맡기기 좋은 일</td><td>기획, 검토</td><td>구현, 검증</td></tr>
           </tbody>
         </table></div>
         <ul><li>같은 Codex·Claude Code도 대화창(확장)과 터미널(CLI) 두 자리에 앉힐 수 있음</li><li>지능의 우열이 아니라 일하는 방식이 다르므로, 구현과 검증을 다른 자리에 앉힘</li></ul>
@@ -101,9 +101,8 @@
             <dl>
               <dt>확장(Extension)</dt><dd>기존 프로그램에 기능을 더하는 부가 프로그램. Chrome에 번역 확장을 설치하듯, IDE에 다른 회사 AI의 확장을 설치하면 그 AI를 IDE 안에서 씁니다.</dd>
               <dt>CLI</dt><dd>명령줄 인터페이스(Command Line Interface). 아이콘을 누르는 대신 문자로 명령해 프로그램을 쓰는 방식. 명령을 조합하거나 다른 프로그램에서 부르기 쉬워 자동화에 좋습니다. CLI는 AI 이름이 아니라 쓰는 방식입니다.</dd>
-              <dt>GUI</dt><dd>그래픽 사용자 인터페이스. 마우스로 아이콘을 누르는 익숙한 방식입니다.</dd>
             </dl>
-            <p>확장과 CLI가 늘 같은 대화 기록을 나누는 것은 아닙니다. 그래서 작업 내용은 대화가 아니라 프로젝트의 파일로 남겨 두는 것이 안전합니다.</p>
+            <p>확장과 CLI는 각자 따로 대화합니다. 같은 회사의 것이라도 한쪽이 나눈 이야기를 다른 쪽은 모릅니다. 그래서 주고받을 내용은 대화가 아니라 프로젝트의 파일로 남겨, 서로 그 파일을 읽게 합니다.</p>
             <a class="more" href="script-4.html#seats" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
           </div>
         </details>
@@ -111,7 +110,7 @@
 
       <section class="scene" id="s4-5">
         <div class="no">4부 · 05 여섯 자리</div>
-        <h2>Antigravity IDE에 차린 나만의 코딩 에이전트</h2>
+        <h2>Antigravity IDE에 차린 <em class="hl">나만의 코딩 에이전트</em></h2>
         <figure class="shot">
           <img src="images/six-seats.png" alt="Antigravity IDE 화면. 오른쪽 패널에 기본 에이전트, 오른쪽 위에 Codex와 Claude 확장 아이콘, 아래 터미널에 codex, agy, claude 세 CLI가 열려 있다." loading="lazy">
           <span class="pin" style="left:89.5%;top:46%">지니<small>Antigravity 기본 Agent</small></span>
@@ -125,8 +124,7 @@
           <li>대화창 셋(지니·행크·버디)과 터미널 셋(애니·토디·제리)</li>
           <li><b>여섯 모델이 아니라 여섯 창구</b>. 이름은 역할과 결과를 구분하려고 붙임</li>
           <li>도구가 처음부터 직책을 가진 것이 아님. 어떤 역할을 줄지는 내가 정함</li>
-          <li>요구사항을 함께 정리하는 대화형 AI 비서는 <b>토비</b>(생성형 AI의 Vibe Agent)</li>
-          <li>설치도 토비에게 화면 캡처를 보여 주며 한 단계씩 안내받음. 클릭과 로그인은 사람</li>
+          <li>3부에서 본 바이브 에이전트는 <b>토비</b>라 부름</li>
         </ul>
         <a class="video" href="videos/coding-agent-antigravity.html" target="_blank" rel="noopener">나만의 Coding Agent 만들기 [Antigravity IDE 활용]</a>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
@@ -135,7 +133,7 @@
               <dt>지니</dt><dd>Antigravity IDE의 기본 AI 에이전트. 이 환경에서 구현 총괄을 맡깁니다.</dd>
               <dt>행크 · 버디</dt><dd>IDE에 설치한 Codex 확장(행크)과 Claude Code 확장(버디). 대화하며 기획을 조정하거나 검토할 때 씁니다.</dd>
               <dt>애니 · 토디 · 제리</dt><dd>터미널의 Antigravity CLI(애니), Codex CLI(토디), Claude Code CLI(제리). 지시서를 받아 구현하거나 검증합니다. 늘 새 대화로 시작해 앞의 작업에 휩쓸리지 않게 합니다.</dd>
-              <dt>Vibe Agent(토비)</dt><dd>ChatGPT나 Claude 같은 대화형 AI를 내 생각을 요구사항으로 정리해 주는 비서로 설정한 것. 저는 어느 회사 것이든 Vibe Agent를 모두 토비라고 부릅니다.</dd>
+              <dt>Vibe Agent(토비)</dt><dd>요구사항을 프롬프트로 정리해 주도록 설정한 ChatGPT나 Claude 같은 대화형 AI. 저는 어느 회사 것이든 Vibe Agent를 모두 토비라고 부릅니다.</dd>
             </dl>
             <a class="more" href="script-4.html#six" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
           </div>
@@ -166,30 +164,26 @@
       <section class="scene" id="s4-7">
         <div class="no">4부 · 07 요구사항</div>
         <h2>요구사항은 대화로 만들어집니다</h2>
-        <p class="lead">「HTML 수정 Agent」 요구사항을 확정한 이틀의 대화에서 생각이 어긋났다가 바로잡힌 장면은 <b>22번</b></p>
-        <div class="flow"><span>제가 바로잡음 16번</span><span>Vibe Agent가 바로잡음 3번</span><span>함께 바로잡음 3번</span></div>
-        <div class="tablewrap"><table>
-          <thead><tr><th>어긋남</th><th>던질 질문</th></tr></thead>
-          <tbody>
-            <tr><td>같은 말, 다른 뜻</td><td>네가 이해한 것을 네 말로 다시 말해 줘</td></tr>
-            <tr><td>목적의 오해</td><td>이걸 다 만들면 무엇이 남아야 해?</td></tr>
-            <tr><td>AI의 일반적인 정답</td><td>그거 왜 필요해? 내 목적과 어떻게 이어져?</td></tr>
-            <tr><td>사람만 아는 맥락</td><td>내가 해 보니 이렇던데 (내 경험을 먼저)</td></tr>
-            <tr><td>서로 고쳐 주기</td><td>근거가 뭐야? 작게 시험해 보자</td></tr>
-          </tbody>
-        </table></div>
+        <div class="flow one"><span>문제를 가져옴</span><i>→</i><span>묻고 정리</span><i>→</i><span>요구사항 작성</span><i>→</i><span>코딩 에이전트의 이해 확인</span><i>→</i><span>1차 승인</span><i>→</i><span>사람이 검수</span></div>
+        <ul>
+          <li>출발점은 되풀이하는 일에 대한 문제의식. 문제를 가져오면 <b>바이브 에이전트</b>가 어떻게 해결하고 싶은지 물으며, 내 업무 지식에서 해결 방법을 끌어내 정리함</li>
+          <li>그제야 "이 문제를 이렇게 해결해 달라"는 요구사항이 생김</li>
+          <li>코딩 에이전트와의 사이에서는 비전문가와 전문가를 잇는 코디네이터. 요구사항을 분명히 쓰고, 제대로 이해했는지 검토하고, 완료 결과를 1차로 승인함</li>
+          <li>사람은 그다음에 검수. 그래서 사람의 일을 가장 많이 줄여 주는 자리</li>
+          <li>이 역할을 잘하려면 나를 잘 알아야 함. 그래서 개인 맞춤설정과 프로젝트 지침을 미리 잘 만들어 둠</li>
+        </ul>
         <div class="case-line"><span class="tag">사례</span><span>한글타자연습앱에서는 외국인 학생에게 "쿵에 누르고 짝에 기본 자리로"라고 가르치는, 수업을 아는 사람만 쓸 수 있는 의도서가 요구사항의 출발점이 됨</span></div>
-        <p class="key">근간이 되는 기준은 사람이 정하고, 사람이 정하지 않은 것은 AI가 대신 정하지 않게 합니다.</p>
+        <p class="key">나를 잘 아는 바이브 에이전트가 내 문제를 요구사항으로 만들고, 사람의 일을 가장 많이 줄여 줍니다.</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
           <div class="fold">
-            <p>어긋남이 생기는 까닭은 AI가 모자라서가 아니라, 처음 듣는 내 말을 가장 평균적인 뜻으로 알아듣기 때문입니다. 모르는 말이 나오면 "쉽게 다시 설명해 줘"라고 묻습니다.</p>
             <dl>
+              <dt>개인 맞춤설정</dt><dd>나는 누구이고 무슨 일을 하는지, 어떻게 답해 주기를 바라는지 적어 두는 곳. 모든 대화에 적용됩니다.</dd>
+              <dt>메모리</dt><dd>대화에서 쌓인 맥락을 다음 대화에서도 기억하게 하는 기능입니다.</dd>
+              <dt>프로젝트 지침</dt><dd>이번 일의 목적·범위·하지 말 것·완료 조건을 적어 두는 곳. "모호한 곳은 하나씩 되물어 요구사항을 구체화해 줘"처럼 대화를 이끄는 방식도 여기에 적습니다.</dd>
               <dt>요구사항</dt><dd>프로그램이 무엇을 해야 하고, 어떤 조건을 지키며, 어떤 결과가 나와야 하는지 적은 것. 문제·입력·처리·결과·검증 다섯 가지를 담으면 좋습니다.</dd>
-              <dt>Vibe Agent 설정 세 가지</dt><dd>개인 맞춤설정(나를 알게), 메모리(대화에서 쌓인 맥락), Project 지침(이번 일의 범위와 완료 조건). 메뉴 이름은 회사마다 다르지만 역할은 같습니다.</dd>
             </dl>
+            <p>설정의 메뉴 이름은 회사마다 조금씩 다르지만 역할은 같습니다. 근간이 되는 기준은 사람이 정하고, 사람이 정하지 않은 것은 AI가 대신 정하지 않게 합니다.</p>
             <div class="links">
-              <a class="more" href="requirements-dialogue.html" target="_blank" rel="noopener">대화가 요구사항을 만든다 →</a>
-              <a class="more" href="infographic-prompt.html" target="_blank" rel="noopener">인포그래픽 한 장 뒤의 프롬프트 →</a>
               <a class="more" href="guide-vibe-agent-claude.html" target="_blank" rel="noopener">Vibe Agent 설정 · Claude →</a>
               <a class="more" href="guide-vibe-agent-chatgpt.html" target="_blank" rel="noopener">Vibe Agent 설정 · ChatGPT →</a>
             </div>
@@ -208,10 +202,8 @@
           <li>다음 단계로 넘어가기 전에 사람의 승인을 받는 <b>승인 게이트</b></li>
           <li>나의 시간은 요구사항 <b>50%</b>, 결과 검토 <b>40%</b>, 전달과 조정 <b>10%</b>. 판단에 쓰는 시간이 90%</li>
         </ul>
-        <div class="case-line"><span class="tag">진행 중</span><span><b>강의자료 표준화(HTML 수정 Agent)</b>는 기획 검토·구현·검사를 맡은 에이전트들이 문서로 일을 주고받는 기록. 자동 테스트 82개가 모두 통과했는데도 실제 자료로 돌려 보자고 멈춘 장면까지 담김</span></div>
         <div class="case-line"><span class="tag">두 대 PC</span><span>노트북과 데스크톱의 Claude 넷이 노션 게시판 한 장으로 이어져 일한 기록</span></div>
         <div class="links">
-          <a class="video" href="videos/solo-html-agent.html" target="_blank" rel="noopener">고칠수록 내 것이 되는 강의자료 [HTML 수정 Agent, 기획에서 첫 시험까지]</a>
           <a class="video" href="videos/solo-two-pcs-notion.html" target="_blank" rel="noopener">Claude 탭은 머리, Code 탭은 손발? [노션 한 장으로 노트북·PC 잇기]</a>
         </div>
         <p class="key">하네스는 AI가 대신 판단하게 하는 장치가 아니라, 사람이 정한 기준과 작업 상태를 이어 주는 장치입니다.</p>
@@ -248,7 +240,7 @@
         <p class="key">에이전트가 몇이든, 원하던 결과인지는 그 일을 쓸 사람만 판단할 수 있습니다.</p>
         <details><summary><svg class="mark" aria-hidden="true"><use href="#gu"/></svg>펼쳐 보기<span class="chev" aria-hidden="true">▸</span></summary>
           <div class="fold">
-            <p>1부에서 테스트는 통과했는데 열어 보니 화면이 비어 있던 장면, 08에서 자동 테스트 82개를 통과하고도 실제 자료로 돌려 보자고 멈춘 장면이 바로 이 차이입니다.</p>
+            <p>1부에서 테스트는 통과했는데 열어 보니 화면이 비어 있던 장면이 바로 이 차이입니다.</p>
             <a class="more" href="script-4.html#validation" target="_blank" rel="noopener">스크립트 읽어보기 →</a>
           </div>
         </details>
