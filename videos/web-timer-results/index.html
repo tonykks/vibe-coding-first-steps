@@ -119,7 +119,7 @@ th{white-space:nowrap;color:var(--muted);font-weight:400;width:84px}
         <tr><th>눈에 띈 점</th><td>시키지 않은 것을 더함: 전체 화면, 끝나면 숫자 깜빡임, 알림음 30초 반복과 '알림음 끄기', 스페이스바로 시작·정지, 타이머 도는 동안 화면 꺼짐 막기, 탭 제목에 남은 시간</td></tr>
       </table>
       <a class="open" href="claude-code.html" target="_blank" rel="noopener">새 창으로 열기</a>
-      <a class="open" href="https://claude.ai/artifact/KqkkZbWzXaK5bgwyTrv4eT" target="_blank" rel="noopener">아티팩트 주소</a>
+      <span class="open" style="opacity:.6;cursor:default">Claude 아티팩트 주소로도 공유했지만, 여기서는 받은 파일로 보여 줌</span>
     </div>
   </article>
   <article class="card">
@@ -153,18 +153,19 @@ th{white-space:nowrap;color:var(--muted);font-weight:400;width:84px}
     </div>
   </article>
   <article class="card">
-    <div class="frame"><iframe src="aistudio-playground.html" loading="lazy" title="AI Studio Playground"></iframe></div>
+    <div class="frame"><iframe src="aistudio-playground-final.html" loading="lazy" title="AI Studio Playground"></iframe></div>
     <div class="body">
       <div class="svc">Google AI Studio · Playground (한꺼번에 넣기)</div>
-      <h2>첫 결과</h2>
+      <h2>최종 (고친 판)</h2>
       <table>
         <tr><th>모델</th><td>Gemini 3.8 Flash, Thinking Medium</td></tr>
-        <tr><th>파일</th><td>파일 하나, 292줄</td></tr>
-        <tr><th>배경</th><td><b>보이지 않음.</b> 인터넷 사진 주소(Unsplash)를 넣었는데 그 주소가 없음(404). 어두운 막만 남음</td></tr>
+        <tr><th>파일</th><td>첫 결과 292줄 → 고친 판 403줄, 둘 다 파일 하나</td></tr>
+        <tr><th>배경</th><td>첫 결과는 <b>보이지 않음.</b> 인터넷 사진 주소(Unsplash)를 넣었는데 그 주소가 없음(404). 고쳐 달라 하자 그림을 코드로 그려 이제 보임</td></tr>
         <tr><th>틀린 곳</th><td>끝난 뒤 '시작'을 누르면 다시 시작하지 않고 알림음만 또 울림. 알림음이 0이 된 뒤 1초 늦게 울림. 시간을 1초씩 빼는 방식</td></tr>
         <tr><th>고친 뒤</th><td>AI의 설명: "외부 이미지가 방화벽에 막히거나 로컬 파일 보안 때문" → <b>실제 원인은 사진 주소가 없는 것(404)</b>. 그럴듯하지만 틀린 진단. 고친 판은 404줄, 그림을 코드로 그리고 낙엽 효과. '끝난 뒤 시작' 문제는 그대로</td></tr>
       </table>
-      <a class="open" href="aistudio-playground.html" target="_blank" rel="noopener">새 창으로 열기</a>
+      <a class="open" href="aistudio-playground-final.html" target="_blank" rel="noopener">새 창으로 열기</a>
+      <a class="open" href="aistudio-playground.html" target="_blank" rel="noopener">첫 결과 (배경 안 보임, 292줄)</a>
     </div>
   </article>
   <article class="card">
