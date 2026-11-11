@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가을밤 교실용 대형 카운트다운 타이머</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chakra Petch & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: #070711;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* 교실 뒤에서도 선명하게 보이는 초대형 폰트 */
+        .digit-display {
+            font-family: 'Chakra Petch', monospace;
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(6.5rem, 25vw, 34rem);
+            line-height: 0.9;
+            color: #FFE600;
+            text-shadow: 0 0 35px rgba(255, 230, 0, 0.75), 0 0 70px rgba(255, 200, 0, 0.35);
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        /* 마지막 10초 긴급 모드 (네온 레드 + 펄스 애니메이션) */
+        .digit-critical {
+            color: #FF2222 !important;
+            text-shadow: 0 0 45px rgba(255, 34, 34, 0.9), 0 0 90px rgba(255, 0, 0, 0.5) !important;
+            animation: pulseWarning 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes pulseWarning {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.04);
+            }
+        }
+
+        /* 00:00 종료 시 화면 붉은빛 점멸 효과 */
+        @keyframes timesUpFlash {
+            0%, 100% {
+                background-color: rgba(0, 0, 0, 0);
+            }
+            50% {
+                background-color: rgba(180, 20, 20, 0.45);
+            }
+        }
+
+        .times-up-active {
+            animation: timesUpFlash 0.75s ease-in-out infinite;
+        }
+
+        /* 별 깜빡임 애니메이션 */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .star {
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+
+        /* 하단 조작 컨트롤 자동 페이드아웃 */
+        .control-bar {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .dimmed {
+            opacity: 0.08 !important;
+        }
+        .control-bar:hover {
+            opacity: 1 !important;
+        }
+
+        /* 상단 게이지 바 */
+        .progress-track {
+            background: rgba(255, 230, 0, 0.15);
+            backdrop-filter: blur(4px);
+        }
+        .progress-fill {
+            background: #FFE600;
+            box-shadow: 0 0 16px rgba(255, 230, 0, 0.85);
+            transition: width 0.35s linear, background-color 0.3s ease;
+        }
+        .progress-critical {
+            background: #FF2222 !important;
+            box-shadow: 0 0 20px rgba(255, 34, 34, 0.9) !important;
+        }
+    </style>
+</head>
+<body class="relative w-screen h-screen flex flex-col justify-between items-center text-white overflow-hidden">
+
+    <!-- 1. 순수 벡터 SVG 가을밤 배경 (외부 링크 없음 -> 100% 로드 보장) -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+        <svg class="w-full h-full object-cover" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- 밤하늘 그러데이션 -->
+                <linearGradient id="nightSky" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#070913"/>
+                    <stop offset="45%" stop-color="#140f24"/>
+                    <stop offset="75%" stop-color="#2d131f"/>
+                    <stop offset="100%" stop-color="#12090d"/>
+                </linearGradient>
+
+                <!-- 달빛 글로우 -->
+                <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#FFF5C2" stop-opacity="0.8"/>
+                    <stop offset="35%" stop-color="#FCD34D" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#FCD34D" stop-opacity="0"/>
+                </radialGradient>
+
+                <!-- 가로등 빛 빔 -->
+                <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#FFDD80" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#F59E0B" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                </radialGradient>
+
+                <!-- 들판 그러데이션 -->
+                <linearGradient id="fieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#3d2716"/>
+                    <stop offset="100%" stop-color="#150d08"/>
+                </linearGradient>
+
+                <!-- 잎사귀 심볼 (단풍잎 & 은행잎) -->
+                <g id="mapleLeaf">
+                    <path d="M0,0 C-6,-15 -20,-18 -15,-30 C-8,-26 -2,-18 0,-12 C2,-18 8,-26 15,-30 C20,-18 6,-15 0,0" fill="#BE2C1A"/>
+                    <path d="M0,-10 C-15,-20 -28,-14 -32,-3 C-22,-4 -12,2 -4,5 C-12,12 -22,18 -16,28 C-9,20 -2,12 0,6 C2,12 9,20 16,28 C22,18 12,12 4,5 C12,2 22,-4 32,-3 C28,-14 15,-20 0,-10" fill="#DC3522"/>
+                </g>
+
+                <g id="ginkgoLeaf">
+                    <path d="M0,0 C-12,-8 -24,-2 -26,12 C-20,24 0,26 0,16 C0,26 20,24 26,12 C24,-2 12,-8 0,0" fill="#F59E0B"/>
+                    <path d="M0,16 L0,28" stroke="#D97706" stroke-width="2"/>
+                </g>
+            </defs>
+
+            <!-- 하늘 배경 -->
+            <rect width="1920" height="1080" fill="url(#nightSky)"/>
+
+            <!-- 반짝이는 밤하늘 별무리 -->
+            <g fill="#FFFFFF">
+                <circle cx="280" cy="180" r="1.5" class="star" style="animation-delay: 0.2s"/>
+                <circle cx="450" cy="120" r="2.2" class="star" style="animation-delay: 1.1s"/>
+                <circle cx="680" cy="220" r="1.2" class="star" style="animation-delay: 0.7s"/>
+                <circle cx="880" cy="90" r="2.5" class="star" style="animation-delay: 1.8s"/>
+                <circle cx="1040" cy="160" r="1.8" class="star" style="animation-delay: 0.4s"/>
+                <circle cx="1220" cy="110" r="2.0" class="star" style="animation-delay: 1.4s"/>
+                <circle cx="1380" cy="250" r="1.5" class="star" style="animation-delay: 2.1s"/>
+                <circle cx="1520" cy="140" r="2.2" class="star" style="animation-delay: 0.9s"/>
+                <circle cx="980" cy="280" r="1.2" class="star" style="animation-delay: 1.6s"/>
+                <!-- 별자리 라인 -->
+                <polyline points="1150,140 1200,160 1280,130 1340,170" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            </g>
+
+            <!-- 은은한 초승달 -->
+            <g transform="translate(720, 140)">
+                <circle cx="0" cy="0" r="70" fill="url(#moonGlow)"/>
+                <path d="M -15,-40 A 42 42 0 1 0 35 35 A 48 48 0 1 1 -15 -40 Z" fill="#FFFBEB" filter="drop-shadow(0 0 12px #FDE68A)"/>
+            </g>
+
+            <!-- 먼 산의 능선 실루엣 -->
+            <path d="M0 820 Q 320 740 680 810 T 1380 790 T 1920 830 L 1920 1080 L 0 1080 Z" fill="#18131e"/>
+            <path d="M0 870 Q 420 800 860 860 T 1620 850 T 1920 890 L 1920 1080 L 0 1080 Z" fill="#201518"/>
+
+            <!-- 가을 들판 및 언덕 -->
+            <path d="M0 920 Q 480 870 1020 930 T 1920 920 L 1920 1080 L 0 1080 Z" fill="url(#fieldGrad)"/>
+
+            <!-- 길 & 가로등 (오른쪽 길목) -->
+            <path d="M1350 1080 Q 1420 960 1480 920 L 1520 920 Q 1460 970 1430 1080 Z" fill="#231710"/>
+            <circle cx="1510" cy="800" r="160" fill="url(#lampGlow)"/>
+            <!-- 가로등 기둥 -->
+            <line x1="1510" y1="920" x2="1510" y2="780" stroke="#110d0a" stroke-width="6"/>
+            <!-- 램프 등갓 -->
+            <polygon points="1500,780 1520,780 1526,805 1494,805" fill="#FFE27A"/>
+            <polygon points="1490,775 1530,775 1520,780 1500,780" fill="#1f1812"/>
+
+            <!-- 왼쪽 붉은 단풍나무 실루엣 & 풍성한 잎 군락 -->
+            <g transform="translate(0, 0)">
+                <!-- 기둥 -->
+                <path d="M 0 1080 C 120 920 90 700 30 500 C 60 560 120 620 180 660 C 130 540 100 420 70 300 C 10 320 -20 340 -60 360 L -60 1080 Z" fill="#160c0c"/>
+                <!-- 단풍 잎 클러스터들 -->
+                <use href="#mapleLeaf" x="120" y="240" transform="scale(1.4) rotate(15)"/>
+                <use href="#mapleLeaf" x="220" y="280" transform="scale(1.7) rotate(45)"/>
+                <use href="#mapleLeaf" x="90" y="380" transform="scale(1.6) rotate(-25)"/>
+                <use href="#mapleLeaf" x="280" y="390" transform="scale(1.3) rotate(35)"/>
+                <use href="#mapleLeaf" x="160" y="490" transform="scale(1.5) rotate(-10)"/>
+                <use href="#mapleLeaf" x="240" y="560" transform="scale(1.2) rotate(20)"/>
+                <use href="#mapleLeaf" x="330" y="470" transform="scale(1.4) rotate(60)"/>
+                <use href="#mapleLeaf" x="80" y="620" transform="scale(1.3) rotate(-30)"/>
+            </g>
+
+            <!-- 오른쪽 황금 은행나무 실루엣 & 노란 잎 군락 -->
+            <g transform="translate(1920, 0) scale(-1, 1)">
+                <!-- 기둥 -->
+                <path d="M 0 1080 C 130 900 110 680 40 480 C 70 550 140 600 210 640 C 150 510 110 390 80 270 C 20 290 -10 310 -50 330 L -50 1080 Z" fill="#1a1209"/>
+                <!-- 은행 잎 클러스터들 -->
+                <use href="#ginkgoLeaf" x="130" y="220" transform="scale(1.8) rotate(20)"/>
+                <use href="#ginkgoLeaf" x="240" y="260" transform="scale(2.1) rotate(65)"/>
+                <use href="#ginkgoLeaf" x="110" y="370" transform="scale(1.9) rotate(-15)"/>
+                <use href="#ginkgoLeaf" x="310" y="360" transform="scale(1.6) rotate(40)"/>
+                <use href="#ginkgoLeaf" x="180" y="480" transform="scale(1.8) rotate(-5)"/>
+                <use href="#ginkgoLeaf" x="260" y="550" transform="scale(1.5) rotate(30)"/>
+                <use href="#ginkgoLeaf" x="360" y="450" transform="scale(1.7) rotate(75)"/>
+                <use href="#ginkgoLeaf" x="90" y="600" transform="scale(1.5) rotate(-40)"/>
+            </g>
+
+            <!-- 하단 억새풀 / 갈대 실루엣 -->
+            <g stroke="#26170d" stroke-width="3" stroke-linecap="round">
+                <path d="M60 1080 Q 80 960 110 920 M90 1080 Q 120 970 160 930 M130 1080 Q 140 980 180 940"/>
+                <path d="M260 1080 Q 280 970 310 935 M290 1080 Q 320 980 370 945 M340 1080 Q 350 990 400 955"/>
+                <path d="M1620 1080 Q 1600 970 1570 920 M1660 1080 Q 1640 980 1600 935 M1700 1080 Q 1680 990 1640 950"/>
+                <path d="M1780 1080 Q 1760 960 1720 910 M1820 1080 Q 1800 975 1760 925"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- 2. 낙엽 떨어지는 파티클 캔버스 (가을 분위기 애니메이션) -->
+    <canvas id="leafCanvas" class="absolute inset-0 pointer-events-none z-10 w-full h-full"></canvas>
+
+    <!-- 3. 고대비 다크 비네팅 오버레이: 교실 뒤에서도 숫자가 최고조로 돋보이도록 중앙부를 어둡게 차광 -->
+    <div class="absolute inset-0 pointer-events-none z-10 bg-radial from-black/85 via-black/55 to-black/20"></div>
+
+    <!-- 4. 종료 시 붉은 화면 점멸 레이어 -->
+    <div id="flashOverlay" class="absolute inset-0 pointer-events-none z-15"></div>
+
+    <!-- 5. 상단 프로그레스 바 & 헤더 -->
+    <header class="w-full flex flex-col items-center pt-3 sm:pt-4 px-6 z-20">
+        <div class="w-full max-w-6xl h-3 sm:h-4 rounded-full progress-track overflow-hidden p-[1px] border border-yellow-500/20">
+            <div id="progressBar" class="h-full rounded-full progress-fill w-full"></div>
+        </div>
+        <div class="flex justify-between w-full max-w-6xl text-xs sm:text-sm font-bold tracking-wider text-yellow-300/90 mt-2 px-1 text-shadow">
+            <span id="sessionStatus" class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-yellow-400 inline-block animate-ping"></span>
+                준비 완료
+            </span>
+            <span id="percentText">100%</span>
+        </div>
+    </header>
+
+    <!-- 6. 중앙 초대형 타이머 디스플레이 -->
+    <main class="flex-1 flex flex-col items-center justify-center w-full px-4 -mt-4 z-20">
+        <div id="timerContainer" class="flex items-center justify-center w-full">
+            <div id="timerDisplay" class="digit-display font-bold select-none text-center">
+                10:00
+            </div>
+        </div>
+        
+        <!-- 하단 보조 알림 텍스트 -->
+        <div id="subMessage" class="text-sm sm:text-xl font-bold tracking-widest text-amber-200/80 mt-2 h-7 text-center drop-shadow-md">
+            스페이스바 또는 시작 버튼을 누르세요
+        </div>
+    </main>
+
+    <!-- 7. 하단 조작 컨트롤 패널 (마우스 유휴 시 자동 페이드아웃) -->
+    <footer id="controlBar" class="control-bar flex flex-col items-center gap-2.5 sm:gap-3 pb-5 sm:pb-7 z-30 w-full px-4">
+        
+        <!-- 시간 프리셋 버튼 (1분, 5분, 10분, 20분) -->
+        <div class="flex items-center justify-center gap-2 sm:gap-3 bg-black/75 backdrop-blur-md px-3 sm:px-5 py-2 rounded-2xl border border-yellow-500/30 shadow-2xl">
+            <span class="text-xs text-amber-200/80 font-bold px-1 hidden sm:inline">시간:</span>
+            <button class="preset-btn px-3 sm:px-4 py-1.5 rounded-xl border border-yellow-500/40 text-yellow-300 font-bold text-xs sm:text-sm hover:bg-yellow-400/20 active:scale-95 transition cursor-pointer" data-minutes="1">1분</button>
+            <button class="preset-btn px-3 sm:px-4 py-1.5 rounded-xl border border-yellow-500/40 text-yellow-300 font-bold text-xs sm:text-sm hover:bg-yellow-400/20 active:scale-95 transition cursor-pointer" data-minutes="5">5분</button>
+            <button class="preset-btn px-3 sm:px-4 py-1.5 rounded-xl border border-yellow-400 bg-yellow-400 text-black font-extrabold text-xs sm:text-sm shadow-md cursor-pointer" data-minutes="10">10분</button>
+            <button class="preset-btn px-3 sm:px-4 py-1.5 rounded-xl border border-yellow-500/40 text-yellow-300 font-bold text-xs sm:text-sm hover:bg-yellow-400/20 active:scale-95 transition cursor-pointer" data-minutes="20">20분</button>
+        </div>
+
+        <!-- 메인 조작부 (시작/일시정지, 리셋, 사운드, 전체화면) -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 bg-black/80 backdrop-blur-md px-4 sm:px-6 py-2.5 rounded-2xl border border-yellow-500/40 shadow-2xl">
+            
+            <!-- 시작 / 일시정지 -->
+            <button id="toggleBtn" class="flex items-center gap-2 px-5 sm:px-7 py-2 sm:py-2.5 rounded-xl bg-yellow-400 text-black font-extrabold text-base sm:text-lg hover:bg-yellow-300 active:scale-95 transition cursor-pointer shadow-lg shadow-yellow-500/30">
+                <svg id="playIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIcon" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+                <span id="toggleText">시작</span>
+            </button>
+
+            <!-- 리셋 -->
+            <button id="resetBtn" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-zinc-900/90 border border-yellow-500/50 text-yellow-300 font-bold text-sm sm:text-base hover:bg-zinc-800 active:scale-95 transition cursor-pointer" title="초기화 (R)">
+                리셋 (R)
+            </button>
+
+            <!-- 부가 설정 (사운드, 전체화면) -->
+            <div class="flex gap-2 border-l border-zinc-700 pl-2">
+                <!-- 사운드 토글 -->
+                <button id="soundToggleBtn" class="p-2.5 rounded-xl bg-zinc-900/90 border border-yellow-500/40 text-yellow-300 hover:bg-zinc-800 active:scale-95 transition cursor-pointer" title="소리 켜기/끄기">
+                    <svg id="soundOnIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                    </svg>
+                    <svg id="soundOffIcon" class="w-5 h-5 hidden text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+                    </svg>
+                </button>
+
+                <!-- 전체화면 토글 -->
+                <button id="fullscreenBtn" class="p-2.5 rounded-xl bg-zinc-900/90 border border-yellow-500/40 text-yellow-300 hover:bg-zinc-800 active:scale-95 transition cursor-pointer" title="전체화면 (F)">
+                    <svg id="enterFsIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                    </svg>
+                    <svg id="exitFsIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 9L4 4m0 0v4m0-4h4m6 0l5 5m0-5h-4m4 0v4M9 15l-5 5m0 0v-4m0 4h4m11 0l-5-5m5 5v-4m0 4h-4"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 단축키 안내 -->
+        <div class="text-[11px] sm:text-xs text-amber-200/60 flex gap-4 tracking-wide">
+            <span><kbd class="px-1.5 py-0.5 rounded bg-zinc-800/80 border border-zinc-700 text-amber-300 font-mono">Space</kbd> 시작/정지</span>
+            <span><kbd class="px-1.5 py-0.5 rounded bg-zinc-800/80 border border-zinc-700 text-amber-300 font-mono">R</kbd> 리셋</span>
+            <span><kbd class="px-1.5 py-0.5 rounded bg-zinc-800/80 border border-zinc-700 text-amber-300 font-mono">F</kbd> 전체화면</span>
+        </div>
+    </footer>
+
+    <!-- 로직 & 사운드 & 파티클 스크립트 -->
+    <script>
+        let chosenMinutes = 10;
+        let totalSeconds = chosenMinutes * 60;
+        let remainingSeconds = totalSeconds;
+        let isRunning = false;
+        let soundEnabled = true;
+        let timerInterval = null;
+        let idleTimeout = null;
+        let alarmLoopInterval = null;
+
+        const timerDisplay = document.getElementById('timerDisplay');
+        const progressBar = document.getElementById('progressBar');
+        const percentText = document.getElementById('percentText');
+        const sessionStatus = document.getElementById('sessionStatus');
+        const subMessage = document.getElementById('subMessage');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const toggleText = document.getElementById('toggleText');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const resetBtn = document.getElementById('resetBtn');
+        const presetButtons = document.querySelectorAll('.preset-btn');
+        const soundToggleBtn = document.getElementById('soundToggleBtn');
+        const soundOnIcon = document.getElementById('soundOnIcon');
+        const soundOffIcon = document.getElementById('soundOffIcon');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const enterFsIcon = document.getElementById('enterFsIcon');
+        const exitFsIcon = document.getElementById('exitFsIcon');
+        const controlBar = document.getElementById('controlBar');
+        const flashOverlay = document.getElementById('flashOverlay');
+
+        /* ---------------- Web Audio API (사운드 시스템) ---------------- */
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioClass) {
+                    audioCtx = new AudioClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playChime(frequency = 880, duration = 0.2, type = 'sine', volume = 0.4) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = type;
+                osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+
+                gain.gain.setValueAtTime(volume, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (err) {
+                console.warn('Audio playback error:', err);
+            }
+        }
+
+        // 수업 종료 맑고 큰 차임벨 사운드
+        function playAlarmBurst() {
+            if (!soundEnabled) return;
+            const chords = [659.25, 880.00, 659.25, 987.77, 1318.51];
+            chords.forEach((freq, idx) => {
+                setTimeout(() => {
+                    playChime(freq, 0.35, 'square', 0.25);
+                    playChime(freq * 0.5, 0.35, 'triangle', 0.3);
+                }, idx * 110);
+            });
+        }
+
+        function startLoudAlarm() {
+            playAlarmBurst();
+            clearInterval(alarmLoopInterval);
+            let count = 0;
+            alarmLoopInterval = setInterval(() => {
+                count++;
+                if (count >= 5) {
+                    clearInterval(alarmLoopInterval);
+                    alarmLoopInterval = null;
+                } else {
+                    playAlarmBurst();
+                }
+            }, 1200);
+        }
+
+        function stopLoudAlarm() {
+            if (alarmLoopInterval) {
+                clearInterval(alarmLoopInterval);
+                alarmLoopInterval = null;
+            }
+        }
+
+        /* ---------------- 타이머 핵심 로직 ---------------- */
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            const mm = m < 10 ? `0${m}` : `${m}`;
+            const ss = s < 10 ? `0${s}` : `${s}`;
+            return `${mm}:${ss}`;
+        }
+
+        function render() {
+            timerDisplay.textContent = formatTime(remainingSeconds);
+
+            const isLast10Seconds = remainingSeconds <= 10 && remainingSeconds > 0;
+            if (isLast10Seconds || remainingSeconds === 0) {
+                timerDisplay.classList.add('digit-critical');
+                progressBar.classList.add('progress-critical');
+            } else {
+                timerDisplay.classList.remove('digit-critical');
+                progressBar.classList.remove('progress-critical');
+            }
+
+            const percentage = totalSeconds > 0 ? (remainingSeconds / totalSeconds) * 100 : 0;
+            progressBar.style.width = `${Math.max(0, Math.min(100, percentage))}%`;
+            percentText.textContent = `${Math.ceil(percentage)}%`;
+
+            if (remainingSeconds === 0) {
+                sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span>시간 종료!`;
+                subMessage.textContent = "타임 오버! 시간이 모두 끝났습니다.";
+            } else if (isRunning) {
+                if (isLast10Seconds) {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 inline-block animate-ping"></span>마지막 10초!`;
+                    subMessage.textContent = `마지막 ${remainingSeconds}초 남음!`;
+                } else {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-yellow-400 inline-block animate-pulse"></span>진행 중`;
+                    subMessage.textContent = "가을밤 집중 시간";
+                }
+            } else if (remainingSeconds === totalSeconds) {
+                sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span>준비 완료`;
+                subMessage.textContent = "스페이스바 또는 시작 버튼을 누르세요";
+            } else {
+                sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-zinc-400 inline-block"></span>일시정지됨`;
+                subMessage.textContent = "일시 정지";
+            }
+        }
+
+        function tick() {
+            if (remainingSeconds > 0) {
+                remainingSeconds--;
+                render();
+
+                if (remainingSeconds <= 10 && remainingSeconds > 0) {
+                    playChime(784, 0.12, 'square', 0.2);
+                }
+
+                if (remainingSeconds === 0) {
+                    handleTimeUp();
+                }
+            }
+        }
+
+        function handleTimeUp() {
+            pauseTimer();
+            flashOverlay.classList.add('times-up-active');
+            startLoudAlarm();
+            render();
+        }
+
+        function clearTimeUpAlert() {
+            flashOverlay.classList.remove('times-up-active');
+            stopLoudAlarm();
+        }
+
+        function startTimer() {
+            getAudioContext();
+            clearTimeUpAlert();
+
+            if (remainingSeconds <= 0) {
+                remainingSeconds = totalSeconds;
+            }
+
+            isRunning = true;
+            toggleText.textContent = "일시정지";
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(tick, 1000);
+            render();
+        }
+
+        function pauseTimer() {
+            isRunning = false;
+            toggleText.textContent = "시작";
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+
+            clearInterval(timerInterval);
+            timerInterval = null;
+            render();
+        }
+
+        function toggleTimer() {
+            if (remainingSeconds === 0) {
+                resetTimer();
+                startTimer();
+                return;
+            }
+            if (isRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            clearTimeUpAlert();
+            remainingSeconds = totalSeconds;
+            render();
+        }
+
+        function selectPreset(minutes) {
+            chosenMinutes = minutes;
+            totalSeconds = minutes * 60;
+            presetButtons.forEach(btn => {
+                const btnMins = parseInt(btn.getAttribute('data-minutes'), 10);
+                if (btnMins === minutes) {
+                    btn.className = 'preset-btn px-3 sm:px-4 py-1.5 rounded-xl border border-yellow-400 bg-yellow-400 text-black font-extrabold text-xs sm:text-sm shadow-md cursor-pointer';
+                } else {
+                    btn.className = 'preset-btn px-3 sm:px-4 py-1.5 rounded-xl border border-yellow-500/40 text-yellow-300 font-bold text-xs sm:text-sm hover:bg-yellow-400/20 active:scale-95 transition cursor-pointer';
+                }
+            });
+            resetTimer();
+        }
+
+        function resetIdleTimer() {
+            controlBar.classList.remove('dimmed');
+            clearTimeout(idleTimeout);
+            if (isRunning) {
+                idleTimeout = setTimeout(() => {
+                    controlBar.classList.add('dimmed');
+                }, 3500);
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const isFs = !!document.fullscreenElement;
+            enterFsIcon.classList.toggle('hidden', isFs);
+            exitFsIcon.classList.toggle('hidden', !isFs);
+        });
+
+        toggleBtn.addEventListener('click', toggleTimer);
+        resetBtn.addEventListener('click', resetTimer);
+
+        presetButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectPreset(parseInt(btn.getAttribute('data-minutes'), 10));
+            });
+        });
+
+        soundToggleBtn.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundOnIcon.classList.toggle('hidden', !soundEnabled);
+            soundOffIcon.classList.toggle('hidden', soundEnabled);
+            if (soundEnabled) {
+                playChime(660, 0.15);
+            } else {
+                stopLoudAlarm();
+            }
+        });
+
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            if (e.code === 'Space') {
+                e.preventDefault();
+                toggleTimer();
+            } else if (e.key === 'r' || e.key === 'R' || e.key === 'ㄱ') {
+                e.preventDefault();
+                resetTimer();
+            } else if (e.key === 'f' || e.key === 'F' || e.key === 'ㄹ') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+
+        window.addEventListener('mousemove', resetIdleTimer);
+        window.addEventListener('touchstart', resetIdleTimer);
+
+        /* ---------------- 8. 낙엽 떨어지는 캔버스 애니메이션 ---------------- */
+        const leafCanvas = document.getElementById('leafCanvas');
+        const ctx = leafCanvas.getContext('2d');
+        let leaves = [];
+
+        function resizeCanvas() {
+            leafCanvas.width = window.innerWidth;
+            leafCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const leafColors = [
+            '#dc2626', // 단풍 빨강
+            '#ef4444', 
+            '#f59e0b', // 은행 노랑
+            '#fbbf24', 
+            '#b45309'  // 짙은 주황
+        ];
+
+        class FallingLeaf {
+            constructor() {
+                this.reset(true);
+            }
+
+            reset(initial = false) {
+                this.x = Math.random() * leafCanvas.width;
+                this.y = initial ? Math.random() * leafCanvas.height : -30;
+                this.size = 7 + Math.random() * 12;
+                this.speedY = 0.7 + Math.random() * 1.6;
+                this.speedX = (Math.random() - 0.4) * 1.5;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.04;
+                this.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+                this.opacity = 0.5 + Math.random() * 0.4;
+                this.isGinkgo = Math.random() > 0.5;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.015) + this.speedX;
+                this.rotation += this.rotSpeed;
+
+                if (this.y > leafCanvas.height + 40 || this.x < -40 || this.x > leafCanvas.width + 40) {
+                    this.reset(false);
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                ctx.beginPath();
+                if (this.isGinkgo) {
+                    // 부채꼴 은행잎
+                    ctx.arc(0, 0, this.size, 0, Math.PI, true);
+                    ctx.lineTo(0, this.size * 0.4);
+                } else {
+                    // 타원형 단풍/낙엽
+                    ctx.ellipse(0, 0, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
+                }
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // 낙엽 생성 (화면 크기에 맞춰 약 28개 유지)
+        for (let i = 0; i < 28; i++) {
+            leaves.push(new FallingLeaf());
+        }
+
+        function animateLeaves() {
+            ctx.clearRect(0, 0, leafCanvas.width, leafCanvas.height);
+            leaves.forEach(leaf => {
+                leaf.update();
+                leaf.draw();
+            });
+            requestAnimationFrame(animateLeaves);
+        }
+
+        window.onload = () => {
+            render();
+            animateLeaves();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>교실용 대형 수업 타이머</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', system-ui, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      overflow: hidden;
+    }
+    .classroom-digits {
+      font-family: 'Chakra Petch', monospace, sans-serif;
+      font-feature-settings: "tnum" 1;
+    }
+    .glow-yellow {
+      color: #FFE600;
+      text-shadow: 
+        0 0 25px rgba(255, 230, 0, 0.45),
+        0 4px 12px rgba(0, 0, 0, 0.95),
+        0 12px 40px rgba(0, 0, 0, 0.95);
+    }
+    .glow-red {
+      color: #FF3333;
+      text-shadow: 
+        0 0 35px rgba(255, 51, 51, 0.85),
+        0 4px 12px rgba(0, 0, 0, 0.98),
+        0 12px 40px rgba(0, 0, 0, 0.95);
+    }
+    @keyframes urgent-pulse {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.035); filter: brightness(1.25); }
+    }
+    .animate-urgent {
+      animation: urgent-pulse 0.9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    input[type=range] {
+      accent-color: #fbbf24;
+    }
+  </style>
+</head>
+<body class="bg-black text-white w-screen h-screen flex flex-col justify-between relative overflow-hidden select-none">
+
+  <!-- 1. Background Layer -->
+  <div id="bg-layer" class="absolute inset-0 z-0 bg-cover bg-center transition-all duration-700 scale-105 pointer-events-none" style="background-image: url('./src/assets/images/autumn_golden_landscape_1794195074557.jpg');"></div>
+  
+  <!-- 2. Scrim Layer for Clarity Control -->
+  <div id="scrim-layer" class="absolute inset-0 z-1 pointer-events-none transition-all duration-300 bg-black/15"></div>
+  <div class="absolute inset-0 z-1 pointer-events-none bg-radial from-transparent via-transparent to-black/50"></div>
+
+  <!-- 3. Header Bar (Exact match to React app) -->
+  <header class="w-full flex items-center justify-between px-4 sm:px-8 py-3 z-20 select-none">
+    <div class="flex items-center gap-2">
+      <span class="text-base sm:text-lg font-black tracking-tight text-white drop-shadow-md">교실 대형 수업 타이머</span>
+      <span class="hidden md:inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-500/30 text-red-200 border border-red-400/30">
+        <span>🎄</span><span>캐롤송 알림 지원</span>
+      </span>
+    </div>
+
+    <!-- Center Quick Actions -->
+    <div class="hidden sm:flex items-center gap-2">
+      <button id="btn-header-activity" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-200 hover:text-white border border-white/10 text-xs font-medium backdrop-blur-md transition-colors cursor-pointer" title="활동 이름 변경">
+        <svg class="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span id="label-activity">수업 집중 시간</span>
+      </button>
+
+      <button id="btn-next-bg" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-200 hover:text-white border border-white/10 text-xs font-medium backdrop-blur-md transition-colors cursor-pointer" title="배경 사진 전환">
+        <svg class="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span id="label-bg" class="truncate max-w-[130px]">황금빛 가을 호수</span>
+      </button>
+
+      <button id="btn-cycle-bright" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-200 hover:text-white border border-white/10 text-xs font-medium backdrop-blur-md transition-colors cursor-pointer" title="배경 선명도·밝기 즉시 전환">
+        <svg class="w-3.5 h-3.5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span id="label-bright">☀️ 선명함</span>
+      </button>
+    </div>
+
+    <!-- Right Utilities: Sound, Settings, Fullscreen -->
+    <div class="flex items-center gap-2">
+      <button id="btn-toggle-sound" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-200 hover:text-white border border-white/10 text-xs font-medium backdrop-blur-md transition-colors flex items-center gap-1.5 cursor-pointer">
+        <span id="icon-sound">🔊</span>
+        <span id="label-sound" class="hidden sm:inline">소리 켬</span>
+      </button>
+
+      <!-- Settings Button (Exact match!) -->
+      <button id="btn-open-settings" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-black/40 hover:bg-black/60 text-slate-200 hover:text-white border border-white/10 text-xs font-medium backdrop-blur-md transition-colors flex items-center gap-1.5 cursor-pointer">
+        <svg class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        <span class="hidden sm:inline font-bold">설정</span>
+      </button>
+
+      <button id="btn-fullscreen" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-amber-400/90 hover:bg-amber-300 text-slate-950 font-bold text-xs backdrop-blur-md shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <span id="label-fullscreen" class="hidden sm:inline">전체화면</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 4. Center Stage: The Ultra-Large High-Visibility Digits -->
+  <main class="relative z-10 flex-1 flex flex-col items-center justify-center w-full px-2 sm:px-6">
+    <div class="relative flex flex-col items-center justify-center w-full max-w-6xl px-4 py-2 select-none">
+      <!-- Activity Title Tag -->
+      <div id="activity-tag" class="mb-2 sm:mb-4 px-6 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 shadow-lg">
+        <p id="display-activity-title" class="text-sm sm:text-base md:text-xl font-bold tracking-wide text-amber-200">수업 집중 시간</p>
+      </div>
+
+      <!-- Main High-Contrast Backdrop Card -->
+      <div id="timer-card" class="relative flex flex-col items-center justify-center w-full rounded-3xl p-4 sm:p-8 md:p-12 transition-all duration-300 bg-black/55 backdrop-blur-xl border border-white/10 shadow-2xl">
+        <div id="urgent-badge" class="hidden absolute -top-4 sm:-top-5 px-4 py-1 rounded-full bg-red-600 text-white font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-lg animate-bounce">
+          마지막 10초!
+        </div>
+
+        <!-- The Massive Digits -->
+        <div class="flex items-center justify-center leading-none">
+          <span id="digits-min" class="classroom-digits font-black tracking-tight transition-colors duration-200 text-[21vw] sm:text-[19vw] md:text-[17vw] lg:text-[15vw] glow-yellow">10</span>
+          <span id="digits-colon" class="classroom-digits font-black px-1 sm:px-2 md:px-3 text-[19vw] sm:text-[17vw] md:text-[15vw] lg:text-[13vw] glow-yellow">:</span>
+          <span id="digits-sec" class="classroom-digits font-black tracking-tight transition-colors duration-200 text-[21vw] sm:text-[19vw] md:text-[17vw] lg:text-[15vw] glow-yellow">00</span>
+        </div>
+
+        <!-- Linear Progress Bar -->
+        <div class="w-full max-w-3xl mt-4 sm:mt-6">
+          <div class="flex justify-between items-center text-xs sm:text-sm font-semibold mb-1 text-slate-300">
+            <span id="label-progress">진행률: 0%</span>
+            <span id="label-remain">10분 0초 남음</span>
+          </div>
+          <div class="w-full h-3 sm:h-4 bg-slate-900/80 rounded-full overflow-hidden p-0.5 border border-white/20">
+            <div id="progress-bar" class="h-full rounded-full transition-all duration-300 bg-gradient-to-r from-amber-400 to-yellow-300" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 5. Bottom Controls and Presets -->
+  <footer class="relative z-10 w-full flex flex-col items-center gap-2 pb-5 sm:pb-8 pt-2">
+    <!-- Presets Bar -->
+    <div class="flex flex-col items-center gap-3 w-full max-w-4xl px-4 py-2 select-none">
+      <div class="grid grid-cols-4 gap-2 sm:gap-4 w-full">
+        <button class="btn-preset py-2.5 sm:py-3.5 px-2 sm:px-4 rounded-2xl font-bold transition-all text-center bg-black/60 hover:bg-black/80 text-white/90 border border-white/15 cursor-pointer" data-sec="60">
+          <div class="text-base sm:text-xl md:text-2xl font-black">1분</div>
+          <div class="text-[10px] text-slate-400 hidden sm:block">집중 퀴즈 / 짧은 발표</div>
+        </button>
+        <button class="btn-preset py-2.5 sm:py-3.5 px-2 sm:px-4 rounded-2xl font-bold transition-all text-center bg-black/60 hover:bg-black/80 text-white/90 border border-white/15 cursor-pointer" data-sec="300">
+          <div class="text-base sm:text-xl md:text-2xl font-black">5분</div>
+          <div class="text-[10px] text-slate-400 hidden sm:block">개별 과제 / 생각 정리</div>
+        </button>
+        <button class="btn-preset py-2.5 sm:py-3.5 px-2 sm:px-4 rounded-2xl font-bold transition-all text-center bg-amber-400 text-slate-950 border-2 border-white shadow-[0_0_20px_rgba(251,191,36,0.5)] scale-[1.02] cursor-pointer" data-sec="600">
+          <div class="text-base sm:text-xl md:text-2xl font-black">10분</div>
+          <div class="text-[10px] text-slate-900/80 font-bold hidden sm:block">모둠 활동 / 토의 토론</div>
+        </button>
+        <button class="btn-preset py-2.5 sm:py-3.5 px-2 sm:px-4 rounded-2xl font-bold transition-all text-center bg-black/60 hover:bg-black/80 text-white/90 border border-white/15 cursor-pointer" data-sec="1200">
+          <div class="text-base sm:text-xl md:text-2xl font-black">20분</div>
+          <div class="text-[10px] text-slate-400 hidden sm:block">실습 / 시험 / 긴 활동</div>
+        </button>
+      </div>
+
+      <!-- Quick +/- Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3 bg-black/50 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full border border-white/15 shadow-md">
+        <span class="text-xs font-medium text-slate-400 mr-1 hidden sm:inline">시간 미세조정:</span>
+        <button id="btn-minus-1m" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-200 cursor-pointer">- 1분</button>
+        <button id="btn-minus-10s" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-200 cursor-pointer">- 10초</button>
+        <div class="h-4 w-px bg-white/20 mx-1"></div>
+        <button id="btn-plus-10s" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-200 cursor-pointer">+ 10초</button>
+        <button id="btn-plus-1m" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white/10 hover:bg-white/20 text-slate-200 cursor-pointer">+ 1분</button>
+      </div>
+    </div>
+
+    <!-- Start / Pause / Reset Controls -->
+    <div class="flex items-center justify-center gap-4 sm:gap-6 py-2 select-none">
+      <button id="btn-reset" class="flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 rounded-2xl font-extrabold text-base sm:text-lg text-slate-200 hover:text-white bg-slate-800/80 hover:bg-slate-700/90 active:scale-95 border border-white/20 shadow-xl backdrop-blur-md transition-all cursor-pointer">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <span>처음으로</span>
+        <span class="hidden sm:inline-block text-[11px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 font-mono">R</span>
+      </button>
+
+      <button id="btn-toggle-run" class="flex items-center gap-2.5 px-8 sm:px-12 py-4 sm:py-4.5 rounded-2xl font-black text-lg sm:text-xl text-slate-950 bg-gradient-to-b from-emerald-300 to-emerald-500 hover:from-emerald-200 hover:to-emerald-400 active:scale-95 border-2 border-emerald-200 shadow-[0_0_35px_rgba(16,185,129,0.5)] transition-all cursor-pointer">
+        <span id="icon-run">▶</span>
+        <span id="label-run">시작</span>
+        <span class="hidden sm:inline-block text-[11px] px-2 py-0.5 rounded bg-slate-950/20 text-slate-950 font-mono">Space</span>
+      </button>
+    </div>
+
+    <p class="hidden md:block text-[11px] font-medium text-slate-400/80 drop-shadow">
+      단축키: Space 시작·일시정지 · R 처음으로 · F 전체화면
+    </p>
+  </footer>
+
+  <!-- ==================== 6. THE EXACT SETTINGS MODAL ==================== -->
+  <div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md select-none animate-in fade-in">
+    <div class="relative w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 rounded-3xl bg-slate-900 border border-white/20 shadow-2xl text-white">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+        <div class="flex items-center gap-2">
+          <span class="text-amber-400 text-xl">✨</span>
+          <h2 class="text-xl font-bold tracking-tight">타이머 및 화면 설정</h2>
+        </div>
+        <button id="btn-close-settings-x" class="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-6">
+        <!-- 1. Activity Title Setting with Quick Chips -->
+        <div>
+          <label class="block text-sm font-bold text-slate-200 mb-2">수업 활동 안내 문구</label>
+          <input type="text" id="input-activity-title" placeholder="예: 3모둠 협동 탐구 활동 (비워두면 숨김)" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-white/20 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 text-sm" maxlength="40">
+          <div class="flex flex-wrap gap-1.5 mt-2.5">
+            <button class="btn-chip px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer">+ 모둠 토의·토론</button>
+            <button class="btn-chip px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer">+ 수학 문제 풀이</button>
+            <button class="btn-chip px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer">+ 독서 및 생각 정리</button>
+            <button class="btn-chip px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer">+ 단어 시험 / 퀴즈</button>
+            <button class="btn-chip px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer">+ 자유 발표 시간</button>
+            <button class="btn-chip px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer">+ 쉬는 시간</button>
+          </div>
+        </div>
+
+        <!-- 2. Background Gallery Cards -->
+        <div>
+          <div class="flex items-center gap-1.5 text-sm font-bold text-slate-200 mb-2.5">
+            <span>🖼️</span><span>계절 배경 사진 선택</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3" id="bg-cards-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- 3. Background Clarity, Brightness & Blur Controls -->
+        <div class="p-4 rounded-2xl bg-slate-800/80 border border-amber-400/30 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 text-sm font-bold text-amber-300">
+              <span>👁️</span><span>배경 선명도 & 밝기 조절 (흐림 해결)</span>
+            </div>
+            <span id="label-settings-clarity-val" class="text-[11px] font-semibold text-slate-300">어둡기 15% · 흐림 0px</span>
+          </div>
+
+          <div>
+            <p className="text-xs text-slate-400 mb-1.5">선명도 추천 프리셋:</p>
+            <div class="grid grid-cols-3 gap-2">
+              <button id="btn-preset-clear" class="py-1.5 px-2 rounded-lg text-xs font-bold border transition-all cursor-pointer bg-slate-700/70 text-slate-200 border-white/10 hover:border-white/30">
+                ✨ 완전 맑고 선명하게
+              </button>
+              <button id="btn-preset-recommend" class="py-1.5 px-2 rounded-lg text-xs font-bold border transition-all cursor-pointer bg-amber-400 text-slate-950 border-amber-400 shadow">
+                🍁 추천 (선명+은은)
+              </button>
+              <button id="btn-preset-focus" class="py-1.5 px-2 rounded-lg text-xs font-bold border transition-all cursor-pointer bg-slate-700/70 text-slate-200 border-white/10 hover:border-white/30">
+                🏫 교실 집중 모드
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-slate-300 mb-1">
+              <span>배경 어둡기 (0%: 가장 밝고 맑음 ~ 80%: 어둡게)</span>
+              <span id="val-dim" class="text-amber-300 font-mono">15%</span>
+            </div>
+            <input type="range" id="range-dim" min="0" max="80" step="5" value="15" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-slate-300 mb-1">
+              <span>배경 흐림 효과 (0px: 완전 선명한 원본 사진)</span>
+              <span id="val-blur" class="text-amber-300 font-mono">0px</span>
+            </div>
+            <input type="range" id="range-blur" min="0" max="8" step="1" value="0" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+          </div>
+
+          <p class="text-[11px] text-amber-200/90 leading-relaxed bg-amber-500/10 p-2 rounded-lg border border-amber-400/20">
+            💡 <strong>배경이 흐리게 보일 때:</strong> '완전 맑고 선명하게' 버튼을 누르거나, 위 슬라이더에서 <strong>어둡기를 0~15%</strong>로 낮추고 <strong>흐림 효과를 0px</strong>로 두시면 원본 고화질 사진이 선명하게 나타납니다!
+          </p>
+        </div>
+
+        <!-- 4. Sound & Christmas Carol Selection -->
+        <div class="space-y-4 pt-2 border-t border-white/10">
+          <div>
+            <div class="flex items-center gap-1.5 text-sm font-bold text-slate-200 mb-2">
+              <span>🎵</span><span>종료 알림음 선택 (크리스마스 캐롤송)</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2" id="carol-options-container">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between text-sm font-bold text-slate-200 mb-1.5">
+              <span>알림음 음량</span>
+              <span id="val-volume" class="text-amber-300 font-mono text-xs">80%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <input type="range" id="range-volume" min="0" max="1" step="0.05" value="0.8" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+              <button id="btn-test-carol" class="px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shrink-0 transition-colors cursor-pointer">
+                캐롤 미리듣기
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <div>
+              <p class="text-xs font-semibold text-slate-200">마지막 10초 째깍 소리</p>
+              <p class="text-[10px] text-slate-400">10초 전부터 초마다 카운트다운 비프음 재생</p>
+            </div>
+            <button id="btn-toggle-tick" class="w-11 h-6 rounded-full transition-colors relative cursor-pointer bg-amber-400">
+              <span id="tick-toggle-knob" class="block w-4 h-4 rounded-full bg-slate-950 transition-transform translate-x-6"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="mt-6 pt-4 border-t border-white/10 flex justify-end">
+        <button id="btn-close-settings" class="px-6 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm transition-colors cursor-pointer">
+          확인 및 닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. THE EXACT FINISH MODAL ==================== -->
+  <div id="finish-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md select-none animate-in fade-in">
+    <div class="relative w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-slate-900/95 border-2 border-red-500/80 shadow-[0_0_70px_rgba(239,68,68,0.35)] text-center text-white overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500"></div>
+
+      <button id="btn-close-finish-x" class="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="mx-auto mb-4 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-red-600 via-amber-500 to-emerald-500 flex items-center justify-center text-4xl sm:text-5xl shadow-[0_0_35px_rgba(239,68,68,0.5)] animate-bounce">
+        🎄
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-black text-amber-300 tracking-tight mb-1">시간 종료! 메리 크리스마스!</h2>
+      <p id="finish-activity-title" class="text-base sm:text-lg font-bold text-emerald-300 mb-2">[수업 집중 시간]</p>
+      <p class="text-xs sm:text-sm text-slate-300 mb-4">선생님과 학생 여러분 수고하셨습니다. 신나는 캐롤송이 울려퍼집니다!</p>
+
+      <div class="mb-5 p-3.5 rounded-2xl bg-black/60 border border-white/15 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-left">
+            <span class="text-amber-400">🎵</span>
+            <div>
+              <p id="finish-playing-song-name" class="text-xs sm:text-sm font-bold text-white truncate max-w-[210px] sm:max-w-[280px]">징글벨 (Jingle Bells)</p>
+              <p id="finish-playing-status" class="text-[11px] text-slate-400">🎵 울려퍼지는 중...</p>
+            </div>
+          </div>
+          <button id="btn-toggle-carol-playing" class="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-red-500/30 text-red-300 border border-red-500/50 hover:bg-red-500/40 cursor-pointer">
+            음악 멈춤
+          </button>
+        </div>
+
+        <div class="grid grid-cols-3 gap-1.5 pt-2 border-t border-white/10" id="finish-carol-switchers">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button id="btn-close-finish" class="w-full sm:w-auto flex-1 px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold text-sm border border-white/15 cursor-pointer">
+          확인 및 닫기
+        </button>
+        <button id="btn-restart-from-finish" class="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm sm:text-base shadow-lg cursor-pointer">
+          ↺ <span>타이머 다시 시작</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE -->
+  <script>
+    // State
+    let totalSeconds = 600;
+    let timeLeft = 600;
+    let isRunning = false;
+    let timerInterval = null;
+    let isMuted = false;
+    let volume = 0.8;
+    let dimLevel = 15;
+    let blurLevel = 0;
+    let enableTickSound = true;
+    let activityTitle = '수업 집중 시간';
+    let alarmType = 'jingle_bells'; // 'jingle_bells' | 'we_wish_you' | 'classic_chime'
+    let isCarolPlaying = false;
+
+    // Backgrounds list
+    const backgrounds = [
+      { id: 'autumn-golden', name: '황금빛 가을 호수', url: './src/assets/images/autumn_golden_landscape_1794195074557.jpg' },
+      { id: 'autumn-forest', name: '따스한 가을 숲길', url: './src/assets/images/autumn_cozy_nature_1794195073853.jpg' },
+      { id: 'winter-christmas', name: '🎄 크리스마스 눈꽃 마을', url: './src/assets/images/winter_festive_forest_1794195672837.jpg' },
+      { id: 'chalkboard-dark', name: '차분한 칠판 모드', url: 'linear-gradient(135deg, #091a14 0%, #032115 50%, #04140e 100%)' }
+    ];
+    let currentBgId = 'autumn-golden';
+
+    const CAROLS = [
+      { id: 'jingle_bells', name: '징글벨 (Jingle Bells)', desc: '경쾌한 썰매 방울 & 멜로디', emoji: '🎄' },
+      { id: 'we_wish_you', name: 'We Wish You a Merry Christmas', desc: '따스한 축하 캐롤송', emoji: '🎅' },
+      { id: 'classic_chime', name: '클래식 학교 차임벨', desc: '단정한 4음 학교 종소리', emoji: '🔔' }
+    ];
+
+    // Web Audio Synthesizer
+    let audioCtx = null;
+    let activeNodes = [];
+    let activeGains = [];
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function stopAllAudio() {
+      if (!audioCtx) return;
+      const now = audioCtx.currentTime;
+      activeGains.forEach(g => {
+        try {
+          g.gain.cancelScheduledValues(now);
+          g.gain.linearRampToValueAtTime(0.0001, now + 0.05);
+        } catch(e){}
+      });
+      activeNodes.forEach(n => {
+        try { n.stop(now + 0.06); } catch(e){}
+      });
+      activeNodes = [];
+      activeGains = [];
+      isCarolPlaying = false;
+      updateCarolPlayingStatusUI();
+    }
+
+    function playBellNote(ctx, masterGain, freq, startTime, duration, noteGain = 0.35) {
+      const osc1 = ctx.createOscillator();
+      const g1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(freq, startTime);
+      g1.gain.setValueAtTime(0, startTime);
+      g1.gain.linearRampToValueAtTime(noteGain, startTime + 0.015);
+      g1.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      osc1.connect(g1);
+      g1.connect(masterGain);
+      osc1.start(startTime);
+      osc1.stop(startTime + duration);
+      activeNodes.push(osc1);
+
+      const osc2 = ctx.createOscillator();
+      const g2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2.01, startTime);
+      g2.gain.setValueAtTime(0, startTime);
+      g2.gain.linearRampToValueAtTime(noteGain * 0.45, startTime + 0.01);
+      g2.gain.exponentialRampToValueAtTime(0.0001, startTime + duration * 0.65);
+      osc2.connect(g2);
+      g2.connect(masterGain);
+      osc2.start(startTime);
+      osc2.stop(startTime + duration * 0.7);
+      activeNodes.push(osc2);
+
+      const osc3 = ctx.createOscillator();
+      const g3 = ctx.createGain();
+      osc3.type = 'sine';
+      osc3.frequency.setValueAtTime(freq * 3.0, startTime);
+      g3.gain.setValueAtTime(0, startTime);
+      g3.gain.linearRampToValueAtTime(noteGain * 0.2, startTime + 0.008);
+      g3.gain.exponentialRampToValueAtTime(0.0001, startTime + duration * 0.4);
+      osc3.connect(g3);
+      g3.connect(masterGain);
+      osc3.start(startTime);
+      osc3.stop(startTime + duration * 0.45);
+      activeNodes.push(osc3);
+    }
+
+    function playSleighBell(ctx, masterGain, time) {
+      [2400, 2750, 3100, 3700, 4200].forEach(freq => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, time);
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(0.04, time + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + 0.13);
+        activeNodes.push(osc);
+      });
+    }
+
+    function playJingleBells() {
+      if (isMuted) return;
+      const ctx = getAudioContext();
+      stopAllAudio();
+      isCarolPlaying = true;
+      updateCarolPlayingStatusUI();
+
+      const now = ctx.currentTime + 0.05;
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(volume, now);
+      master.connect(ctx.destination);
+      activeGains.push(master);
+
+      const beat = 0.36;
+      const C5 = 523.25, D5 = 587.33, E5 = 659.25, F5 = 698.46, G5 = 783.99;
+      const C4 = 261.63, F4 = 349.23, G4 = 392.00;
+
+      const melody = [
+        [E5, 0, 0.8], [E5, 1, 0.8], [E5, 2, 1.8],
+        [E5, 4, 0.8], [E5, 5, 0.8], [E5, 6, 1.8],
+        [E5, 8, 0.8], [G5, 9, 0.8], [C5, 10, 1.2], [D5, 11.2, 0.6], [E5, 12, 3.2],
+        [F5, 16, 0.8], [F5, 17, 0.8], [F5, 18, 1.2], [F5, 19.2, 0.6],
+        [F5, 20, 0.8], [E5, 21, 0.8], [E5, 22, 0.8], [E5, 22.8, 0.5], [E5, 23.4, 0.5],
+        [E5, 24, 0.8], [D5, 25, 0.8], [D5, 26, 0.8], [E5, 27, 0.8], [D5, 28, 1.8], [G5, 30, 1.8],
+        [E5, 32, 0.8], [E5, 33, 0.8], [E5, 34, 1.8],
+        [E5, 36, 0.8], [E5, 37, 0.8], [E5, 38, 1.8],
+        [E5, 40, 0.8], [G5, 41, 0.8], [C5, 42, 1.2], [D5, 43.2, 0.6], [E5, 44, 3.2],
+        [F5, 48, 0.8], [F5, 49, 0.8], [F5, 50, 1.2], [F5, 51.2, 0.6],
+        [F5, 52, 0.8], [E5, 53, 0.8], [E5, 54, 0.8], [E5, 55, 0.8],
+        [G5, 56, 0.8], [G5, 57, 0.8], [F5, 58, 0.8], [D5, 59, 0.8], [C5, 60, 3.6, 0.45]
+      ];
+
+      melody.forEach(([freq, startBeat, durBeats, gainVal]) => {
+        playBellNote(ctx, master, freq, now + startBeat * beat, durBeats * beat * 1.35, gainVal || 0.35);
+      });
+
+      for (let b = 0; b <= 64; b++) {
+        const time = now + b * beat;
+        playSleighBell(ctx, master, time);
+        if (b % 4 === 0 && b < 60) {
+          let bass = (b >= 16 && b < 24) || (b >= 48 && b < 56) ? F4 : (b >= 24 && b < 32) || (b >= 56) ? G4 : C4;
+          playBellNote(ctx, master, bass, time, beat * 3.5, 0.18);
+        }
+      }
+    }
+
+    function playWeWishYou() {
+      if (isMuted) return;
+      const ctx = getAudioContext();
+      stopAllAudio();
+      isCarolPlaying = true;
+      updateCarolPlayingStatusUI();
+
+      const now = ctx.currentTime + 0.05;
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(volume, now);
+      master.connect(ctx.destination);
+      activeGains.push(master);
+
+      const beat = 0.42;
+      const D4 = 293.66, G4 = 392.00, A4 = 440.00, B4 = 493.88, C5 = 523.25;
+      const D5 = 587.33, E5 = 659.25, FS5 = 739.99, G5 = 783.99, A5 = 880.00;
+
+      const melody = [
+        [D5, 0, 1.0], [G5, 1, 1.0], [G5, 2, 0.5], [A5, 2.5, 0.5], [G5, 3, 0.5], [FS5, 3.5, 0.5],
+        [E5, 4, 1.0], [E5, 5, 1.0], [E5, 6, 1.0],
+        [E5, 7, 1.0], [A5, 8, 1.0], [A5, 9, 0.5], [B4, 9.5, 0.5], [A5, 10, 0.5], [G5, 10.5, 0.5],
+        [FS5, 11, 1.0], [D5, 12, 1.0], [D5, 13, 1.0],
+        [D5, 14, 1.0], [B4, 15, 1.0], [B4, 16, 0.5], [C5, 16.5, 0.5], [B4, 17, 0.5], [A5, 17.5, 0.5],
+        [G5, 18, 1.0], [E5, 19, 1.0], [D4, 20, 0.5], [D4, 20.5, 0.5],
+        [E5, 21, 1.0], [A5, 22, 1.0], [FS5, 23, 1.0], [G5, 24, 3.0, 0.45]
+      ];
+
+      melody.forEach(([freq, startBeat, durBeats, gainVal]) => {
+        playBellNote(ctx, master, freq, now + startBeat * beat, durBeats * beat * 1.35, gainVal || 0.35);
+      });
+
+      for (let b = 0; b <= 26; b++) {
+        playSleighBell(ctx, master, now + b * beat);
+      }
+    }
+
+    function playClassicChime() {
+      if (isMuted) return;
+      const ctx = getAudioContext();
+      stopAllAudio();
+      isCarolPlaying = true;
+      updateCarolPlayingStatusUI();
+
+      const now = ctx.currentTime + 0.05;
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(volume, now);
+      master.connect(ctx.destination);
+      activeGains.push(master);
+
+      const notes = [
+        { freq: 659.25, time: 0.0, dur: 0.8 },
+        { freq: 523.25, time: 0.65, dur: 0.8 },
+        { freq: 587.33, time: 1.3, dur: 0.8 },
+        { freq: 392.00, time: 1.95, dur: 1.4 },
+        { freq: 523.25, time: 2.8, dur: 2.0 },
+        { freq: 659.25, time: 2.8, dur: 2.0 },
+        { freq: 783.99, time: 2.8, dur: 2.2 },
+        { freq: 1046.50, time: 2.85, dur: 2.5 }
+      ];
+
+      notes.forEach(n => {
+        playBellNote(ctx, master, n.freq, now + n.time, n.dur, 0.4);
+      });
+    }
+
+    function playFinishSound() {
+      if (alarmType === 'jingle_bells') playJingleBells();
+      else if (alarmType === 'we_wish_you') playWeWishYou();
+      else playClassicChime();
+    }
+
+    function playTick(second) {
+      if (isMuted || !enableTickSound) return;
+      const ctx = getAudioContext();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = second <= 3 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(second <= 3 ? 880 : 587.33, now);
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(second <= 3 ? 0.35 : 0.22, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + (second <= 3 ? 0.25 : 0.15));
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    }
+
+    function updateCarolPlayingStatusUI() {
+      const btn = document.getElementById('btn-toggle-carol-playing');
+      const statusTxt = document.getElementById('finish-playing-status');
+      const songTxt = document.getElementById('finish-playing-song-name');
+      const current = CAROLS.find(c => c.id === alarmType) || CAROLS[0];
+      if (songTxt) songTxt.innerText = current.name;
+
+      if (btn && statusTxt) {
+        if (isCarolPlaying) {
+          btn.innerText = '음악 멈춤';
+          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-red-500/30 text-red-300 border border-red-500/50 hover:bg-red-500/40 cursor-pointer';
+          statusTxt.innerText = '🎵 울려퍼지는 중...';
+        } else {
+          btn.innerText = '다시 재생';
+          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-emerald-500/30 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 cursor-pointer';
+          statusTxt.innerText = '일시정지됨';
+        }
+      }
+    }
+
+    // Render & Updates
+    function updateDisplay() {
+      const min = Math.floor(timeLeft / 60);
+      const sec = timeLeft % 60;
+      document.getElementById('digits-min').innerText = String(min).padStart(2, '0');
+      document.getElementById('digits-sec').innerText = String(sec).padStart(2, '0');
+
+      const isUrgent = timeLeft <= 10 && timeLeft > 0;
+      const minEl = document.getElementById('digits-min');
+      const secEl = document.getElementById('digits-sec');
+      const colonEl = document.getElementById('digits-colon');
+      const cardEl = document.getElementById('timer-card');
+      const badgeEl = document.getElementById('urgent-badge');
+
+      if (isUrgent) {
+        minEl.className = 'classroom-digits font-black tracking-tight transition-colors duration-200 text-[21vw] sm:text-[19vw] md:text-[17vw] lg:text-[15vw] glow-red';
+        secEl.className = 'classroom-digits font-black tracking-tight transition-colors duration-200 text-[21vw] sm:text-[19vw] md:text-[17vw] lg:text-[15vw] glow-red';
+        colonEl.className = 'classroom-digits font-black px-1 sm:px-2 md:px-3 text-[19vw] sm:text-[17vw] md:text-[15vw] lg:text-[13vw] glow-red';
+        cardEl.className = 'relative flex flex-col items-center justify-center w-full rounded-3xl p-4 sm:p-8 md:p-12 transition-all duration-300 bg-black/55 backdrop-blur-xl border border-red-500/50 shadow-[0_0_50px_rgba(239,68,68,0.3)] animate-urgent';
+        badgeEl.classList.remove('hidden');
+      } else {
+        minEl.className = 'classroom-digits font-black tracking-tight transition-colors duration-200 text-[21vw] sm:text-[19vw] md:text-[17vw] lg:text-[15vw] glow-yellow';
+        secEl.className = 'classroom-digits font-black tracking-tight transition-colors duration-200 text-[21vw] sm:text-[19vw] md:text-[17vw] lg:text-[15vw] glow-yellow';
+        colonEl.className = 'classroom-digits font-black px-1 sm:px-2 md:px-3 text-[19vw] sm:text-[17vw] md:text-[15vw] lg:text-[13vw] glow-yellow';
+        cardEl.className = 'relative flex flex-col items-center justify-center w-full rounded-3xl p-4 sm:p-8 md:p-12 transition-all duration-300 bg-black/55 backdrop-blur-xl border border-white/10 shadow-2xl';
+        badgeEl.classList.add('hidden');
+      }
+
+      const percent = totalSeconds > 0 ? Math.round(((totalSeconds - timeLeft) / totalSeconds) * 100) : 0;
+      document.getElementById('label-progress').innerText = `진행률: ${percent}%`;
+      document.getElementById('label-remain').innerText = timeLeft === 0 ? '시간 종료' : `${min}분 ${sec}초 남음`;
+      const pBar = document.getElementById('progress-bar');
+      pBar.style.width = `${percent}%`;
+      pBar.className = isUrgent
+        ? 'h-full rounded-full transition-all duration-300 bg-gradient-to-r from-red-600 to-rose-400'
+        : 'h-full rounded-full transition-all duration-300 bg-gradient-to-r from-amber-400 to-yellow-300';
+    }
+
+    function applyClarity() {
+      const scrim = document.getElementById('scrim-layer');
+      scrim.style.backgroundColor = `rgba(0, 0, 0, ${dimLevel / 100})`;
+      scrim.style.backdropFilter = blurLevel > 0 ? `blur(${blurLevel}px)` : 'none';
+
+      document.getElementById('val-dim').innerText = `${dimLevel}%`;
+      document.getElementById('val-blur').innerText = `${blurLevel}px`;
+      document.getElementById('range-dim').value = dimLevel;
+      document.getElementById('range-blur').value = blurLevel;
+      document.getElementById('label-settings-clarity-val').innerText = `어둡기 ${dimLevel}% · 흐림 ${blurLevel}px`;
+
+      const brightBtn = document.getElementById('label-bright');
+      if (dimLevel === 0 && blurLevel === 0) brightBtn.innerText = '✨ 가장 맑음';
+      else if (dimLevel <= 20) brightBtn.innerText = '☀️ 선명함';
+      else brightBtn.innerText = '🌙 집중';
+    }
+
+    function applyBackground() {
+      const bg = backgrounds.find(b => b.id === currentBgId) || backgrounds[0];
+      const bgLayer = document.getElementById('bg-layer');
+      document.getElementById('label-bg').innerText = bg.name;
+      if (bg.url.startsWith('linear')) {
+        bgLayer.style.backgroundImage = 'none';
+        bgLayer.style.background = bg.url;
+      } else {
+        bgLayer.style.background = 'none';
+        bgLayer.style.backgroundImage = `url('${bg.url}')`;
+      }
+      renderBgCards();
+    }
+
+    function renderBgCards() {
+      const container = document.getElementById('bg-cards-container');
+      if (!container) return;
+      container.innerHTML = backgrounds.map(b => {
+        const isSel = b.id === currentBgId;
+        return `
+          <button type="button" class="bg-card-btn relative rounded-xl overflow-hidden border-2 transition-all p-1 text-left cursor-pointer ${
+            isSel ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.5)]' : 'border-white/10 hover:border-white/40'
+          }" data-id="${b.id}">
+            <div class="w-full h-20 rounded-lg overflow-hidden bg-slate-800 relative">
+              ${b.url.startsWith('linear') ? `<div class="w-full h-full" style="background:${b.url}"></div>` : `<img src="${b.url}" alt="${b.name}" class="w-full h-full object-cover">`}
+              ${isSel ? `<div class="absolute top-1.5 right-1.5 bg-amber-400 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded shadow">선택됨</div>` : ''}
+            </div>
+            <span class="block mt-1 text-xs font-semibold text-slate-300 truncate">${b.name}</span>
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.bg-card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentBgId = btn.dataset.id;
+          applyBackground();
+        });
+      });
+    }
+
+    function renderCarolOptions() {
+      const container = document.getElementById('carol-options-container');
+      if (!container) return;
+      container.innerHTML = CAROLS.map(c => {
+        const isSel = c.id === alarmType;
+        return `
+          <button type="button" class="carol-opt-btn p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+            isSel ? 'bg-amber-400/20 border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.25)]' : 'bg-slate-800/80 border-white/10 hover:border-white/30'
+          }" data-id="${c.id}">
+            <div>
+              <div class="flex items-center gap-1.5 font-bold text-xs sm:text-sm text-white">
+                <span>${c.emoji}</span>
+                <span class="truncate">${c.name.split(' ')[0]}</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1 line-clamp-1">${c.desc}</p>
+            </div>
+            ${isSel ? `<span class="mt-2 text-[10px] font-black text-amber-300">선택 및 미리듣기 중</span>` : ''}
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.carol-opt-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alarmType = btn.dataset.id;
+          renderCarolOptions();
+          renderFinishCarolSwitchers();
+          playFinishSound();
+        });
+      });
+    }
+
+    function renderFinishCarolSwitchers() {
+      const container = document.getElementById('finish-carol-switchers');
+      if (!container) return;
+      container.innerHTML = CAROLS.map(c => {
+        const isSel = c.id === alarmType;
+        return `
+          <button type="button" class="finish-carol-btn py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer truncate ${
+            isSel ? 'bg-amber-400 text-slate-950 shadow' : 'bg-white/5 hover:bg-white/15 text-slate-300'
+          }" data-id="${c.id}">
+            ${c.emoji} ${c.id === 'jingle_bells' ? '징글벨' : c.id === 'we_wish_you' ? 'We Wish' : '학교종'}
+          </button>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.finish-carol-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          alarmType = btn.dataset.id;
+          renderCarolOptions();
+          renderFinishCarolSwitchers();
+          playFinishSound();
+        });
+      });
+    }
+
+    function startTimer() {
+      stopAllAudio();
+      if (timeLeft === 0) timeLeft = totalSeconds;
+      isRunning = true;
+      document.getElementById('icon-run').innerText = '❚❚';
+      document.getElementById('label-run').innerText = '일시정지';
+      document.getElementById('btn-toggle-run').className = 'flex items-center gap-2.5 px-8 sm:px-12 py-4 sm:py-4.5 rounded-2xl font-black text-lg sm:text-xl text-amber-950 bg-gradient-to-b from-amber-300 to-amber-500 hover:from-amber-200 active:scale-95 border-2 border-amber-200 shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all cursor-pointer';
+
+      timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          if (timeLeft <= 10 && timeLeft > 0) {
+            playTick(timeLeft);
+          }
+          updateDisplay();
+          if (timeLeft === 0) {
+            pauseTimer();
+            showFinishModal();
+            playFinishSound();
+          }
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      clearInterval(timerInterval);
+      document.getElementById('icon-run').innerText = '▶';
+      document.getElementById('label-run').innerText = '시작';
+      document.getElementById('btn-toggle-run').className = 'flex items-center gap-2.5 px-8 sm:px-12 py-4 sm:py-4.5 rounded-2xl font-black text-lg sm:text-xl text-slate-950 bg-gradient-to-b from-emerald-300 to-emerald-500 hover:from-emerald-200 active:scale-95 border-2 border-emerald-200 shadow-[0_0_35px_rgba(16,185,129,0.5)] transition-all cursor-pointer';
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      stopAllAudio();
+      timeLeft = totalSeconds;
+      updateDisplay();
+    }
+
+    function showFinishModal() {
+      document.getElementById('finish-activity-title').innerText = `[${activityTitle}]`;
+      document.getElementById('finish-modal').classList.remove('hidden');
+      updateCarolPlayingStatusUI();
+      renderFinishCarolSwitchers();
+    }
+
+    function hideFinishModal() {
+      stopAllAudio();
+      document.getElementById('finish-modal').classList.add('hidden');
+    }
+
+    function openSettings() {
+      document.getElementById('input-activity-title').value = activityTitle;
+      applyClarity();
+      renderBgCards();
+      renderCarolOptions();
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function closeSettings() {
+      stopAllAudio();
+      activityTitle = document.getElementById('input-activity-title').value.trim() || '수업 집중 시간';
+      document.getElementById('label-activity').innerText = activityTitle;
+      document.getElementById('display-activity-title').innerText = activityTitle;
+      document.getElementById('settings-modal').classList.add('hidden');
+    }
+
+    // Event Listeners
+    document.getElementById('btn-toggle-run').addEventListener('click', () => {
+      if (isRunning) pauseTimer(); else startTimer();
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', resetTimer);
+
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn-preset').forEach(b => {
+          b.className = 'btn-preset py-2.5 sm:py-3.5 px-2 sm:px-4 rounded-2xl font-bold transition-all text-center bg-black/60 hover:bg-black/80 text-white/90 border border-white/15 cursor-pointer';
+        });
+        btn.className = 'btn-preset py-2.5 sm:py-3.5 px-2 sm:px-4 rounded-2xl font-bold transition-all text-center bg-amber-400 text-slate-950 border-2 border-white shadow-[0_0_20px_rgba(251,191,36,0.5)] scale-[1.02] cursor-pointer';
+
+        totalSeconds = parseInt(btn.dataset.sec, 10);
+        resetTimer();
+      });
+    });
+
+    document.getElementById('btn-plus-1m').addEventListener('click', () => {
+      totalSeconds += 60;
+      if (!isRunning) timeLeft = totalSeconds; else timeLeft += 60;
+      updateDisplay();
+    });
+    document.getElementById('btn-minus-1m').addEventListener('click', () => {
+      if (totalSeconds > 60) {
+        totalSeconds -= 60;
+        if (!isRunning) timeLeft = totalSeconds; else timeLeft = Math.max(1, timeLeft - 60);
+        updateDisplay();
+      }
+    });
+    document.getElementById('btn-plus-10s').addEventListener('click', () => {
+      totalSeconds += 10;
+      if (!isRunning) timeLeft = totalSeconds; else timeLeft += 10;
+      updateDisplay();
+    });
+    document.getElementById('btn-minus-10s').addEventListener('click', () => {
+      if (totalSeconds > 10) {
+        totalSeconds -= 10;
+        if (!isRunning) timeLeft = totalSeconds; else timeLeft = Math.max(1, timeLeft - 10);
+        updateDisplay();
+      }
+    });
+
+    // Brightness Cycle in Header
+    document.getElementById('btn-cycle-bright').addEventListener('click', () => {
+      if (dimLevel === 0 && blurLevel === 0) {
+        dimLevel = 15;
+        blurLevel = 0;
+      } else if (dimLevel <= 20) {
+        dimLevel = 45;
+        blurLevel = 0;
+      } else {
+        dimLevel = 0;
+        blurLevel = 0;
+      }
+      applyClarity();
+    });
+
+    // Background next button in Header
+    document.getElementById('btn-next-bg').addEventListener('click', () => {
+      const idx = backgrounds.findIndex(b => b.id === currentBgId);
+      const nextIdx = (idx + 1) % backgrounds.length;
+      currentBgId = backgrounds[nextIdx].id;
+      applyBackground();
+    });
+
+    // Header Activity button opens Settings!
+    document.getElementById('btn-header-activity').addEventListener('click', openSettings);
+    document.getElementById('btn-open-settings').addEventListener('click', openSettings);
+    document.getElementById('btn-close-settings').addEventListener('click', closeSettings);
+    document.getElementById('btn-close-settings-x').addEventListener('click', closeSettings);
+
+    // Quick Chips in Settings
+    document.querySelectorAll('.btn-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const text = chip.innerText.replace('+', '').trim();
+        document.getElementById('input-activity-title').value = text;
+      });
+    });
+
+    // Clarity Presets in Settings
+    document.getElementById('btn-preset-clear').addEventListener('click', () => {
+      dimLevel = 0;
+      blurLevel = 0;
+      applyClarity();
+    });
+    document.getElementById('btn-preset-recommend').addEventListener('click', () => {
+      dimLevel = 15;
+      blurLevel = 0;
+      applyClarity();
+    });
+    document.getElementById('btn-preset-focus').addEventListener('click', () => {
+      dimLevel = 45;
+      blurLevel = 0;
+      applyClarity();
+    });
+
+    // Sliders
+    document.getElementById('range-dim').addEventListener('input', (e) => {
+      dimLevel = parseInt(e.target.value, 10);
+      applyClarity();
+    });
+    document.getElementById('range-blur').addEventListener('input', (e) => {
+      blurLevel = parseInt(e.target.value, 10);
+      applyClarity();
+    });
+    document.getElementById('range-volume').addEventListener('input', (e) => {
+      volume = parseFloat(e.target.value);
+      document.getElementById('val-volume').innerText = `${Math.round(volume * 100)}%`;
+    });
+
+    document.getElementById('btn-test-carol').addEventListener('click', () => {
+      playFinishSound();
+    });
+
+    // 10s tick toggle
+    document.getElementById('btn-toggle-tick').addEventListener('click', () => {
+      enableTickSound = !enableTickSound;
+      const btn = document.getElementById('btn-toggle-tick');
+      const knob = document.getElementById('tick-toggle-knob');
+      if (enableTickSound) {
+        btn.className = 'w-11 h-6 rounded-full transition-colors relative cursor-pointer bg-amber-400';
+        knob.className = 'block w-4 h-4 rounded-full bg-slate-950 transition-transform translate-x-6';
+      } else {
+        btn.className = 'w-11 h-6 rounded-full transition-colors relative cursor-pointer bg-slate-700';
+        knob.className = 'block w-4 h-4 rounded-full bg-slate-950 transition-transform translate-x-1';
+      }
+    });
+
+    // Fullscreen
+    document.getElementById('btn-fullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        document.getElementById('label-fullscreen').innerText = '화면 복귀';
+      } else {
+        document.exitFullscreen().catch(() => {});
+        document.getElementById('label-fullscreen').innerText = '전체화면';
+      }
+    });
+
+    // Sound Toggle
+    document.getElementById('btn-toggle-sound').addEventListener('click', () => {
+      isMuted = !isMuted;
+      document.getElementById('icon-sound').innerText = isMuted ? '🔇' : '🔊';
+      document.getElementById('label-sound').innerText = isMuted ? '음소거' : '소리 켬';
+      if (isMuted) stopAllAudio();
+    });
+
+    // Finish Modal Controls
+    document.getElementById('btn-toggle-carol-playing').addEventListener('click', () => {
+      if (isCarolPlaying) {
+        stopAllAudio();
+      } else {
+        playFinishSound();
+      }
+    });
+    document.getElementById('btn-close-finish').addEventListener('click', hideFinishModal);
+    document.getElementById('btn-close-finish-x').addEventListener('click', hideFinishModal);
+    document.getElementById('btn-restart-from-finish').addEventListener('click', () => {
+      hideFinishModal();
+      resetTimer();
+      startTimer();
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (isRunning) pauseTimer(); else startTimer();
+      } else if (e.key === 'r' || e.key === 'R') {
+        resetTimer();
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      } else if (e.key === 'Escape') {
+        document.getElementById('settings-modal').classList.add('hidden');
+        hideFinishModal();
+      }
+    });
+
+    // Initial Bootstrap
+    applyBackground();
+    applyClarity();
+    updateDisplay();
+  </script>
+</body>
+</html>

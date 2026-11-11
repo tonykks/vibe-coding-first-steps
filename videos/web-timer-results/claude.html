@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>타이머</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #150f1c; font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+  #scene { position: fixed; inset: 0; width: 100vw; height: 100vh; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #panel { background: rgba(0,0,0,0.72); border-radius: 20px; padding: 3vh 4vw; text-align: center; max-width: 92vw; }
+  #presets { display: flex; gap: 1.2vw; justify-content: center; margin-bottom: 2vh; }
+  button { cursor: pointer; font-family: inherit; border-radius: 10px; }
+  #presets button { font-size: clamp(16px, 3vh, 34px); height: clamp(40px, 7vh, 72px); padding: 0 2.2vw; border: 1px solid #FFD600; background: transparent; color: #FFD600; }
+  #disp { font-size: min(36vh, 19vw); line-height: 1; font-weight: 500; font-variant-numeric: tabular-nums; color: #FFD600; white-space: nowrap; }
+  #track { height: clamp(8px, 1.4vh, 16px); background: #333; border-radius: 8px; margin: 2.5vh 0 3vh; overflow: hidden; }
+  #bar { height: 100%; width: 100%; background: #FFD600; }
+  #ctl { display: flex; gap: 1.5vw; justify-content: center; }
+  #go { background: #FFD600; color: #000; border: none; font-size: clamp(18px, 3.4vh, 38px); height: clamp(46px, 8vh, 84px); padding: 0 3vw; font-weight: 500; }
+  #rst { background: transparent; color: #FFD600; border: 1px solid #FFD600; font-size: clamp(18px, 3.4vh, 38px); height: clamp(46px, 8vh, 84px); padding: 0 3vw; }
+  #msg { margin-top: 2vh; font-size: clamp(16px, 3vh, 32px); color: #FFD600; min-height: 1.4em; }
+</style>
+</head>
+<body>
+<svg id="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <rect width="1600" height="900" fill="#1b1326"/>
+  <circle cx="1280" cy="150" r="60" fill="#f3e3b5"/>
+  <circle cx="1302" cy="140" r="54" fill="#1b1326"/>
+  <circle cx="220" cy="90" r="3" fill="#f3e3b5"/><circle cx="520" cy="60" r="2.5" fill="#f3e3b5"/><circle cx="820" cy="120" r="3" fill="#f3e3b5"/><circle cx="1040" cy="50" r="2.5" fill="#f3e3b5"/><circle cx="1500" cy="300" r="2.5" fill="#f3e3b5"/><circle cx="680" cy="200" r="2" fill="#f3e3b5"/>
+  <path d="M0 640 Q250 540 520 620 T1050 600 T1600 630 L1600 900 L0 900Z" fill="#2b1b24"/>
+  <path d="M0 740 Q400 680 800 740 T1600 720 L1600 900 L0 900Z" fill="#3a2118"/>
+  <rect x="470" y="560" width="14" height="150" fill="#3a2418"/>
+  <circle cx="477" cy="545" r="52" fill="#9a3412"/><circle cx="445" cy="575" r="34" fill="#c2410c"/>
+  <rect x="1090" y="570" width="14" height="140" fill="#3a2418"/>
+  <circle cx="1097" cy="555" r="50" fill="#d97706"/><circle cx="1130" cy="580" r="32" fill="#b45309"/>
+  <rect x="150" y="470" width="26" height="330" fill="#4a2e1c"/>
+  <circle cx="163" cy="420" r="130" fill="#c2410c"/><circle cx="70" cy="490" r="95" fill="#d97706"/><circle cx="260" cy="490" r="100" fill="#9a3412"/><circle cx="170" cy="330" r="85" fill="#e0711a"/>
+  <rect x="1430" y="490" width="26" height="310" fill="#4a2e1c"/>
+  <circle cx="1443" cy="440" r="125" fill="#b45309"/><circle cx="1350" cy="510" r="92" fill="#c2410c"/><circle cx="1535" cy="510" r="96" fill="#d97706"/><circle cx="1450" cy="350" r="82" fill="#9a3412"/>
+  <ellipse cx="330" cy="820" rx="22" ry="8" fill="#c2410c" transform="rotate(-15 330 820)"/>
+  <ellipse cx="620" cy="850" rx="20" ry="7" fill="#d97706" transform="rotate(20 620 850)"/>
+  <ellipse cx="900" cy="815" rx="21" ry="8" fill="#9a3412" transform="rotate(-8 900 815)"/>
+  <ellipse cx="1180" cy="855" rx="22" ry="8" fill="#c2410c" transform="rotate(12 1180 855)"/>
+  <ellipse cx="80" cy="860" rx="21" ry="8" fill="#d97706" transform="rotate(-20 80 860)"/>
+  <ellipse cx="1520" cy="830" rx="20" ry="7" fill="#b45309" transform="rotate(25 1520 830)"/>
+  <ellipse cx="400" cy="260" rx="14" ry="6" fill="#e0711a" transform="rotate(35 400 260)"/>
+  <ellipse cx="560" cy="400" rx="13" ry="5.5" fill="#d97706" transform="rotate(-30 560 400)"/>
+  <ellipse cx="1060" cy="280" rx="14" ry="6" fill="#c2410c" transform="rotate(20 1060 280)"/>
+  <ellipse cx="1180" cy="450" rx="13" ry="5.5" fill="#e0711a" transform="rotate(-25 1180 450)"/>
+  <ellipse cx="780" cy="180" rx="13" ry="5.5" fill="#d97706" transform="rotate(40 780 180)"/>
+  <ellipse cx="300" cy="620" rx="12" ry="5" fill="#c2410c" transform="rotate(-10 300 620)"/>
+  <ellipse cx="1320" cy="680" rx="12" ry="5" fill="#d97706" transform="rotate(15 1320 680)"/>
+</svg>
+<div id="stage">
+  <div id="panel">
+    <div id="presets">
+      <button data-m="1">1분</button>
+      <button data-m="5">5분</button>
+      <button data-m="10">10분</button>
+      <button data-m="20">20분</button>
+    </div>
+    <div id="disp">10:00</div>
+    <div id="track"><div id="bar"></div></div>
+    <div id="ctl">
+      <button id="go"></button>
+      <button id="rst">처음으로</button>
+    </div>
+    <div id="msg"></div>
+  </div>
+</div>
+<script>
+var Y = '#FFD600', R = '#FF3B30';
+var TOTAL = 600, left = TOTAL, end = 0, t = null, ac = null;
+var d = document.getElementById('disp'), b = document.getElementById('bar'),
+    g = document.getElementById('go'), m = document.getElementById('msg');
+
+function paintPresets() {
+  document.querySelectorAll('#presets button').forEach(function (x) {
+    var on = (+x.dataset.m * 60 === TOTAL);
+    x.style.background = on ? Y : 'transparent';
+    x.style.color = on ? '#000' : Y;
+    x.style.fontWeight = on ? '700' : '400';
+  });
+}
+function show() {
+  var s = Math.max(0, Math.ceil(left));
+  var mm = Math.floor(s / 60), ss = s % 60;
+  d.textContent = (mm < 10 ? '0' : '') + mm + ':' + (ss < 10 ? '0' : '') + ss;
+  b.style.width = (left / TOTAL * 100) + '%';
+  var red = (t !== null && s <= 10) || left <= 0;
+  d.style.color = red ? R : Y;
+  b.style.background = red ? R : Y;
+}
+function ctx() {
+  try {
+    if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+    if (ac.state === 'suspended') ac.resume();
+  } catch (e) {}
+  return ac;
+}
+function beep() {
+  var c = ctx(); if (!c) return;
+  for (var i = 0; i < 6; i++) {
+    (function (i) {
+      var o = c.createOscillator(), gn = c.createGain();
+      o.type = 'square'; o.connect(gn); gn.connect(c.destination);
+      o.frequency.value = i % 2 ? 660 : 880; gn.gain.value = 0.25;
+      o.start(c.currentTime + i * 0.45); o.stop(c.currentTime + i * 0.45 + 0.3);
+    })(i);
+  }
+}
+function tick() {
+  left = (end - Date.now()) / 1000;
+  if (left <= 0) {
+    left = 0; clearInterval(t); t = null;
+    g.textContent = '▶ 시작'; m.textContent = '시간이 끝났습니다.'; beep();
+  }
+  show();
+}
+function reset(min) {
+  clearInterval(t); t = null;
+  if (min) TOTAL = min * 60;
+  left = TOTAL; m.textContent = ''; g.textContent = '▶ 시작';
+  paintPresets(); show();
+}
+g.onclick = function () {
+  ctx();
+  if (t) { clearInterval(t); t = null; g.textContent = '▶ 계속'; m.textContent = '일시정지'; return; }
+  if (left <= 0) left = TOTAL;
+  end = Date.now() + left * 1000; m.textContent = '';
+  t = setInterval(tick, 200); g.textContent = '❚❚ 일시정지'; show();
+};
+document.getElementById('rst').onclick = function () { reset(); };
+document.querySelectorAll('#presets button').forEach(function (x) {
+  x.onclick = function () { reset(+x.dataset.m); };
+});
+reset();
+</script>
+</body>
+</html>

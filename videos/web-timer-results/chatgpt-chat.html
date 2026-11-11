@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#493c31">
+<title>교실용 늦가을 타이머</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:Arial,'Malgun Gothic',sans-serif;background:#151515;color:#ffea00}
+.timer{position:relative;isolation:isolate;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;overflow:hidden;text-align:center}
+.landscape{position:absolute;inset:0;width:100%;height:100%;z-index:-2}.shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,.43),rgba(0,0,0,.35))}
+.presets,.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}.presets{margin-bottom:clamp(16px,4vh,42px)}
+button{font:700 clamp(18px,2.2vw,27px)/1.2 Arial,'Malgun Gothic',sans-serif;cursor:pointer;border-radius:13px;padding:14px 25px;border:2px solid #ffe600;background:#282622;color:white;box-shadow:0 2px 8px #0007}button.active,button.primary{background:#ffe600;color:#121212;border-color:#fff}button:hover{filter:brightness(1.13)}button:focus-visible{outline:4px solid white;outline-offset:3px}
+.clock{font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;font-family:Arial,sans-serif;font-size:clamp(80px,24vw,360px);letter-spacing:-.055em;line-height:1.04;text-shadow:0 6px 14px #000,3px 0 #111,-3px 0 #111;color:#ffe600}
+.status{color:white;font-size:clamp(18px,2vw,27px);font-weight:700;text-shadow:0 3px 6px #000;margin:20px 0}
+.track{width:min(88vw,1100px);height:14px;background:#222;border:1px solid #ddd8;border-radius:9px;overflow:hidden;margin-bottom:clamp(20px,4vh,42px)}.fill{height:100%;width:100%;background:#ffe600}
+@media(max-width:600px){.timer{padding:18px 8px}.presets,.actions{gap:7px}button{padding:12px 14px;font-size:16px}.clock{font-size:23vw}}
+</style>
+</head>
+<body>
+<main id="timer" class="timer">
+<svg class="landscape" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs><radialGradient id="sky"><stop stop-color="#ffd497"/><stop offset=".55" stop-color="#d78351"/><stop offset="1" stop-color="#3d4a56"/></radialGradient><radialGradient id="leaves"><stop stop-color="#e9a531"/><stop offset=".7" stop-color="#b64d22"/><stop offset="1" stop-color="#733820"/></radialGradient></defs>
+<rect width="1000" height="560" fill="url(#sky)"/><circle cx="790" cy="185" r="88" fill="#ffdc95" opacity=".55"/>
+<path d="M0 390 Q170 310 320 370 T670 355 T1000 370 L1000 560 H0Z" fill="#5e6655" opacity=".7"/><path d="M0 460 Q270 365 480 430 T1000 412 L1000 560 H0Z" fill="#394337"/><path d="M0 510 Q300 435 560 490 T1000 475 L1000 560 H0Z" fill="#253128"/>
+<g fill="none" stroke="#34251e" stroke-linecap="round"><path d="M58 560 Q88 370 78 80 M80 320 L245 105 M76 260 L-15 140 M82 185 L180 35" stroke-width="24"/><path d="M970 560 Q905 340 945 52 M935 320 L775 105 M930 200 L1030 105" stroke-width="22"/></g>
+<g fill="url(#leaves)"><circle cx="75" cy="92" r="100"/><circle cx="215" cy="82" r="90"/><circle cx="20" cy="205" r="90"/><circle cx="180" cy="205" r="70"/><circle cx="945" cy="90" r="105"/><circle cx="825" cy="85" r="83"/><circle cx="995" cy="218" r="88"/><circle cx="852" cy="215" r="65"/></g>
+<g fill="#ffd36a" opacity=".9"><path d="M265 225 l18 10 -7 22 -19 -12Z"/><path d="M690 88 l18 8 -8 22 -16 -8Z"/><path d="M730 350 l22 4 -8 20 -19 -8Z"/><path d="M340 450 l20 -10 9 20 -22 9Z"/><path d="M610 410 l15 -20 20 11 -19 15Z"/></g>
+</svg>
+<div class="shade"></div>
+<div class="presets" role="group" aria-label="시간 선택">
+<button type="button" data-min="1">1분</button><button type="button" data-min="5">5분</button><button type="button" data-min="10" class="active" aria-pressed="true">10분</button><button type="button" data-min="20">20분</button>
+</div>
+<div class="clock" id="clock" role="timer" aria-label="남은 시간">10:00</div>
+<div class="status" id="status" aria-live="polite">시작 버튼을 누르세요</div>
+<div class="track" aria-hidden="true"><div class="fill" id="progress"></div></div>
+<div class="actions"><button class="primary" type="button" id="start">▶ 시작</button><button type="button" id="reset">↺ 초기화</button><button type="button" id="fullscreen">⛶ 전체화면</button></div>
+</main>
+<script>
+(()=>{
+'use strict';
+const root=document.getElementById('timer'),clock=document.getElementById('clock'),status=document.getElementById('status'),progress=document.getElementById('progress'),start=document.getElementById('start'),reset=document.getElementById('reset'),fullscreen=document.getElementById('fullscreen');
+let duration=600000,remaining=duration,deadline=0,running=false,loop=null,audio=null;
+const now=()=>performance.now();
+function render(){const sec=Math.ceil(remaining/1000),urgent=remaining>0&&sec<=10;clock.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');clock.style.color=urgent?'#ff3434':'#ffe600';progress.style.background=urgent?'#ff3434':'#ffe600';progress.style.width=(100*remaining/duration)+'%';}
+function halt(){running=false;if(loop!==null)clearInterval(loop);loop=null;}
+function primeAudio(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();if(audio.state==='suspended')audio.resume();}catch(e){}}
+function alarm(){if(!audio)return;try{const t=audio.currentTime+.04;for(let i=0;i<6;i++){const osc=audio.createOscillator(),gain=audio.createGain(),at=t+i*.42;osc.type='square';osc.frequency.setValueAtTime(i%2?660:880,at);gain.gain.setValueAtTime(.0001,at);gain.gain.linearRampToValueAtTime(.13,at+.02);gain.gain.setValueAtTime(.13,at+.27);gain.gain.exponentialRampToValueAtTime(.0001,at+.34);osc.connect(gain);gain.connect(audio.destination);osc.start(at);osc.stop(at+.36);}}catch(e){}}
+function tick(){remaining=Math.max(0,deadline-now());render();if(remaining===0){halt();start.textContent='▶ 다시 시작';status.textContent='⏰ 시간이 끝났습니다!';alarm();}}
+start.addEventListener('click',()=>{if(running){tick();if(running){halt();start.textContent='▶ 계속';status.textContent='일시정지';}}else{primeAudio();if(remaining===0)remaining=duration;deadline=now()+remaining;running=true;start.textContent='Ⅱ 일시정지';status.textContent='카운트다운 진행 중';loop=setInterval(tick,80);tick();}});
+reset.addEventListener('click',()=>{halt();remaining=duration;start.textContent='▶ 시작';status.textContent='시작 버튼을 누르세요';render();});
+root.querySelectorAll('[data-min]').forEach(button=>button.addEventListener('click',()=>{halt();duration=Number(button.dataset.min)*60000;remaining=duration;root.querySelectorAll('[data-min]').forEach(b=>{let active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});start.textContent='▶ 시작';status.textContent=button.dataset.min+'분 타이머 준비 완료';render();}));
+fullscreen.addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await root.requestFullscreen();}catch(e){status.textContent='이 환경에서는 전체화면을 지원하지 않습니다.';}});
+document.addEventListener('fullscreenchange',()=>{fullscreen.textContent=document.fullscreenElement?'⛶ 전체화면 종료':'⛶ 전체화면';});
+render();
+})();
+</script>
+</body>
+</html>

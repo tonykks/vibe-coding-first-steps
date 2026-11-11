@@ -1,0 +1,192 @@
+<div id="timer10" style="
+  width:100%;
+  min-height:100vh;
+  background:#000000;
+  color:#ffd400;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+">
+  <div style="
+    color:#ffd400;
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:20px;
+  ">
+    10분 타이머
+  </div>
+
+  <div id="timerDisplay" style="
+    font-family:'Courier New', monospace;
+    font-size:min(32vw, 320px);
+    font-weight:900;
+    line-height:1;
+    letter-spacing:4px;
+    color:#ffd400;
+    text-align:center;
+    margin-bottom:30px;
+    text-shadow:0 0 10px rgba(255,212,0,0.25);
+  ">
+    10:00
+  </div>
+
+  <div style="
+    width:min(90vw, 1200px);
+    height:18px;
+    background:#333333;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:25px;
+  ">
+    <div id="timerProgress" style="
+      width:100%;
+      height:100%;
+      background:#ffd400;
+      transition:width 0.2s linear;
+    "></div>
+  </div>
+
+  <div id="timerStatus" style="
+    font-size:26px;
+    color:#ffea70;
+    margin-bottom:25px;
+  ">
+    시작 버튼을 눌러 주세요
+  </div>
+
+  <div style="
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+  ">
+    <button id="timerStart" style="
+      font-size:28px;
+      font-weight:700;
+      padding:18px 36px;
+      border:none;
+      border-radius:14px;
+      background:#ffd400;
+      color:#000000;
+      cursor:pointer;
+    ">▶ 시작</button>
+
+    <button id="timerReset" style="
+      font-size:28px;
+      font-weight:700;
+      padding:18px 36px;
+      border:3px solid #ffd400;
+      border-radius:14px;
+      background:#000000;
+      color:#ffd400;
+      cursor:pointer;
+    ">↺ 초기화</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const duration = 10 * 60 * 1000; // 10분
+  let remaining = duration;
+  let running = false;
+  let deadline = 0;
+  let interval = null;
+  let audioCtx = null;
+
+  const display = document.getElementById("timerDisplay");
+  const progress = document.getElementById("timerProgress");
+  const status = document.getElementById("timerStatus");
+  const startBtn = document.getElementById("timerStart");
+  const resetBtn = document.getElementById("timerReset");
+
+  function render() {
+    const totalSeconds = Math.ceil(remaining / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    display.textContent =
+      String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+
+    progress.style.width = (remaining / duration) * 100 + "%";
+  }
+
+  function stopTimer() {
+    clearInterval(interval);
+    interval = null;
+    running = false;
+  }
+
+  function playBeep() {
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      audioCtx = audioCtx || new AudioContextClass();
+
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+
+      for (let i = 0; i < 3; i++) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const t = audioCtx.currentTime + i * 0.35;
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, t);
+
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(0.25, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(t);
+        osc.stop(t + 0.27);
+      }
+    } catch (e) {}
+  }
+
+  function tick() {
+    remaining = Math.max(0, deadline - performance.now());
+    render();
+
+    if (remaining <= 0) {
+      stopTimer();
+      startBtn.textContent = "▶ 다시 시작";
+      status.textContent = "⏰ 10분이 끝났습니다!";
+      playBeep();
+    }
+  }
+
+  startBtn.addEventListener("click", function () {
+    if (running) {
+      tick();
+      if (running) stopTimer();
+      startBtn.textContent = "▶ 계속";
+      status.textContent = "일시정지";
+    } else {
+      if (remaining <= 0) remaining = duration;
+      deadline = performance.now() + remaining;
+      running = true;
+      startBtn.textContent = "Ⅱ 일시정지";
+      status.textContent = "타이머 작동 중";
+      interval = setInterval(tick, 100);
+      tick();
+    }
+  });
+
+  resetBtn.addEventListener("click", function () {
+    stopTimer();
+    remaining = duration;
+    render();
+    startBtn.textContent = "▶ 시작";
+    status.textContent = "시작 버튼을 눌러 주세요";
+  });
+
+  render();
+})();
+</script>

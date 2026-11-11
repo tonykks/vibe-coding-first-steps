@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10분 타이머</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 교실 뒤에서도 보이도록 화면 가득 큰 숫자, 위에 시간 선택, 아래에 진행 막대와 버튼. 의도적으로 검정 배경 단일 테마 */
+:root {
+  --bg: #000000; --fg: #ffd400; --muted: #b8a64a; --track: #2a2600;
+  --btn: #1a1a1a; --done: #ff3b2f; color-scheme: dark;
+  --num: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); margin: 0;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2.5vh;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 2vh; box-sizing: border-box;
+  overflow: hidden; }
+#time { font-family: var(--num); font-weight: 700; line-height: 1; color: var(--fg);
+  font-size: min(30vw, 56vh); font-variant-numeric: tabular-nums; letter-spacing: -.04em; white-space: nowrap;
+  transition: color .2s; }
+#status { color: var(--muted); font-size: clamp(1.2rem, 3.5vw, 2.2rem); }
+.progress { width: min(92vw, 1400px); height: 14px; background: var(--track); border-radius: 7px; overflow: hidden; }
+#bar { height: 100%; width: 100%; background: var(--fg); transform-origin: left; transition: transform .25s linear; }
+body.warn #time, body.done #time { color: var(--done); }
+body.warn #bar, body.done #bar { background: var(--done); }
+body.done #time { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: .3; } }
+@media (prefers-reduced-motion: reduce) { body.done #time { animation: none; } #bar { transition: none; } }
+.controls, .presets { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+button { font-family: var(--body); font-size: clamp(1.1rem, 2.4vw, 1.6rem); min-width: 120px; padding: 12px 26px;
+  border-radius: 999px; border: 2px solid var(--fg); background: var(--btn); color: var(--fg); cursor: pointer; }
+.presets button { min-width: 90px; padding: 8px 20px; border-color: var(--muted); color: var(--muted); }
+.presets button[aria-pressed="true"] { border-color: var(--fg); color: var(--bg); background: var(--fg); }
+button.primary { background: var(--fg); color: var(--bg); }
+button:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+#time { text-shadow: 0 0 .12em #000, 0 0 .4em rgba(0,0,0,.85); }
+#status { text-shadow: 0 0 8px #000, 0 0 16px #000; }
+</style>
+</head>
+<body>
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="presets" role="group" aria-label="시간 선택">
+  <button data-min="1" aria-pressed="false">1분</button>
+  <button data-min="5" aria-pressed="false">5분</button>
+  <button data-min="10" aria-pressed="true">10분</button>
+  <button data-min="20" aria-pressed="false">20분</button>
+</div>
+<div id="time" role="timer" aria-live="off">10:00</div>
+<div class="progress" aria-hidden="true"><div id="bar"></div></div>
+<div id="status">시작을 누르세요</div>
+<div class="controls">
+  <button id="toggle" class="primary">시작</button>
+  <button id="reset">처음으로</button>
+  <button id="full">전체 화면</button>
+</div>
+
+<script>
+let minutes = 10, TOTAL = minutes * 60 * 1000;
+const bar = document.getElementById('bar'), timeEl = document.getElementById('time'),
+      statusEl = document.getElementById('status'), toggle = document.getElementById('toggle'),
+      resetBtn = document.getElementById('reset'), fullBtn = document.getElementById('full'),
+      presets = document.querySelectorAll('.presets button');
+let remaining = TOTAL, endAt = 0, tick = null, audio = null, lock = null, beepTimer = null, stopTimer = null;
+
+function render() {
+  const s = Math.ceil(remaining / 1000);
+  const txt = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  timeEl.textContent = txt;
+  document.title = tick ? txt + ' · 타이머' : minutes + '분 타이머';
+  bar.style.transform = 'scaleX(' + (remaining / TOTAL) + ')';
+  document.body.classList.toggle('warn', remaining > 0 && remaining <= 10000);
+}
+async function wake(on) {
+  try { if (on && navigator.wakeLock) lock = await navigator.wakeLock.request('screen');
+        else if (!on && lock) { await lock.release(); lock = null; } } catch (e) {}
+}
+function ensureAudio() {
+  try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); audio.resume(); } catch (e) {}
+}
+// 알림음: 높은음-낮은음 차임을 두 번
+function chime() {
+  if (!audio) return;
+  [[0, 1046], [0.3, 784], [0.7, 1046], [1.0, 784]].forEach(([d, f]) => {
+    const o = audio.createOscillator(), g = audio.createGain();
+    o.type = 'triangle'; o.frequency.value = f; o.connect(g); g.connect(audio.destination);
+    const t = audio.currentTime + d;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.7, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+    o.start(t); o.stop(t + 0.55);
+  });
+}
+function start() {
+  ensureAudio();
+  endAt = Date.now() + remaining;
+  tick = setInterval(() => {
+    remaining = Math.max(0, endAt - Date.now());
+    render();
+    if (remaining === 0) finish();
+  }, 200);
+  toggle.textContent = '일시정지'; statusEl.textContent = '진행 중'; wake(true); render();
+}
+function pause() {
+  clearInterval(tick); tick = null;
+  toggle.textContent = '계속'; statusEl.textContent = '일시정지됨'; wake(false); render();
+}
+function finish() {
+  clearInterval(tick); tick = null;
+  document.body.classList.add('done');
+  statusEl.textContent = minutes + '분이 지났습니다'; toggle.textContent = '알림음 끄기';
+  chime(); beepTimer = setInterval(chime, 2500);
+  stopTimer = setTimeout(() => clearInterval(beepTimer), 30000);
+  wake(false); render();
+}
+function reset() {
+  clearInterval(tick); tick = null; clearInterval(beepTimer); clearTimeout(stopTimer);
+  document.body.classList.remove('done');
+  remaining = TOTAL; toggle.textContent = '시작'; statusEl.textContent = '시작을 누르세요'; render();
+}
+presets.forEach(b => b.addEventListener('click', () => {
+  minutes = Number(b.dataset.min); TOTAL = minutes * 60 * 1000;
+  presets.forEach(p => p.setAttribute('aria-pressed', p === b ? 'true' : 'false'));
+  ensureAudio();
+  reset();
+}));
+toggle.addEventListener('click', () => {
+  if (document.body.classList.contains('done')) return reset();
+  tick ? pause() : start();
+});
+resetBtn.addEventListener('click', reset);
+fullBtn.addEventListener('click', () => {
+  try {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => { fullBtn.textContent = '전체 화면 불가'; });
+  } catch (e) { fullBtn.textContent = '전체 화면 불가'; }
+});
+document.addEventListener('fullscreenchange', () => {
+  fullBtn.textContent = document.fullscreenElement ? '전체 화면 끄기' : '전체 화면';
+});
+document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); toggle.click(); } });
+render();
+
+// 늦가을 밤 배경: 달, 별, 언덕, 단풍나무 실루엣, 떨어지는 낙엽
+(function () {
+  const cv = document.getElementById('scene'), ctx = cv.getContext('2d');
+  const bg = document.createElement('canvas'), bctx = bg.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const LEAF = ['#c2410c', '#b45309', '#9a3412', '#a16207', '#7c2d12'];
+  let W = 0, H = 0, dpr = 1, leaves = [], seed = 7;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  function tree(c, x, y, len, ang, depth) {
+    const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+    c.strokeStyle = '#0c0705'; c.lineWidth = Math.max(1, depth * 1.6 * dpr); c.lineCap = 'round';
+    c.beginPath(); c.moveTo(x, y); c.lineTo(x2, y2); c.stroke();
+    if (depth <= 2) {
+      for (let i = 0; i < 5; i++) {
+        c.globalAlpha = .45; c.fillStyle = LEAF[Math.floor(rnd() * LEAF.length)];
+        c.beginPath(); c.arc(x2 + (rnd() - .5) * len, y2 + (rnd() - .5) * len, (2 + rnd() * 4) * dpr, 0, 7); c.fill();
+      }
+      c.globalAlpha = 1;
+    }
+    if (depth > 0) {
+      tree(c, x2, y2, len * (.68 + rnd() * .1), ang - .3 - rnd() * .3, depth - 1);
+      tree(c, x2, y2, len * (.68 + rnd() * .1), ang + .3 + rnd() * .3, depth - 1);
+    }
+  }
+  function drawStatic() {
+    seed = 7;
+    const g = bctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#070a16'); g.addColorStop(.6, '#120c10'); g.addColorStop(1, '#1c0f06');
+    bctx.fillStyle = g; bctx.fillRect(0, 0, W, H);
+    const m = Math.min(W, H), mx = W * .84, my = H * .15, mr = m * .045;
+    const glow = bctx.createRadialGradient(mx, my, mr * .5, mx, my, mr * 4);
+    glow.addColorStop(0, 'rgba(243,227,176,.18)'); glow.addColorStop(1, 'rgba(243,227,176,0)');
+    bctx.fillStyle = glow; bctx.fillRect(mx - mr * 4, my - mr * 4, mr * 8, mr * 8);
+    bctx.fillStyle = 'rgba(243,227,176,.45)'; bctx.beginPath(); bctx.arc(mx, my, mr, 0, 7); bctx.fill();
+    for (let i = 0; i < 60; i++) {
+      bctx.fillStyle = 'rgba(255,255,255,' + (.15 + rnd() * .25) + ')';
+      bctx.fillRect(rnd() * W, rnd() * H * .5, dpr, dpr);
+    }
+    [['#140b07', .78, .05], ['#0a0503', .86, .035]].forEach(([col, base, amp], k) => {
+      bctx.fillStyle = col; bctx.beginPath(); bctx.moveTo(0, H);
+      for (let x = 0; x <= W; x += W / 60) bctx.lineTo(x, H * base + Math.sin(x / W * Math.PI * (2 + k) + k) * H * amp);
+      bctx.lineTo(W, H); bctx.fill();
+    });
+    tree(bctx, W * .06, H, H * .2, -Math.PI / 2 + .08, 7);
+    tree(bctx, W * .95, H, H * .17, -Math.PI / 2 - .1, 7);
+  }
+  function newLeaf(top) {
+    return { x: Math.random() * W, y: top ? -20 * dpr : Math.random() * H, s: (5 + Math.random() * 7) * dpr,
+      vy: (.3 + Math.random() * .6) * dpr, sway: Math.random() * 6.28, r: Math.random() * 6.28,
+      vr: (Math.random() - .5) * .03, c: LEAF[Math.floor(Math.random() * LEAF.length)] };
+  }
+  function drawLeaf(l) {
+    ctx.save(); ctx.translate(l.x, l.y); ctx.rotate(l.r); ctx.globalAlpha = .5; ctx.fillStyle = l.c;
+    ctx.beginPath(); ctx.ellipse(0, 0, l.s, l.s * .55, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = dpr;
+    ctx.beginPath(); ctx.moveTo(-l.s, 0); ctx.lineTo(l.s, 0); ctx.stroke(); ctx.restore();
+  }
+  function frame() {
+    ctx.drawImage(bg, 0, 0);
+    leaves.forEach(l => {
+      if (!reduce) {
+        l.sway += .02; l.x += Math.sin(l.sway) * .6 * dpr + .15 * dpr; l.y += l.vy; l.r += l.vr;
+        if (l.y > H + 20 * dpr) Object.assign(l, newLeaf(true));
+      }
+      drawLeaf(l);
+    });
+  }
+  function resize() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = cv.width = bg.width = Math.round(innerWidth * dpr);
+    H = cv.height = bg.height = Math.round(innerHeight * dpr);
+    drawStatic();
+    leaves = Array.from({ length: Math.round(Math.min(40, innerWidth / 40)) }, () => newLeaf(false));
+    frame();
+  }
+  function loop() { frame(); requestAnimationFrame(loop); }
+  addEventListener('resize', resize); resize();
+  if (!reduce) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

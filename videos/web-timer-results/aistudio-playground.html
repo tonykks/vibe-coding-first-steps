@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수업용 타이머</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            /* 가을(11월) 분위기의 단풍 숲 고화질 배경 */
+            background: url('https://images.unsplash.com/photo-1508873696983-2df57036476b?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 숫자가 배경에 묻히지 않도록 깔아둔 어두운 가을빛 반투명 오버레이 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(20, 12, 5, 0.65) 0%, rgba(10, 5, 2, 0.85) 100%);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        /* 시간 프리셋 선택 버튼 그룹 */
+        .preset-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 10px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            background: #ffb703;
+            color: #1a0d00;
+            border-color: #ffb703;
+            box-shadow: 0 0 15px rgba(255, 183, 3, 0.6);
+        }
+
+        /* 교실 뒤에서도 선명하게 보이는 초대형 숫자 */
+        .timer-display {
+            font-size: clamp(7rem, 23vw, 20rem);
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -2px;
+            line-height: 1;
+            /* 기본 노란색 */
+            color: #FFE600;
+            /* 가독성을 높여주는 깊은 외곽 그림자 */
+            text-shadow: 
+                0 0 20px rgba(255, 230, 0, 0.4),
+                4px 6px 12px rgba(0, 0, 0, 0.9);
+            margin: 15px 0 35px 0;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        /* 10초 이하 경고: 강렬한 빨간색 & 펄스 효과 */
+        .timer-display.danger {
+            color: #FF334B !important;
+            text-shadow: 
+                0 0 30px rgba(255, 51, 75, 0.8),
+                4px 6px 12px rgba(0, 0, 0, 0.9) !important;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.03); }
+        }
+
+        /* 조작 버튼 그룹 */
+        .control-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            font-size: 1.8rem;
+            font-weight: 800;
+            padding: 14px 40px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-start {
+            background-color: #4CAF50;
+            color: #ffffff;
+        }
+        .btn-start:hover { background-color: #45a049; }
+
+        .btn-pause {
+            background-color: #FF9800;
+            color: #ffffff;
+        }
+        .btn-pause:hover { background-color: #fb8c00; }
+
+        .btn-reset {
+            background-color: #607D8B;
+            color: #ffffff;
+        }
+        .btn-reset:hover { background-color: #546E7A; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        <!-- 시간 선택 (프리셋) -->
+        <div class="preset-group">
+            <button class="preset-btn" onclick="setPreset(60, this)">1분</button>
+            <button class="preset-btn" onclick="setPreset(300, this)">5분</button>
+            <button class="preset-btn active" onclick="setPreset(600, this)">10분</button>
+            <button class="preset-btn" onclick="setPreset(1200, this)">20분</button>
+        </div>
+
+        <!-- 초대형 타이머 숫자 표시 -->
+        <div id="display" class="timer-display">10:00</div>
+
+        <!-- 조작 버튼 -->
+        <div class="control-group">
+            <button class="btn btn-start" onclick="startTimer()">시작</button>
+            <button class="btn btn-pause" onclick="pauseTimer()">일시정지</button>
+            <button class="btn btn-reset" onclick="resetTimer()">처음으로</button>
+        </div>
+    </div>
+
+    <script>
+        let totalSeconds = 600; // 기본값 10분
+        let remainingSeconds = 600;
+        let timerInterval = null;
+        let isRunning = false;
+
+        const display = document.getElementById('display');
+
+        // 초 단위 시간을 "분:초" 포맷으로 변환
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // 화면 갱신
+        function updateDisplay() {
+            display.textContent = formatTime(remainingSeconds);
+
+            // 마지막 10초 이하일 때 빨간색으로 변경
+            if (remainingSeconds <= 10 && remainingSeconds > 0) {
+                display.classList.add('danger');
+            } else {
+                display.classList.remove('danger');
+            }
+        }
+
+        // 프리셋 버튼 설정
+        function setPreset(seconds, btnElement) {
+            pauseTimer();
+            totalSeconds = seconds;
+            remainingSeconds = seconds;
+            updateDisplay();
+
+            // 프리셋 버튼 강조 변경
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+        }
+
+        // 시작
+        function startTimer() {
+            if (isRunning) return;
+
+            // 브라우저 오디오 권한 활성화 (최초 1회)
+            getAudioContext();
+
+            isRunning = true;
+            timerInterval = setInterval(() => {
+                if (remainingSeconds > 0) {
+                    remainingSeconds--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    playAlarmSound(); // 종료 알림음 재생
+                }
+            }, 1000);
+        }
+
+        // 일시정지
+        function pauseTimer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+        }
+
+        // 처음으로 돌리기 (초기화)
+        function resetTimer() {
+            pauseTimer();
+            remainingSeconds = totalSeconds;
+            updateDisplay();
+        }
+
+        // 외부 오디오 파일 없이 청명한 종소리/차임벨을 울리는 Web Audio API
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTone(freq, startTime, duration) {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.3, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+
+        // 종료 알림음 (3음 차임벨 "딩-동-댕")
+        function playAlarmSound() {
+            const ctx = getAudioContext();
+            const now = ctx.currentTime;
+            playTone(523.25, now, 0.6);        // 도 (C5)
+            playTone(659.25, now + 0.4, 0.6);  // 미 (E5)
+            playTone(783.99, now + 0.8, 1.2);  // 솔 (G5)
+        }
+
+        // 초기 화면 표시
+        updateDisplay();
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "교실용 대형 수업 타이머",
+  "description": "교실 뒤에서도 선명하게 보이는 대형 노란색 숫자와 가을 감성 배경, 1·5·10·20분 프리셋, 마지막 10초 긴급 모드 및 종료 알림음을 지원하는 수업용 타이머",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
