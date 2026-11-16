@@ -7,7 +7,7 @@
 <style>
 :root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
 --me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+@media all{:root[data-theme=dark]{--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
 --me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
@@ -62,9 +62,9 @@ table.cmp td:first-child{font-weight:700;white-space:nowrap}
 .hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
 .hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
 .hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
-:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
-:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+@media all{:root[data-theme=dark] .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root[data-theme=dark] .hq-d{border-color:#6b5414}:root[data-theme=dark] .hq-d summary{color:#ffc94d}
+:root[data-theme=dark] .hq .k{background:#241b05;border-color:#8a6a1a}}
 .app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
 .app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
 .app .play{font-size:15px;padding:10px 18px}
@@ -76,7 +76,32 @@ table.cmp td:first-child{font-weight:700;white-space:nowrap}
 main.single{max-width:900px;margin:0 auto;padding:0 16px}
 @media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
 .video{padding:18px}}
-</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+</style><style id="vcfs-skin">
+html{scroll-padding-top:72px}
+.vcfs-bar{position:sticky;top:0;z-index:20;height:60px;background:#102a4c;color:#fff;display:flex;align-items:center;gap:14px;
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px));
+  font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif}
+.vcfs-bar img{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:#fff;flex:none}
+.vcfs-bar .t{margin:0;font-size:20px;font-weight:800;line-height:1.3;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vcfs-bar .t a{color:#fff;text-decoration:none}
+.vcfs-bar .where{margin-left:auto;font-size:14px;font-weight:600;color:#fff;opacity:.85;white-space:nowrap;text-decoration:none}
+.vcfs-bar .where:hover{opacity:1;text-decoration:underline}
+.vcfs-mode{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.vcfs-mode:hover{background:rgba(255,255,255,.12)}.vcfs-mode svg{width:20px;height:20px}
+.vcfs-mode .sun{display:none}html.is-dark .vcfs-mode .sun{display:block}html.is-dark .vcfs-mode .moon{display:none}
+.vcfs-foot{display:flex;justify-content:center;align-items:center;gap:8px;max-width:1180px;margin:8px auto 0;padding:16px 16px 32px;
+  border-top:1px solid #dce5ef;font:13px/1.4 "Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;color:#52647a;letter-spacing:.02em}
+.vcfs-foot svg{width:16px;height:16px;flex:none}
+:root[data-theme=dark] .vcfs-bar{background:#0a1628}
+:root[data-theme=dark] .vcfs-foot{border-color:#2a4166;color:#a3b3c8}
+@media (max-width:900px){.vcfs-bar{gap:10px}.vcfs-bar .t{font-size:16px}.vcfs-bar .long{display:none}.vcfs-bar .where{font-size:13px}}
+:root{--bg:#eef2f7;--card:#fbfcfe;--ink:#1c2f48;--muted:#52647a;--line:#dce5ef;--accent:#1561c4}
+:root[data-theme=dark]{--bg:#12223b;--card:#182c4b;--ink:#e3eaf4;--muted:#a3b3c8;--line:#2a4166;--accent:#8fb8ff;color-scheme:dark;
+  --me:#9cc0ff;--me-bg:#2a4a7a;--ai:#dcb6f7;--ai-bg:#43325f;--word:#5fe0cf;--word-bg:#164a45;--key:#ffc36b;--key-bg:#4a3517}
+:root[data-theme=dark] .play,:root[data-theme=dark] .tab.on{color:#12223b}
+.wrap>nav{top:76px;max-height:calc(100vh - 92px)}
+.video{scroll-margin-top:72px}
+</style></head><body><!--vcfs-top--><svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/><g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g><g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g><path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg><header class="vcfs-bar"><img alt="강연자 캐리커처" src="../images/face.png"><p class="t"><a href="../index.html">바이브코딩의 첫걸음<span class="long"> · 강연 보충자료</span></a></p><a class="where" href="index.html"><span class="long">화면 녹화 </span>사례 모음</a><button class="vcfs-mode" id="vcfs-mode" type="button" aria-label="어두운 화면으로 보기"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button></header><!--/vcfs-top-->
 <header class="hero"><h1>AI와 함께 일하기: 화면 녹화 사례 모음</h1><p>Claude, Codex, Google AI Studio 같은 AI 도구로 실제 일을 해 본 화면 녹화입니다. 영상은 빠르게 훑어보고, 이 페이지에서 &#x27;내가 요구한 것&#x27;과 &#x27;AI가 한 일&#x27;을 나눠 읽으면 AI가 어디까지 해 주는지 보입니다.</p>
 <div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div><div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div></header>
 <div class="wrap"><nav><ul><li><a class="gn" href="#g1">나만의 Coding Agent 만들기</a><ul><li><a href="#antigravity">나만의 Coding Agent 만들기</a></li></ul></li><li><a class="gn" href="#g2">관광대 강의 준비</a><ul><li><a href="#jtu1">강의 자료를 웹사이트로</a></li><li><a href="#jtu2">Claude 데스크톱 앱 이해하기</a></li><li><a href="#jtu3">Claude 둘이 나눠 맡은 강의 사이트 고치기</a></li></ul></li><li><a class="gn" href="#g3">바이브 코딩으로 한글타자연습앱 만들기</a><ul><li><a href="#typing3">바이브 코딩으로 한글타자연습앱 만들기</a></li><li><a href="#typing1">바이브 코딩으로 한글타자연습앱 만들기</a></li><li><a href="#typing2">바이브 코딩으로 한글타자연습앱 만들기</a></li></ul></li><li><a class="gn" href="#g4">같은 타이머, 일곱 가지 AI</a><ul><li><a href="#webtimer">같은 타이머, 일곱 가지 AI</a></li></ul></li><li><a class="gn" href="#g5">AI와 일하는 방법</a><ul><li><a href="#solo1">바이브코딩 작업장 이사하기</a></li><li><a href="#solo3">바이브코딩 작업장 이사하기</a></li><li><a href="#solo5">Claude 탭은 머리, Code 탭은 손발?</a></li><li><a href="#solo2">고칠수록 내 것이 되는 강의자료</a></li><li><a href="#autocut">44시간 녹화를 4시간으로</a></li><li><a href="#solo4">Claude Desktop App</a></li></ul></li><li><a class="gn" href="#g6">내 컴퓨터 안의 AI</a><ul><li><a href="#lmstudio">내 컴퓨터 안의 AI 두뇌</a></li></ul></li></ul></nav><main><section class="group" id="g1"><h2>나만의 Coding Agent 만들기</h2><p class="gdesc">강연 주제 영상입니다. Antigravity IDE 하나에 AI 여섯이 일할 자리를 만들고, 각자에게 이름과 역할을 줍니다.</p><article class="video" id="antigravity">
@@ -632,4 +657,8 @@ main.single{max-width:900px;margin:0 auto;padding:0 16px}
 <details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=0s" target="_blank" rel="noopener">0:00</a><span>LM Studio란</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=24s" target="_blank" rel="noopener">0:24</a><span>설치</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=36s" target="_blank" rel="noopener">0:36</a><span>내 PC 사양부터</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=50s" target="_blank" rel="noopener">0:50</a><span>모델 찾기와 받기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=69s" target="_blank" rel="noopener">1:09</a><span>불러오기와 컨텍스트</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=80s" target="_blank" rel="noopener">1:20</a><span>7B: 빠르지만 빠뜨린다</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=102s" target="_blank" rel="noopener">1:42</a><span>30B: 느리지만 한 번에</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=117s" target="_blank" rel="noopener">1:57</a><span>서버 켜기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=128s" target="_blank" rel="noopener">2:08</a><span>Cline이란</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=166s" target="_blank" rel="noopener">2:46</a><span>연결과 첫 일</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=179s" target="_blank" rel="noopener">2:59</a><span>인터넷을 끊고</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=198s" target="_blank" rel="noopener">3:18</a><span>업무 시연: 왜 프로그램인가</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=220s" target="_blank" rel="noopener">3:40</a><span>실패와 업무를 아는 눈</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=239s" target="_blank" rel="noopener">3:59</a><span>사양의 한계와 현실적인 길</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=272s" target="_blank" rel="noopener">4:32</a><span>연령분석에서 공매도로</span></li></ol></details>
 </article></section></main></div>
 <footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
-</body></html>
+<!--vcfs-foot--><footer class="vcfs-foot"><svg aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer><script>(function(){var r=document.documentElement,b=document.getElementById('vcfs-mode');
+function d(){return r.getAttribute('data-theme')==='dark';}
+function p(){r.classList.toggle('is-dark',d());if(b)b.setAttribute('aria-label',d()?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+try{if(localStorage.getItem('vcfs-theme')==='dark')r.setAttribute('data-theme','dark');}catch(e){}p();
+if(b)b.addEventListener('click',function(){var t=d()?'light':'dark';r.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}p();});})();</script><!--/vcfs-foot--></body></html>

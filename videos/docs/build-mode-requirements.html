@@ -4,7 +4,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#c2562f}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#151517;--card:#1f1f23;--ink:#ececf0;--muted:#a3a3ad;--line:#33333a;--accent:#ee8a5f}}
+@media all{:root[data-theme=dark]{--bg:#151517;--card:#1f1f23;--ink:#ececf0;--muted:#a3a3ad;--line:#33333a;--accent:#ee8a5f}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 "Pretendard","Noto Sans KR",system-ui,sans-serif;word-break:keep-all}
 main{max-width:860px;margin:0 auto;padding:24px 16px 48px}
 .top{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 16px}
@@ -14,7 +14,32 @@ h1{font-size:24px;line-height:1.4}h2{font-size:19px;margin-top:28px;border-top:1
 code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
 pre{background:var(--bg);padding:12px;border-radius:8px;overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
-</style></head><body><div class="sitebar"><a href="../../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="../index.html">화면 녹화 사례 모음</a></div><main>
+</style><style id="vcfs-skin">
+html{scroll-padding-top:72px}
+.vcfs-bar{position:sticky;top:0;z-index:20;height:60px;background:#102a4c;color:#fff;display:flex;align-items:center;gap:14px;
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px));
+  font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif}
+.vcfs-bar img{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:#fff;flex:none}
+.vcfs-bar .t{margin:0;font-size:20px;font-weight:800;line-height:1.3;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vcfs-bar .t a{color:#fff;text-decoration:none}
+.vcfs-bar .where{margin-left:auto;font-size:14px;font-weight:600;color:#fff;opacity:.85;white-space:nowrap;text-decoration:none}
+.vcfs-bar .where:hover{opacity:1;text-decoration:underline}
+.vcfs-mode{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.vcfs-mode:hover{background:rgba(255,255,255,.12)}.vcfs-mode svg{width:20px;height:20px}
+.vcfs-mode .sun{display:none}html.is-dark .vcfs-mode .sun{display:block}html.is-dark .vcfs-mode .moon{display:none}
+.vcfs-foot{display:flex;justify-content:center;align-items:center;gap:8px;max-width:1180px;margin:8px auto 0;padding:16px 16px 32px;
+  border-top:1px solid #dce5ef;font:13px/1.4 "Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;color:#52647a;letter-spacing:.02em}
+.vcfs-foot svg{width:16px;height:16px;flex:none}
+:root[data-theme=dark] .vcfs-bar{background:#0a1628}
+:root[data-theme=dark] .vcfs-foot{border-color:#2a4166;color:#a3b3c8}
+@media (max-width:900px){.vcfs-bar{gap:10px}.vcfs-bar .t{font-size:16px}.vcfs-bar .long{display:none}.vcfs-bar .where{font-size:13px}}
+:root{--bg:#eef2f7;--card:#fbfcfe;--ink:#1c2f48;--muted:#52647a;--line:#dce5ef;--accent:#1561c4}
+:root[data-theme=dark]{--bg:#12223b;--card:#182c4b;--ink:#e3eaf4;--muted:#a3b3c8;--line:#2a4166;--accent:#8fb8ff;color-scheme:dark;
+  --me:#9cc0ff;--me-bg:#2a4a7a;--ai:#dcb6f7;--ai-bg:#43325f;--word:#5fe0cf;--word-bg:#164a45;--key:#ffc36b;--key-bg:#4a3517}
+:root[data-theme=dark] .play,:root[data-theme=dark] .tab.on{color:#12223b}
+.wrap>nav{top:76px;max-height:calc(100vh - 92px)}
+.video{scroll-margin-top:72px}
+</style></head><body><!--vcfs-top--><svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/><g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g><g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g><path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg><header class="vcfs-bar"><img alt="강연자 캐리커처" src="../../images/face.png"><p class="t"><a href="../../index.html">바이브코딩의 첫걸음<span class="long"> · 강연 보충자료</span></a></p><a class="where" href="../index.html"><span class="long">화면 녹화 </span>사례 모음</a><button class="vcfs-mode" id="vcfs-mode" type="button" aria-label="어두운 화면으로 보기"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button></header><!--/vcfs-top--><main>
 <div class="top"><a href="../typing-ai-studio.html">← 설명 페이지로</a><a href="build-mode-requirements.md" download>원본 .md 내려받기</a></div>
 <article><h1>AI Studio Build Mode 독립 개발 프로젝트 — 한글 글쇠·손가락 기초 연습 프로그램</h1>
 <h2>1. 당신의 역할</h2>
@@ -306,4 +331,8 @@ A19. 초보자 관점의 사용 편의성</p>
 <li>파일 구성과 기술 선택 이유를 간단하게 제시합니다.</li>
 <li>구현 전에 나의 승인이 필요한 사항이 있으면 알려줍니다.</li>
 </ol>
-<p>이 작업을 마치면 채팅창에서 내 승인을 기다리세요.</p></article></main></body></html>
+<p>이 작업을 마치면 채팅창에서 내 승인을 기다리세요.</p></article></main><!--vcfs-foot--><footer class="vcfs-foot"><svg aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer><script>(function(){var r=document.documentElement,b=document.getElementById('vcfs-mode');
+function d(){return r.getAttribute('data-theme')==='dark';}
+function p(){r.classList.toggle('is-dark',d());if(b)b.setAttribute('aria-label',d()?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+try{if(localStorage.getItem('vcfs-theme')==='dark')r.setAttribute('data-theme','dark');}catch(e){}p();
+if(b)b.addEventListener('click',function(){var t=d()?'light':'dark';r.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}p();});})();</script><!--/vcfs-foot--></body></html>

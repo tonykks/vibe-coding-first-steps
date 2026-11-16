@@ -7,7 +7,7 @@
 <style>
 :root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
 --me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+@media all{:root[data-theme=dark]{--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
 --me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
@@ -62,9 +62,9 @@ table.cmp td:first-child{font-weight:700;white-space:nowrap}
 .hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
 .hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
 .hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
-:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
-:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+@media all{:root[data-theme=dark] .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root[data-theme=dark] .hq-d{border-color:#6b5414}:root[data-theme=dark] .hq-d summary{color:#ffc94d}
+:root[data-theme=dark] .hq .k{background:#241b05;border-color:#8a6a1a}}
 .app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
 .app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
 .app .play{font-size:15px;padding:10px 18px}
@@ -76,7 +76,32 @@ table.cmp td:first-child{font-weight:700;white-space:nowrap}
 main.single{max-width:900px;margin:0 auto;padding:0 16px}
 @media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
 .video{padding:18px}}
-</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+</style><style id="vcfs-skin">
+html{scroll-padding-top:72px}
+.vcfs-bar{position:sticky;top:0;z-index:20;height:60px;background:#102a4c;color:#fff;display:flex;align-items:center;gap:14px;
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px));
+  font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif}
+.vcfs-bar img{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:#fff;flex:none}
+.vcfs-bar .t{margin:0;font-size:20px;font-weight:800;line-height:1.3;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vcfs-bar .t a{color:#fff;text-decoration:none}
+.vcfs-bar .where{margin-left:auto;font-size:14px;font-weight:600;color:#fff;opacity:.85;white-space:nowrap;text-decoration:none}
+.vcfs-bar .where:hover{opacity:1;text-decoration:underline}
+.vcfs-mode{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.vcfs-mode:hover{background:rgba(255,255,255,.12)}.vcfs-mode svg{width:20px;height:20px}
+.vcfs-mode .sun{display:none}html.is-dark .vcfs-mode .sun{display:block}html.is-dark .vcfs-mode .moon{display:none}
+.vcfs-foot{display:flex;justify-content:center;align-items:center;gap:8px;max-width:1180px;margin:8px auto 0;padding:16px 16px 32px;
+  border-top:1px solid #dce5ef;font:13px/1.4 "Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;color:#52647a;letter-spacing:.02em}
+.vcfs-foot svg{width:16px;height:16px;flex:none}
+:root[data-theme=dark] .vcfs-bar{background:#0a1628}
+:root[data-theme=dark] .vcfs-foot{border-color:#2a4166;color:#a3b3c8}
+@media (max-width:900px){.vcfs-bar{gap:10px}.vcfs-bar .t{font-size:16px}.vcfs-bar .long{display:none}.vcfs-bar .where{font-size:13px}}
+:root{--bg:#eef2f7;--card:#fbfcfe;--ink:#1c2f48;--muted:#52647a;--line:#dce5ef;--accent:#1561c4}
+:root[data-theme=dark]{--bg:#12223b;--card:#182c4b;--ink:#e3eaf4;--muted:#a3b3c8;--line:#2a4166;--accent:#8fb8ff;color-scheme:dark;
+  --me:#9cc0ff;--me-bg:#2a4a7a;--ai:#dcb6f7;--ai-bg:#43325f;--word:#5fe0cf;--word-bg:#164a45;--key:#ffc36b;--key-bg:#4a3517}
+:root[data-theme=dark] .play,:root[data-theme=dark] .tab.on{color:#12223b}
+.wrap>nav{top:76px;max-height:calc(100vh - 92px)}
+.video{scroll-margin-top:72px}
+</style></head><body><!--vcfs-top--><svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gu" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#102a4c"/><g stroke="#8fd3d6" stroke-width="2.4" stroke-linecap="round"><line x1="15" y1="13" x2="32" y2="30"/><line x1="32" y1="9" x2="32" y2="30"/><line x1="49" y1="13" x2="32" y2="30"/></g><g fill="#8fd3d6"><circle cx="15" cy="13" r="3.2"/><circle cx="32" cy="9" r="3.2"/><circle cx="49" cy="13" r="3.2"/></g><path d="M31 36 Q21 31 10 34 V52 Q21 49 31 54 Z" fill="#f0a83c"/><path d="M33 36 Q43 31 54 34 V52 Q43 49 33 54 Z" fill="#f0a83c"/></symbol></svg><header class="vcfs-bar"><img alt="강연자 캐리커처" src="../images/face.png"><p class="t"><a href="../index.html">바이브코딩의 첫걸음<span class="long"> · 강연 보충자료</span></a></p><a class="where" href="index.html"><span class="long">화면 녹화 </span>사례 모음</a><button class="vcfs-mode" id="vcfs-mode" type="button" aria-label="어두운 화면으로 보기"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button></header><!--/vcfs-top-->
 <header class="hero one"><p class="series">AI와 일하는 방법</p>
 <nav class="tabs"><a class="tab" href="solo-workspace-move.html">지식 도서관 작업장</a><a class="tab" href="solo-my-agents.html">Skyview 연동 작업장</a><a class="tab" href="solo-two-pcs-notion.html">두 PC·노션 게시판</a><a class="tab on" href="solo-html-agent.html">HTML 수정 Agent</a><a class="tab" href="autocut-44h.html">44시간 녹화를 4시간으로</a><a class="tab" href="solo-claude-desktop.html">Claude 탭과 Code 탭</a></nav><h1>고칠수록 내 것이 되는 강의자료<span class="h1sub">[HTML 수정 Agent, 기획에서 첫 시험까지]</span></h1><p>컴퓨터 이사, 에이전트 팀, 방식 비교처럼 AI와 일하는 방법을 실험합니다.</p>
 <div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
@@ -126,4 +151,8 @@ main.single{max-width:900px;margin:0 auto;padding:0 16px}
 <p>원본 강의 자료를 넣자 장면 10개로 나뉘고 원본 보존 검사 결과가 나옴. 다만 원본 디자인이 빠져 보여 다음에 이어 가기로 함.</p></details>
 </article></main>
 <footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
-</body></html>
+<!--vcfs-foot--><footer class="vcfs-foot"><svg aria-hidden="true"><use href="#gu"/></svg>Tony's Library · Gather to learn, unfold to teach.</footer><script>(function(){var r=document.documentElement,b=document.getElementById('vcfs-mode');
+function d(){return r.getAttribute('data-theme')==='dark';}
+function p(){r.classList.toggle('is-dark',d());if(b)b.setAttribute('aria-label',d()?'밝은 화면으로 보기':'어두운 화면으로 보기');}
+try{if(localStorage.getItem('vcfs-theme')==='dark')r.setAttribute('data-theme','dark');}catch(e){}p();
+if(b)b.addEventListener('click',function(){var t=d()?'light':'dark';r.setAttribute('data-theme',t);try{localStorage.setItem('vcfs-theme',t);}catch(e){}p();});})();</script><!--/vcfs-foot--></body></html>
