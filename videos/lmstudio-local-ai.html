@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내 컴퓨터 안의 AI 두뇌 [LM Studio 설치부터 Cline 연결까지]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero one"><p class="series">내 컴퓨터 안의 AI</p>
+<nav class="tabs"><a class="tab on" href="lmstudio-local-ai.html">내 컴퓨터 안의 AI 두뇌</a></nav><h1>내 컴퓨터 안의<br>AI 두뇌<span class="h1sub">[LM Studio 설치부터 Cline 연결까지]</span></h1><p>AI 모델을 내 PC에서 돌리는 LM Studio를 설치하고, Cline 에이전트에 연결해 업무에 써 봅니다. 내 PC 사양으로 어디까지 되는지 솔직하게 확인합니다.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
+</header>
+<main class="single"><article class="video" id="lmstudio">
+
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>내 컴퓨터 안의<br>AI 두뇌</h3>
+<p class="sub">[LM Studio 설치부터 Cline 연결까지]</p></div>
+<div class="meta"><a class="play" href="https://www.youtube.com/watch?v=BzNrEsem2oM" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">AI 모델을 내 컴퓨터 안에서 돌리는 무료 프로그램 LM Studio를 설치하고, 내 PC에 맞는 모델을 골라 대화하고, 서버를 켜서 VS Code의 Cline 에이전트에 연결했습니다. 작은 7B 모델은 빠르지만 요구를 빠뜨렸고, 큰 30B 모델은 느리지만 한 번에 해냈습니다. 인터넷을 끊고도 Cline이 파일을 만들었지만, 매출채권 연령분석 프로그램은 그래픽 메모리 8GB로는 끝내 완성하지 못했습니다. 틀린 계산을 알아본 것은 업무를 아는 눈이었고, 마지막에는 같은 연령분석의 생각이 공매도 분석으로 옮겨 간 예를 봅니다. (공매도 분석은 투자 추천이 아니라 분석 방법 시연입니다.)</p>
+<h4 class='sec'>이 영상으로 전하고 싶은 것</h4><p><strong>AI 두뇌를 내 컴퓨터 안으로 들여올 수 있습니다</strong></p>
+<p>LM Studio로 모델을 내 PC에서 돌리면 자료가 밖으로 나가지 않고, 인터넷이 끊겨도 답하고, 사용료도 없습니다. 다만 내 PC의 그래픽 메모리에 맞는 모델을 골라야 합니다.</p>
+<p><strong>작은 모델은 빠르고, 큰 모델은 정확합니다</strong></p>
+<p>그래픽 메모리 8GB에 다 들어가는 7B 모델은 1초에 50토큰 넘게 답했지만 요구를 자주 빠뜨렸습니다. 일부만 들어가는 30B 모델은 1초에 16토큰으로 느렸지만, 같은 타이머를 한 번에 만들었습니다.</p>
+<p><strong>에이전트는 손발, 모델은 두뇌입니다</strong></p>
+<p>채팅창은 글로 답만 하고, 저장과 실행은 사람이 합니다. Cursor, Claude Code, Codex의 에이전트는 내 폴더의 파일을 직접 읽고, 만들고, 실행합니다. Cline도 같은 에이전트인데, 두뇌를 내가 고를 수 있어서 내 PC의 LM Studio를 끼울 수 있습니다.</p>
+<p><strong>AI가 다 됐다고 해도 확인은 사람의 몫입니다</strong></p>
+<p>Cline은 타이머를 다 만들었다고 했지만 요구 하나가 바뀌어 있었습니다. 연령분석 프로그램은 업체별 판매가 아니라 회사 전체 판매로 계산하고 있었습니다. 이런 잘못을 알아본 것은 코드 실력이 아니라 연령분석을 해 본 경험이었습니다.</p>
+<p><strong>내 PC 사양의 한계를 솔직하게 봅니다</strong></p>
+<p>그래픽 메모리 8GB, 램 32GB로는 Cline과 30B 모델을 함께 쓰기에 부족했습니다. 업무에 제대로 쓰려면 그래픽 메모리 16GB, 넉넉하게는 24GB 이상이 필요합니다. 개인은 클라우드 에이전트에게 자료 없이 규칙만 주고 프로그램을 만들게 하고, 보안이 중요한 회사는 사내 AI 서버에 Cline을 연결하는 길이 현실적입니다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th></th><th>채팅창</th><th>데스크톱 에이전트 (Cursor, Claude Code, Codex)</th><th>Cline</th></tr></thead><tbody><tr><td>하는 일</td><td>글로 답만 함</td><td>파일을 읽고, 만들고, 고치고, 실행함</td><td>데스크톱 에이전트와 같음</td></tr><tr><td>내 파일</td><td>못 봄 (내가 붙여 넣음)</td><td>직접 읽음</td><td>직접 읽음</td></tr><tr><td>결과</td><td>대화창에만 남음</td><td>내 폴더에 파일로 남음</td><td>내 폴더에 파일로 남음</td></tr><tr><td>두뇌</td><td>그 회사의 클라우드</td><td>그 회사의 클라우드 모델</td><td>내가 고름 (클라우드 또는 내 PC)</td></tr><tr><td>자료</td><td>밖으로 감</td><td>밖으로 감</td><td>내 PC 두뇌면 나가지 않음</td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th>이 PC에서 잰 것</th><th>값</th></tr></thead><tbody><tr><td>그래픽 카드</td><td>RTX 5060, 그래픽 메모리 8GB (램 32GB)</td></tr><tr><td>7B 모델 (그래픽 카드에 다 들어감)</td><td>1초에 50~68토큰, 빠르지만 요구를 빠뜨림</td></tr><tr><td>30B 모델 (3분의 1만 그래픽 카드)</td><td>1초에 7~16토큰, 한 번에 정확</td></tr><tr><td>30B 모델 + Cline</td><td>1초에 2~8토큰, 한 번에 1만 6천 토큰을 보냄</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=0s" target="_blank" rel="noopener">0:00</a><span>LM Studio란</span></h4>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>모델</strong>은 AI의 두뇌. <strong>LM Studio</strong>는 그 두뇌를 내 컴퓨터에서 깨워 일하게 하는 무료 프로그램.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=24s" target="_blank" rel="noopener">0:24</a><span>설치</span></h4>
+<ul><li><span class="tag me">내 요구</span> LM Studio 설치. 로그인이 필요한지, 사이트 첫 화면의 Bionic을 받아야 하는지 물음.</li><li><span class="tag ai">AI가 한 일</span> Bionic은 같은 회사의 별도 에이전트 프로그램이라 다운로드 페이지 아래쪽의 원래 LM Studio를 받도록 안내. 로그인 없이 설치. 처음 권하는 모델은 건너뛰고, 개발자 모드는 켜고, 컴퓨터를 켤 때 서버가 저절로 켜지는 설정은 끔.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=36s" target="_blank" rel="noopener">0:36</a><span>내 PC 사양부터</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> 작업 관리자의 성능 탭에서 그래픽 메모리와 램을 확인.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>그래픽 메모리</strong>에 모델이 다 들어가야 빠릅니다. 8GB라면 파일 크기 4~5GB, 곧 7~8B 크기의 4비트 모델이 알맞습니다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=50s" target="_blank" rel="noopener">0:50</a><span>모델 찾기와 받기</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 모델 저장 폴더를 여유 있는 드라이브로 바꾸고, Model Search에서 코딩용 모델을 찾도록 안내.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>Hugging Face</strong>는 전 세계 사람들이 AI 모델을 올려 두는 곳. LM Studio는 모델마다 초록(그래픽 카드에 다 들어감), 파랑(일부만 들어감), 빨강(너무 큼)으로 알려 줍니다. <strong>Q4_K_M</strong>은 모델을 4비트로 줄인 판 가운데 크기와 품질의 균형이 좋은 것입니다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=69s" target="_blank" rel="noopener">1:09</a><span>불러오기와 컨텍스트</span></h4>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>컨텍스트</strong>는 AI가 한 번에 기억하는 글의 양. 늘릴수록 메모리를 더 쓰고, 가득 차면 앞의 대화부터 잊습니다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=80s" target="_blank" rel="noopener">1:20</a><span>7B: 빠르지만 빠뜨린다</span></h4>
+<ul><li><span class="tag me">내 요구</span> 매출채권 연령분석이 무엇인지 설명, 10분 타이머 만들기.</li><li><span class="tag ai">AI가 한 일</span> 1초에 50토큰으로 빠르게 답했지만 연령분석의 핵심(기간별로 나눈다)을 빠뜨림. 타이머는 시작 버튼을 여러 번 누르면 빨라졌고, 고칠 때마다 전체를 새로 쓰며 다른 곳이 바뀜.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=102s" target="_blank" rel="noopener">1:42</a><span>30B: 느리지만 한 번에</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 같은 요구를 한 번에 해냄. 대신 1초에 16토큰으로 서너 배 느림. 소리 파일을 인터넷 주소에서 가져오게 만든 것은 사람이 짚음.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=117s" target="_blank" rel="noopener">1:57</a><span>서버 켜기</span></h4>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> <strong>서버</strong>를 켜면 이 컴퓨터 안에서만 열리는 주소(127.0.0.1:1234)가 생기고, 다른 프로그램이 그 주소로 내 PC의 두뇌를 씁니다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=128s" target="_blank" rel="noopener">2:08</a><span>Cline이란 · 2:46 연결과 첫 일</span></h4>
+<ul><li><span class="tag me">내가 한 일</span> VS Code에 공식 Cline(파란 확인 표시)을 설치하고, 무료 클라우드 대신 "내 API 키 쓰기"를 골라 LM Studio를 연결.</li><li><span class="tag ai">AI가 한 일</span> 명령을 실행하기 전에 허락을 구함. 맥용 명령으로 오류가 나자 결과를 읽고 윈도우 명령으로 스스로 바꿈. 비용 0원.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=179s" target="_blank" rel="noopener">2:59</a><span>인터넷을 끊고</span></h4>
+<ul><li><span class="tag ai">AI가 한 일</span> 인터넷 없이 폴더와 타이머 파일을 직접 만들어 저장. 다 됐다고 했지만 "처음으로" 버튼이 마지막에 고른 시간이 아니라 0분으로 돌아가게 바뀌어 있었음.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=198s" target="_blank" rel="noopener">3:18</a><span>업무 시연: 왜 프로그램인가 · 3:40 실패와 업무를 아는 눈</span></h4>
+<ul><li><span class="tag me">내 요구</span> 9월 말 연령분석 결과표를 정답지로 주고, 같은 결과가 나오는 프로그램을 만들게 함. 규칙(최근 판매월부터 거꾸로 채우기, 마이너스 판매는 앞 달에서 빼기)은 말로 덧붙이고, 인터넷 읽기 권한은 끔.</li><li><span class="tag ai">AI가 한 일</span> 긴 파일을 여러 번 새로 쓰다 앞부분을 잃어 실행되지 않았고, 업체별이 아닌 회사 전체 판매로 계산. 사람이 중단하고 실패로 판정.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=239s" target="_blank" rel="noopener">3:59</a><span>사양의 한계와 현실적인 길</span></h4>
+<ul><li><span class="tag word">알아 두면 좋은 말</span> Cline은 한 번에 1만 토큰이 넘는 안내문을 함께 보냅니다. 그래픽 메모리가 모자란 PC에서는 그것을 읽는 데만 몇 분이 걸립니다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=272s" target="_blank" rel="noopener">4:32</a><span>연령분석에서 공매도로</span></h4>
+<ul><li>생각의 줄기: 매출채권 연령분석은 판매가 쌓이고 수금은 오래된 것부터 갚은 것으로 쳐서, 남은 잔액의 나이를 봅니다. 공매도도 같습니다. 날마다 새 공매도가 쌓이고 갚은 것은 오래된 것부터 빼 나가면, 남은 공매도가 평균 얼마에 팔린 것인지 나옵니다. 누가 언제 갚았는지는 공개되지 않아 결과는 가정을 둔 추정치입니다.</li><li>화면: 이 평균 단가를 주가와 함께 그린 대시보드. 7월 29일은 주가가 평균 단가보다 가장 크게 낮았던 날, 곧 공매도한 쪽의 추정 이익이 가장 컸던 날입니다.</li><li>따라 해 보기: 내가 만든 연령분석 프로그램을 AI에게 보여 주고 "이 매출채권 연령분석 프로그램을 공매도용으로 바꿔 줘. 판매 대신 날마다의 공매도 수량과 금액, 수금 대신 갚은 수량으로 계산해 줘."라고 해 보세요.</li><li>이것은 투자 추천이 아니라, 분석 방법을 보여 드리는 시연입니다.</li></ul></details>
+<details><summary>챕터 목차 (영상 시간)</summary><ol class="toc"><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=0s" target="_blank" rel="noopener">0:00</a><span>LM Studio란</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=24s" target="_blank" rel="noopener">0:24</a><span>설치</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=36s" target="_blank" rel="noopener">0:36</a><span>내 PC 사양부터</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=50s" target="_blank" rel="noopener">0:50</a><span>모델 찾기와 받기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=69s" target="_blank" rel="noopener">1:09</a><span>불러오기와 컨텍스트</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=80s" target="_blank" rel="noopener">1:20</a><span>7B: 빠르지만 빠뜨린다</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=102s" target="_blank" rel="noopener">1:42</a><span>30B: 느리지만 한 번에</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=117s" target="_blank" rel="noopener">1:57</a><span>서버 켜기</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=128s" target="_blank" rel="noopener">2:08</a><span>Cline이란</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=166s" target="_blank" rel="noopener">2:46</a><span>연결과 첫 일</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=179s" target="_blank" rel="noopener">2:59</a><span>인터넷을 끊고</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=198s" target="_blank" rel="noopener">3:18</a><span>업무 시연: 왜 프로그램인가</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=220s" target="_blank" rel="noopener">3:40</a><span>실패와 업무를 아는 눈</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=239s" target="_blank" rel="noopener">3:59</a><span>사양의 한계와 현실적인 길</span></li><li><a class="ts" href="https://www.youtube.com/watch?v=BzNrEsem2oM&t=272s" target="_blank" rel="noopener">4:32</a><span>연령분석에서 공매도로</span></li></ol></details>
+</article></main>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>

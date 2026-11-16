@@ -1,0 +1,371 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI의 기억 수첩</title>
+<meta name="description" content="Claude가 메모리 파일과 노션으로 대화를 넘어 작업 맥락을 이어 가는 방법을 실제 화면으로 소개합니다">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: fixed left table of contents (deep navy rail) + one reading column; each section = one part of the memory structure, with real screenshots */
+:root {
+  --bg: #f4f6f9;
+  --paper: #ffffff;
+  --ink: #14233a;
+  --muted: #55657a;
+  --line: #d9dfe7;
+  --navy: #13284a;
+  --navy-ink: #e9eef6;
+  --navy-muted: #9fb0c8;
+  --amber: #b9770e;
+  --amber-soft: #fbf1df;
+  --amber-line: #e8c98f;
+  --quote-bg: #eef2f7;
+  --display: "Gowun Batang", "Noto Serif KR", "AppleMyungjo", serif;
+  --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --rail: 264px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1626; --paper: #10203a; --ink: #e6ecf5; --muted: #a2b1c6; --line: #24385a;
+    --navy: #07101e; --navy-ink: #e6ecf5; --navy-muted: #8394ad;
+    --amber: #eab14d; --amber-soft: #2a2414; --amber-line: #6b5426; --quote-bg: #142a4a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1626; --paper: #10203a; --ink: #e6ecf5; --muted: #a2b1c6; --line: #24385a;
+  --navy: #07101e; --navy-ink: #e6ecf5; --navy-muted: #8394ad;
+  --amber: #eab14d; --amber-soft: #2a2414; --amber-line: #6b5426; --quote-bg: #142a4a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.9;
+  word-break: keep-all; overflow-wrap: break-word;
+}
+a { color: inherit; }
+.rail {
+  position: fixed; inset: 0 auto 0 0; width: var(--rail);
+  background: var(--navy); color: var(--navy-ink);
+  padding: 34px 22px; padding-left: max(22px, env(safe-area-inset-left, 0px));
+  overflow-y: auto; z-index: 5;
+}
+.rail .brand { font-family: var(--display); font-size: 1.15rem; line-height: 1.4; margin: 0 0 4px; }
+.rail .sub { color: var(--navy-muted); font-size: .8rem; margin: 0 0 26px; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: step; }
+.rail li { counter-increment: step; }
+.rail a {
+  display: grid; grid-template-columns: 26px 1fr; gap: 6px; align-items: baseline;
+  padding: 7px 8px; border-radius: 6px; text-decoration: none;
+  color: var(--navy-muted); font-size: .86rem; line-height: 1.45;
+}
+.rail a::before { content: counter(step); font-family: var(--mono); font-size: .74rem; color: var(--amber); }
+.rail a:hover, .rail a:focus-visible { color: var(--navy-ink); background: rgba(255,255,255,.06); outline: none; }
+.rail a:focus-visible { box-shadow: 0 0 0 2px var(--amber); }
+.rail .next { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); font-size: .8rem; color: var(--navy-muted); }
+.rail .next b { display: block; color: var(--amber); font-weight: 600; margin-top: 2px; }
+
+main {
+  margin-left: var(--rail);
+  padding-block: 64px 96px;
+  padding-left: max(48px, env(safe-area-inset-left, 0px));
+  padding-right: max(48px, env(safe-area-inset-right, 0px));
+}
+.col { max-width: 720px; }
+header.hero { padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+.eyebrow { font-family: var(--mono); font-size: .76rem; letter-spacing: .12em; color: var(--amber); text-transform: uppercase; margin: 0 0 14px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1.25; margin: 0 0 18px; text-wrap: balance; letter-spacing: -.01em; }
+.lede { font-size: 1.05rem; color: var(--muted); margin: 0 0 22px; max-width: 64ch; }
+.thesis {
+  border-left: 3px solid var(--amber); background: var(--amber-soft);
+  padding: 16px 20px; border-radius: 0 8px 8px 0; font-weight: 600; margin: 0;
+}
+
+section { padding-top: 68px; scroll-margin-top: 16px; }
+.step { font-family: var(--mono); font-size: .76rem; color: var(--amber); letter-spacing: .1em; margin: 0 0 6px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 2.8vw, 1.95rem); line-height: 1.35; margin: 0 0 20px; text-wrap: balance; }
+h3 { font-size: 1.02rem; font-weight: 700; margin: 28px 0 8px; }
+p { margin: 0 0 16px; max-width: 66ch; }
+.muted { color: var(--muted); }
+.takeaway {
+  margin-top: 24px; padding: 14px 18px; border: 1px solid var(--amber-line);
+  border-radius: 8px; background: var(--paper); font-weight: 600; line-height: 1.75;
+}
+.takeaway::before { content: "이 장면의 한 줄"; display: block; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; color: var(--amber); font-weight: 500; margin-bottom: 4px; }
+blockquote {
+  margin: 20px 0; padding: 16px 20px; background: var(--quote-bg); border-radius: 8px;
+  font-family: var(--display); font-size: 1.08rem; line-height: 1.75;
+}
+blockquote cite { display: block; margin-top: 6px; font-family: var(--body); font-style: normal; font-size: .8rem; color: var(--muted); }
+.ask {
+  margin: 22px 0; padding: 18px 20px; border: 1px dashed var(--amber); border-radius: 10px; background: var(--paper);
+}
+.ask::before { content: "여러분께 묻습니다"; display: block; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; color: var(--amber); margin-bottom: 6px; }
+.ask p:last-child { margin-bottom: 0; }
+.note { font-size: .86rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 16px; line-height: 1.7; }
+
+.figure { margin: 24px 0; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.figure .scroll { overflow-x: auto; }
+.figure svg { display: block; width: 100%; min-width: 640px; height: auto; }
+.figure figcaption { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+svg .t { fill: var(--ink); font-family: var(--body); }
+svg .tm { fill: var(--muted); font-family: var(--body); }
+svg .ta { fill: var(--amber); font-family: var(--mono); }
+svg .ln { stroke: var(--line); }
+svg .dot { fill: var(--paper); stroke: var(--muted); }
+svg .dot-a { fill: var(--amber); stroke: var(--amber); }
+
+.tbl { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; line-height: 1.7; min-width: 480px; }
+th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+th { font-size: .78rem; letter-spacing: .04em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.pair > div { min-width: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.pair h4 { margin: 0 0 6px; font-size: .95rem; }
+.pair ul { margin: 0; padding-left: 1.1rem; font-size: .92rem; line-height: 1.7; }
+.pair li { margin: 4px 0; }
+.pair .gain { border-color: var(--amber-line); }
+.pair .gain h4 { color: var(--amber); }
+
+.prompt { margin: 20px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); overflow: hidden; }
+.prompt-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: .8rem; color: var(--muted); }
+.prompt pre { margin: 0; padding: 14px 16px; white-space: pre-wrap; font-family: var(--body); font-size: .92rem; line-height: 1.7; }
+.copy { font: inherit; font-size: .78rem; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.copy:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.link { color: var(--amber); font-weight: 600; }
+
+.handoff {
+  margin-top: 76px; padding: 28px; border-radius: 12px; background: var(--navy); color: var(--navy-ink);
+}
+.handoff .step { color: var(--amber); }
+.handoff p { color: var(--navy-ink); }
+.handoff .big { font-family: var(--display); font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.45; margin: 6px 0 14px; }
+.handoff .def { border-left: 3px solid var(--amber); padding: 4px 0 4px 16px; font-weight: 600; }
+
+.sources { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line); font-size: .84rem; line-height: 1.7; color: var(--muted); }
+.sources h2 { font-size: 1.1rem; }
+.sources ol { padding-left: 1.2rem; margin: 0; }
+.sources li { margin: 5px 0; }
+
+@media (max-width: 960px) {
+  .rail { position: static; width: auto; padding: 22px 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .rail ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  main { margin-left: 0; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+}
+@media (max-width: 620px) {
+  body { font-size: 16.5px; }
+  .rail ol { grid-template-columns: 1fr; }
+  .pair { grid-template-columns: 1fr; }
+  section { padding-top: 52px; }
+  .handoff { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.shot { margin: 24px 0; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+.shot.narrow img { max-width: 360px; margin: 0 auto; }
+.shot figcaption { font-size: .82rem; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+.layers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+.layer { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.layer .tag { font-family: var(--mono); font-size: .72rem; color: var(--amber); letter-spacing: .08em; }
+.layer b { display: block; font-family: var(--display); font-size: 1.15rem; margin: 2px 0 6px; }
+.layer p { font-size: .9rem; line-height: 1.65; margin: 0; color: var(--muted); }
+.flow { counter-reset: f; list-style: none; padding: 0; margin: 20px 0; display: grid; gap: 10px; }
+.flow li { counter-increment: f; display: grid; grid-template-columns: 34px 1fr; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; line-height: 1.7; }
+.flow li::before { content: counter(f); font-family: var(--mono); color: var(--amber); font-weight: 600; }
+.rail .next a { display: inline; padding: 0; color: var(--amber); }
+.rail .next a::before { content: none; }
+@media (max-width: 620px) { .layers { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="rail" aria-label="목차">
+  <p class="brand">AI의 기억 수첩</p>
+  <p class="sub">Claude가 어제 일을 이어 가는 법</p>
+  <ol>
+    <li><a href="#forget">AI는 대화가 끝나면 잊습니다</a></li>
+    <li><a href="#layers">기억을 세 곳에 나눠 적습니다</a></li>
+    <li><a href="#notebook">수첩 첫 장: 메모리 파일</a></li>
+    <li><a href="#journal">업무일지: 노션 시작 페이지</a></li>
+    <li><a href="#board">게시판: 두 PC가 함께 쓰는 페이지</a></li>
+    <li><a href="#day">하루의 흐름</a></li>
+    <li><a href="#you">여러분이 따라 하려면</a></li>
+  </ol>
+  <p class="next">함께 보면 좋은 자료<b><a href="context-continuity.html" style="color:inherit">Claude 탭 맥락 잇기 가이드</a></b></p>
+</nav>
+
+<main>
+<div class="col">
+
+<header class="hero">
+  <p class="eyebrow">강연 보충자료 · 맥락 관리</p>
+  <h1>AI의 기억 수첩:<br>어제 일을 오늘 이어 가는 법</h1>
+  <p class="lede">강연자가 Claude(토비)와 매일 일하면서 실제로 쓰고 있는 방법입니다. AI는 대화가 끝나면 아무것도 기억하지 못합니다. 그래서 기억을 "적어 두고 다시 읽히는" 구조를 만들었습니다. 화면 캡처는 모두 실제 작업 화면입니다.</p>
+  <p class="thesis">AI가 기억하는 것이 아니라, 사람이 기억할 곳을 정해 주고 AI가 그곳을 적고 읽게 하는 것입니다.</p>
+</header>
+
+<!-- 1 -->
+<section id="forget">
+  <p class="step">1 · 출발점</p>
+  <h2>AI는 대화가 끝나면 잊습니다</h2>
+  <p>Claude와 하루 종일 일하고 나서 새 대화창을 열면, Claude는 어제 무슨 일을 했는지 하나도 모릅니다. AI 모델은 대화와 대화 사이에 아무것도 남기지 않기 때문입니다.</p>
+  <p>대화 중에 기억하는 것은 <b>컨텍스트</b>(context, 맥락)라는 작업 공간에 올라가 있는 내용뿐입니다. 컴퓨터로 치면 RAM(내장 메모리)과 비슷합니다. 지금 하는 일을 올려 두고 쓰지만, 전원이 꺼지면 사라집니다. 대화가 길어지면 이 공간도 차서, 앞부분은 요약되며 흐려집니다.</p>
+  <figure class="shot narrow">
+    <img src="ctx-session-panel.jpg" alt="Claude 데스크톱 앱 Code 탭의 세션 정보 패널. 컨텍스트 29%, 연결된 커넥터, 백그라운드 작업이 보인다" loading="lazy" width="403" height="742">
+    <figcaption>Code 탭의 세션 정보 패널입니다. "컨텍스트 29%"는 이번 대화의 작업 공간이 29% 찼다는 뜻입니다. 이 숫자가 100%에 가까워지면 앞부분이 요약됩니다.</figcaption>
+  </figure>
+  <p>그래서 오래 이어지는 일을 하려면, 대화가 끝나도 남는 곳에 <b>적어 두었다가 다음 대화에서 다시 읽히는</b> 구조가 필요합니다. 컴퓨터로 치면 저장장치(SSD)입니다. AI 도구들이 이 기능을 "메모리"라고 부르는데, 부품 이름이 아니라 사람의 "기억"이라는 뜻에서 빌려 온 말입니다.</p>
+  <p class="takeaway">대화 중의 기억은 RAM처럼 사라지고, 오래 남길 기억은 저장장치에 적어 두어야 합니다.</p>
+</section>
+
+<!-- 2 -->
+<section id="layers">
+  <p class="step">2 · 구조</p>
+  <h2>기억을 세 곳에 나눠 적습니다</h2>
+  <p>사람도 기억할 것을 한곳에 몰아 두지 않습니다. 수첩 첫 장에는 꼭 지킬 것만 적고, 자세한 내용은 업무일지에, 현장 상황은 현장 일지에 적습니다. 토비의 기억도 같은 방식으로 세 곳에 나눴습니다.</p>
+  <div class="layers">
+    <div class="layer"><span class="tag">수첩 첫 장</span><b>메모리 파일</b><p>내 PC의 작은 글 파일. "한국어로 답한다", "증권계좌만 가린다"처럼 꼭 지킬 것과 "어디를 보라"는 안내. 새 대화에서 <b>자동으로</b> 읽힘.</p></div>
+    <div class="layer"><span class="tag">업무일지</span><b>노션</b><p>프로젝트별 결정, 진행 상황, 다음 할 일. 자동으로 읽히지 않고 수첩의 안내를 보고 Claude가 열어 읽음. 휴대폰·다른 PC에서도 보임.</p></div>
+    <div class="layer"><span class="tag">현장 일지</span><b>작업 폴더 문서</b><p>프로젝트 폴더 안의 다음할일.md 같은 현황표. 그 프로젝트에서 일할 때 읽음. 코드와 함께 버전이 남음.</p></div>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th></th><th>메모리 파일</th><th>노션</th><th>작업 폴더 문서</th></tr></thead>
+      <tbody>
+        <tr><td>어디에</td><td>내 PC (C:\Users\…\.claude)</td><td>노션 클라우드</td><td>프로젝트 폴더</td></tr>
+        <tr><td>새 대화에서</td><td>자동으로 읽힘</td><td>안내를 보고 열어 읽음</td><td>그 폴더에서 일할 때 읽음</td></tr>
+        <tr><td>무엇을</td><td>짧은 규칙과 이정표</td><td>결정, 진행표, 다음 할 일</td><td>파일 위치, 명령, 작업 순서</td></tr>
+        <tr><td>누가 보나</td><td>이 PC의 Code 탭</td><td>모든 Claude와 사람</td><td>그 폴더를 여는 Agent</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="takeaway">짧은 것은 자동으로 읽히는 수첩에, 긴 것은 노션에. 수첩에는 "자세한 건 노션 어디를 보라"고 적어 둡니다.</p>
+</section>
+
+<!-- 3 -->
+<section id="notebook">
+  <p class="step">3 · 수첩 첫 장</p>
+  <h2>메모리 파일: 한 장에 한 가지</h2>
+  <p>Code 탭의 메모리는 클라우드가 아니라 <b>내 PC에 있는 작은 글 파일</b>입니다. 파일 하나에 기억 하나를 적고, <code>MEMORY.md</code>라는 목록 파일에 한 줄씩 이정표를 남깁니다. 새 대화를 시작하면 이 목록이 자동으로 Claude에게 들어갑니다.</p>
+  <figure class="shot">
+    <img src="ctx-memory-files.jpg" alt="Windows 탐색기의 memory 폴더에 13개의 메모 파일이 있고, 메모장에 MEMORY.md 목록이 열려 있다" loading="lazy" width="1400" height="487">
+    <figcaption>왼쪽은 메모리 폴더(파일 13개, 모두 합쳐 64KB 남짓), 오른쪽은 목록 파일 MEMORY.md입니다. "호칭 토비", "영상 길이 그대로", "강연 줄거리·시연 계획"처럼 한 줄씩 적혀 있습니다.</figcaption>
+  </figure>
+  <p>메모마다 <b>왜</b> 그렇게 하는지와 <b>언제 적용하는지</b>를 함께 적습니다. 예를 들어 "긴 강의 영상도 줄이자고 권하지 않는다"에는 "필요한 사람은 다 보고 싶어 한다"는 강연자의 말이 이유로 붙어 있습니다. 이유를 알아야 비슷하지만 다른 상황에서도 바르게 판단하기 때문입니다.</p>
+  <h3>알아 둘 점 두 가지</h3>
+  <ul>
+    <li><b>폴더마다 수첩이 따로 있습니다.</b> 대화를 시작할 때 고른 작업 폴더마다 메모리 자리가 따로 생깁니다. 그래서 늘 같은 폴더(예: H:\AI_Projects)를 골라 시작합니다.</li>
+    <li><b>이 PC의 Code 탭에서만 자동으로 읽힙니다.</b> 노트북의 Code 탭이나 Claude 탭(채팅)은 이 파일을 모릅니다. Claude 탭에는 계정에 붙는 별도의 메모리가 있습니다.</li>
+  </ul>
+  <p class="takeaway">메모리는 AI 회사 서버의 특별한 기억이 아니라, 내 PC에 있는 열어 볼 수 있는 메모 파일입니다.</p>
+</section>
+
+<!-- 4 -->
+<section id="journal">
+  <p class="step">4 · 업무일지</p>
+  <h2>노션: 시작 페이지 하나에서 내려갑니다</h2>
+  <p>노션에는 「Claude 맥락 유지용」이라는 시작 페이지를 하나 두었습니다. 이 페이지에는 목차와 규칙만 있고, 프로젝트마다 페이지가 하나씩 달려 있습니다. 각 프로젝트 페이지는 "지금 상태 한 줄"과 최신 요약만 담고, 자세한 내용은 그 아래 하위 페이지로 나눕니다.</p>
+  <figure class="shot">
+    <img src="ctx-notion-root.jpg" alt="노션의 Claude 맥락 유지용 페이지. 프로젝트와 한 줄 상태를 적은 표가 있고, 왼쪽 개인 페이지 목록 맨 위에 Claude 맥락 유지용이 있다" loading="lazy" width="1372" height="885">
+    <figcaption>정리한 뒤의 시작 페이지입니다. 표에 프로젝트와 한 줄 상태가 있어, 새 대화의 Claude는 여기서 해당 프로젝트로 바로 내려갑니다. 왼쪽 개인 페이지 목록에는 Claude가 만든 페이지가 「Claude 맥락 유지용」 하나뿐입니다.</figcaption>
+  </figure>
+  <h3>규칙은 페이지 안에 적어 둡니다</h3>
+  <ul>
+    <li>사람은 이 페이지에서 시작해 프로젝트로 내려갑니다.</li>
+    <li>프로젝트 페이지는 최신 요약으로 유지하고, 주제별 상세는 하위 페이지로 나눕니다.</li>
+    <li>Claude는 새 페이지를 <b>반드시 이 페이지 아래, 해당 프로젝트 밑에</b> 만듭니다. 개인 페이지 맨 위(루트)에는 만들지 않습니다.</li>
+  </ul>
+  <p>마지막 규칙은 실제로 겪고 나서 생겼습니다. 대화마다 Claude가 페이지를 그냥 만들다 보니, 어느새 개인 페이지 맨 위에 Claude가 만든 페이지가 여러 개 흩어졌습니다. 사람이 만든 페이지와 섞여 무엇이 어디 있는지 찾기 어려워졌습니다. 그래서 흩어진 페이지를 프로젝트 아래로 옮기고, 규칙으로 막았습니다. 노션 링크는 이름이나 위치가 아니라 고유 번호로 이어지기 때문에, 옮겨도 기존 링크는 끊어지지 않습니다.</p>
+  <p class="takeaway">시작 페이지 하나, 프로젝트마다 한 줄 상태. 그리고 "어디에 만들지"까지 규칙으로 정해 둡니다.</p>
+</section>
+
+<!-- 5 -->
+<section id="board">
+  <p class="step">5 · 공용 게시판</p>
+  <h2>두 PC의 Claude가 같은 페이지를 읽고 씁니다</h2>
+  <p>노트북과 데스크톱에서 함께 일할 때, 두 컴퓨터의 Claude는 서로 직접 말할 수 없습니다. 같은 컴퓨터 안의 Claude 탭과 Code 탭도 마찬가지입니다. 그래서 노션 페이지 하나를 공용 진행표로 정하고, 모두 그 페이지를 읽고 결과를 적게 했습니다.</p>
+  <figure class="shot">
+    <img src="ctx-notion-board.jpg" alt="노션의 노트북→데스크톱 이전 진행표 페이지. 상단 안내 상자에 비밀 값은 적지 않는다는 규칙이 있고, 확정 원칙과 오늘 우선순위가 이어진다" loading="lazy" width="1400" height="805">
+    <figcaption>노트북과 데스크톱의 Claude가 함께 읽고 고친 진행표입니다. 맨 위 안내 상자에 ".env, API Key 같은 비밀 값은 이 페이지에 적지 않는다"는 규칙이 있습니다. 왼쪽 목록은 정리하기 전 모습이라, 개인 페이지 맨 위에 Claude가 만든 페이지들이 흩어져 있는 것이 보입니다.</figcaption>
+  </figure>
+  <ul>
+    <li>에이전트는 스스로 깨어나지 않습니다. 사람이 각 창에 "진행표 읽고 나에게 온 일 처리해"라고 한 줄만 보냅니다.</li>
+    <li>확인한 쪽이 결과를 적고, 다른 쪽은 그 결과를 읽고 다음 일을 정합니다.</li>
+    <li>비밀 값은 적지 않고 "있음/없음"만 적습니다. 값은 사람이 직접 옮깁니다.</li>
+  </ul>
+  <p class="takeaway">서로 말할 수 없는 AI들도, 같은 기록을 보게 하면 함께 일할 수 있습니다.</p>
+</section>
+
+<!-- 6 -->
+<section id="day">
+  <p class="step">6 · 하루의 흐름</p>
+  <h2>시작할 때 읽고, 끝날 때 적습니다</h2>
+  <p>실제 하루는 이렇게 돌아갑니다. 강연 준비 막바지의 어느 새벽이 그랬습니다.</p>
+  <ol class="flow">
+    <li><span><b>새 대화 시작:</b> H:\AI_Projects 폴더로 Code 탭을 엽니다. 메모리 목록이 자동으로 읽혀, 토비는 호칭, 말투, 지켜야 할 규칙을 이미 알고 시작합니다.</span></li>
+    <li><span><b>한 줄로 부르기:</b> "토비야, 노션 「강연 마무리 진행표」 읽고 이어 가자." 메모리에 "강연 이야기는 노션 진행표부터"라는 이정표가 있어 바로 그 페이지를 엽니다.</span></li>
+    <li><span><b>일하기:</b> 진행표의 다음 할 일부터 처리합니다. 프로젝트 폴더의 현황표(다음할일.md)로 파일 위치와 명령을 확인합니다.</span></li>
+    <li><span><b>새로 정한 것 적기:</b> 사람이 "앞으로는 이렇게 하자"고 정하면 그 자리에서 메모리 파일에 이유와 함께 적습니다.</span></li>
+    <li><span><b>끝낼 때 정리:</b> "오늘 내용 정리해 두고 내일 새 창에서 하자"고 하면 노션 진행표, 현황표, 메모리 이정표를 모두 고쳐 둡니다.</span></li>
+  </ol>
+  <p>이렇게 하면 대화창은 바뀌어도 일은 끊기지 않습니다. 대화가 길어져 컨텍스트가 차면, 정리하고 새 창으로 옮기는 편이 오히려 정확합니다.</p>
+  <p class="takeaway">대화는 바뀌어도 기록은 남습니다. 시작할 때 기록을 읽게 하고, 끝날 때 기록을 고치게 합니다.</p>
+</section>
+
+<!-- 7 -->
+<section id="you">
+  <p class="step">7 · 따라 하기</p>
+  <h2>여러분이 따라 하려면 세 가지면 됩니다</h2>
+  <ol class="flow">
+    <li><span><b>시작 페이지 하나를 만드십시오.</b> 노션이든 구글 문서든 상관없습니다. 목차와 규칙만 두고, 프로젝트마다 "지금 상태 한 줄"을 적습니다.</span></li>
+    <li><span><b>끝날 때 정리를 시키십시오.</b> "오늘 정한 것과 다음 할 일을 시작 페이지 아래 프로젝트에 정리해 줘." 이 한 마디가 다음 날을 살립니다.</span></li>
+    <li><span><b>시작할 때 읽게 하십시오.</b> 새 대화의 첫 문장을 정해 두면 됩니다.</span></li>
+  </ol>
+  <div class="prompt">
+    <div class="prompt-head"><span>새 대화의 첫 문장 예시</span><button class="copy" type="button" id="copyPrompt">복사</button></div>
+<pre id="promptText">노션 「(시작 페이지 이름)」을 먼저 읽고,
+(프로젝트 이름) 페이지의 지금 상태와 다음 할 일을 짧게 정리해 줘.
+정리가 맞는지 내가 확인하면 그때부터 이어서 하자.</pre>
+  </div>
+  <p>Claude 탭(채팅)을 쓰신다면 프로젝트 지침에 "새 페이지는 시작 페이지 아래 프로젝트 밑에만 만든다"는 한 줄도 넣어 두십시오. 그래야 페이지가 흩어지지 않습니다.</p>
+  <p class="takeaway">AI에게 기억력을 바라기보다, 기억할 곳과 읽는 순서를 정해 주십시오. 그것이 사람이 할 일입니다.</p>
+</section>
+
+<div class="handoff">
+  <p class="step">함께 보면 좋은 자료</p>
+  <p class="big">Claude 탭(채팅)에서 쓰는 프로젝트 메모리와 계정 메모리 설정은 따로 정리해 두었습니다.</p>
+  <p><a href="context-continuity.html" style="color:var(--amber)">Claude 탭 맥락 잇기 가이드 보기 →</a> · <a href="index.html" style="color:var(--amber)">보충자료 첫 화면으로 →</a></p>
+</div>
+
+</div>
+</main>
+
+<script>
+(function () {
+  var btn = document.getElementById('copyPrompt');
+  var src = document.getElementById('promptText');
+  if (!btn || !src) return;
+  btn.addEventListener('click', function () {
+    var text = src.textContent;
+    function selectFallback() {
+      var r = document.createRange(); r.selectNodeContents(src);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = '선택됨';
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { btn.textContent = '복사됨'; }, selectFallback);
+    } catch (e) { selectFallback(); }
+    setTimeout(function () { btn.textContent = '복사'; }, 1800);
+  });
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수업용 가을 타이머</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(to bottom, #1f1008 0%, #3d1b0a 40%, #61270d 75%, #421804 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 가을 풍경 일러스트 SVG 배경 레이어 */
+        .autumn-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 살랑살랑 떨어지는 단풍잎 애니메이션 */
+        .leaf-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            top: -10%;
+            font-size: 1.8rem;
+            opacity: 0.85;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(55vh) rotate(180deg) translateX(50px);
+            }
+            100% {
+                transform: translateY(115vh) rotate(360deg) translateX(-30px);
+                opacity: 0.2;
+            }
+        }
+
+        /* 중앙 콘텐츠 영역 (숫자가 그림에 묻히지 않도록 은은한 먹색 반투명 박스 적용) */
+        .main-card {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 60px;
+            background: rgba(18, 10, 5, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 175, 55, 0.25);
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        /* 시간 프리셋 선택 버튼 그룹 */
+        .preset-group {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 220, 150, 0.4);
+            color: #ffe6c7;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 9px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn.active {
+            background: #ff9800;
+            color: #ffffff;
+            border-color: #ffd54f;
+            box-shadow: 0 0 16px rgba(255, 152, 0, 0.7);
+        }
+
+        /* 교실 맨 뒤에서도 선명하게 보이는 초대형 노란색 숫자 */
+        .timer-display {
+            font-size: clamp(7rem, 21vw, 18rem);
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            color: #FFE600;
+            text-shadow: 
+                0 0 25px rgba(255, 230, 0, 0.45),
+                4px 6px 14px rgba(0, 0, 0, 0.95);
+            margin: 10px 0 25px 0;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        /* 마지막 10초 경고: 붉은색 전환 및 박동 애니메이션 */
+        .timer-display.danger {
+            color: #FF334B !important;
+            text-shadow: 
+                0 0 35px rgba(255, 51, 75, 0.8),
+                4px 6px 14px rgba(0, 0, 0, 0.95) !important;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.03); }
+        }
+
+        /* 조작 버튼 그룹 */
+        .control-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            font-size: 1.7rem;
+            font-weight: 800;
+            padding: 13px 38px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-start {
+            background-color: #38b000;
+            color: #ffffff;
+        }
+        .btn-start:hover { background-color: #2f9400; }
+
+        .btn-pause {
+            background-color: #ff9100;
+            color: #ffffff;
+        }
+        .btn-pause:hover { background-color: #e07f00; }
+
+        .btn-reset {
+            background-color: #5c6b73;
+            color: #ffffff;
+        }
+        .btn-reset:hover { background-color: #48545a; }
+    </style>
+</head>
+<body>
+
+    <!-- 100% 오프라인 동작 가을 일러스트 (저녁 노을 + 가을 산 + 단풍나무 군락) -->
+    <svg class="autumn-bg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#1f0f08"/>
+                <stop offset="45%" stop-color="#4e210b"/>
+                <stop offset="75%" stop-color="#8c3a10"/>
+                <stop offset="100%" stop-color="#d96b18"/>
+            </linearGradient>
+            <!-- 가을 노을 달/해 -->
+            <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffecb3" stop-opacity="0.9"/>
+                <stop offset="40%" stop-color="#ffa726" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#ff7043" stop-opacity="0"/>
+            </radialGradient>
+        </defs>
+
+        <!-- 가을 하늘 -->
+        <rect width="1920" height="1080" fill="url(#skyGrad)"/>
+
+        <!-- 저녁 둥근 노을 -->
+        <circle cx="960" cy="500" r="350" fill="url(#sunGlow)"/>
+
+        <!-- 먼 가을 산 (단풍 갈색/주황) -->
+        <path d="M-100 800 Q 250 520 600 680 T 1300 650 Q 1650 560 2050 780 L 2050 1080 L -100 1080 Z" fill="#54210a" opacity="0.8"/>
+
+        <!-- 중간 능선 (붉은 단풍빛) -->
+        <path d="M-50 860 Q 300 700 750 810 T 1550 770 Q 1850 720 2050 880 L 2050 1080 L -50 1080 Z" fill="#752709" opacity="0.9"/>
+
+        <!-- 앞쪽 가을 언덕 -->
+        <path d="M0 920 Q 400 830 960 900 T 1920 910 L 1920 1080 L 0 1080 Z" fill="#381305"/>
+
+        <!-- 왼쪽 단풍나무 군락 (노란색/주황색/붉은색 단풍) -->
+        <g transform="translate(10, 360)">
+            <!-- 나무 기둥 -->
+            <path d="M120 700 L 140 450 L 170 700 Z" fill="#1b0802"/>
+            <!-- 단풍 잎 덩어리 -->
+            <circle cx="140" cy="420" r="95" fill="#c4380d"/>
+            <circle cx="90" cy="470" r="75" fill="#e26d14"/>
+            <circle cx="190" cy="460" r="75" fill="#9d2a07"/>
+            <circle cx="140" cy="470" r="70" fill="#f48c06"/>
+            <!-- 작은 앞나무 -->
+            <path d="M250 700 L 260 520 L 275 700 Z" fill="#1b0802"/>
+            <circle cx="260" cy="500" r="65" fill="#f48c06"/>
+            <circle cx="225" cy="535" r="50" fill="#dc2f02"/>
+            <circle cx="295" cy="535" r="50" fill="#e85d04"/>
+        </g>
+
+        <!-- 오른쪽 단풍나무 군락 -->
+        <g transform="translate(1550, 380)">
+            <!-- 큰 나무 기둥 -->
+            <path d="M220 700 L 200 440 L 170 700 Z" fill="#1b0802"/>
+            <!-- 단풍 잎 덩어리 (황금빛 은행/단풍) -->
+            <circle cx="195" cy="410" r="100" fill="#d9531e"/>
+            <circle cx="140" cy="460" r="80" fill="#f48c06"/>
+            <circle cx="250" cy="455" r="80" fill="#c4380d"/>
+            <circle cx="195" cy="480" r="75" fill="#ffb703"/>
+            <!-- 곁나무 -->
+            <path d="M80 700 L 70 540 L 55 700 Z" fill="#1b0802"/>
+            <circle cx="70" cy="515" r="60" fill="#e85d04"/>
+            <circle cx="40" cy="550" r="45" fill="#c4380d"/>
+            <circle cx="100" cy="550" r="45" fill="#faa307"/>
+        </g>
+    </svg>
+
+    <!-- 날리는 가을 단풍잎 효과 -->
+    <div class="leaf-container" id="leafContainer"></div>
+
+    <!-- 타이머 본체 카드 -->
+    <div class="main-card">
+        <!-- 1분, 5분, 10분, 20분 선택 -->
+        <div class="preset-group">
+            <button class="preset-btn" onclick="setPreset(60, this)">1분</button>
+            <button class="preset-btn" onclick="setPreset(300, this)">5분</button>
+            <button class="preset-btn active" onclick="setPreset(600, this)">10분</button>
+            <button class="preset-btn" onclick="setPreset(1200, this)">20분</button>
+        </div>
+
+        <!-- 초대형 타이머 숫자 (기본 10분 설정) -->
+        <div id="display" class="timer-display">10:00</div>
+
+        <!-- 조작 버튼 -->
+        <div class="control-group">
+            <button class="btn btn-start" onclick="startTimer()">시작</button>
+            <button class="btn btn-pause" onclick="pauseTimer()">일시정지</button>
+            <button class="btn btn-reset" onclick="resetTimer()">처음으로</button>
+        </div>
+    </div>
+
+    <script>
+        let totalSeconds = 600;
+        let remainingSeconds = 600;
+        let timerInterval = null;
+        let isRunning = false;
+
+        const display = document.getElementById('display');
+
+        // 가을 낙엽 생성 스크립트
+        const leafContainer = document.getElementById('leafContainer');
+        const leafIcons = ['🍁', '🍂', '🍁', '🍃'];
+        for (let i = 0; i < 16; i++) {
+            const leaf = document.createElement('div');
+            leaf.classList.add('leaf');
+            leaf.textContent = leafIcons[i % leafIcons.length];
+            leaf.style.left = (Math.random() * 96) + '%';
+            leaf.style.animationDuration = (8 + Math.random() * 8) + 's';
+            leaf.style.animationDelay = (Math.random() * 7) + 's';
+            leafContainer.appendChild(leaf);
+        }
+
+        // 시간 표시 형식 (분:초)
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        // 화면 갱신 및 10초 이하 빨간색 전환
+        function updateDisplay() {
+            display.textContent = formatTime(remainingSeconds);
+
+            if (remainingSeconds <= 10 && remainingSeconds > 0) {
+                display.classList.add('danger');
+            } else {
+                display.classList.remove('danger');
+            }
+        }
+
+        // 프리셋 변경
+        function setPreset(seconds, btnElement) {
+            pauseTimer();
+            totalSeconds = seconds;
+            remainingSeconds = seconds;
+            updateDisplay();
+
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+        }
+
+        // 시작
+        function startTimer() {
+            if (isRunning) return;
+            getAudioContext(); // 사운드 권한 확보
+
+            isRunning = true;
+            timerInterval = setInterval(() => {
+                if (remainingSeconds > 0) {
+                    remainingSeconds--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    playAlarmSound(); // 알림음
+                }
+            }, 1000);
+        }
+
+        // 일시정지
+        function pauseTimer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+        }
+
+        // 처음으로 돌리기
+        function resetTimer() {
+            pauseTimer();
+            remainingSeconds = totalSeconds;
+            updateDisplay();
+        }
+
+        // 종료 알림음 (Web Audio API 차임벨)
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTone(freq, startTime, duration) {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.35, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+
+        function playAlarmSound() {
+            const ctx = getAudioContext();
+            const now = ctx.currentTime;
+            playTone(523.25, now, 0.6);        // 도 (C5)
+            playTone(659.25, now + 0.35, 0.6);  // 미 (E5)
+            playTone(783.99, now + 0.7, 1.2);  // 솔 (G5)
+        }
+
+        // 초기화 실행
+        updateDisplay();
+    </script>
+</body>
+</html>

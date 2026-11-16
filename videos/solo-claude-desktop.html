@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Desktop App [Claude / Code]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1f;--muted:#5f5f66;--line:#e3e1dc;--accent:#5b4bd6;
+--me:#1f6feb;--me-bg:#e8f0fe;--ai:#a14ad6;--ai-bg:#f4eafb;--word:#1f8a7c;--word-bg:#e2f5f2;--key:#b35c00;--key-bg:#fff1e0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#07111b;--card:#0c1926;--ink:#edf5ff;--muted:#9eb0c2;--line:#243b4f;--accent:#a99dff;
+--me:#79a8ff;--me-bg:#1c2a44;--ai:#cf9bf2;--ai-bg:#2e2140;--word:#32c5b3;--word-bg:#0f2f2c;--key:#ffb44a;--key-bg:#33260f;}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Pretendard,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;word-break:keep-all}
+.sitebar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:#07111b;font-size:14px}
+.sitebar a{color:#cfd8ff;text-decoration:none;font-weight:600}.sitebar a:hover{color:#fff}
+.sitebar a:last-child{color:#32c5b3}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:250px 1fr;gap:32px}
+.hero{max-width:1180px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:760px;margin:0 0 20px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+nav{position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14px}
+nav ul{list-style:none;margin:0;padding:0}nav ul ul{margin:4px 0 14px 10px;border-left:2px solid var(--line);padding-left:10px}
+nav a{color:var(--muted);text-decoration:none;display:block;padding:2px 0}nav a:hover{color:var(--accent)}
+nav .gn{color:var(--ink);font-weight:700}
+.group h2{font-size:24px;margin:8px 0 4px}.gdesc{color:var(--muted);margin:0 0 16px}
+.video{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin:0 0 24px;scroll-margin-top:16px}
+.vh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.vt h3{font-size:22px;line-height:1.35;margin:0}.sub{color:var(--muted);margin:4px 0 0;font-size:15px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.len{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.play,.link{background:var(--accent);color:#fff;text-decoration:none;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:500}
+.link{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.play.off{background:var(--line);color:var(--muted)}
+.intro{font-size:17px;margin:16px 0;padding-left:12px;border-left:4px solid var(--accent)}
+h4.sec{font-size:16px;margin:20px 0 8px}
+.tbl{overflow-x:auto;margin:8px 0}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700;white-space:nowrap}
+details{margin:16px 0 0;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+h4.ch{display:flex;gap:10px;align-items:baseline;font-size:16px;margin:20px 0 6px}
+.ts{font:500 13px/1 ui-monospace,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--ink);text-decoration:none;flex:none}
+a.ts{color:var(--accent);border-color:var(--accent)}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}p{margin:8px 0}
+code{font:13px ui-monospace,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.me{color:var(--me);background:var(--me-bg)}.tag.ai{color:var(--ai);background:var(--ai-bg)}
+.tag.word{color:var(--word);background:var(--word-bg)}.tag.key{color:var(--key);background:var(--key-bg)}
+ol.toc{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+ol.toc li{display:flex;gap:10px;align-items:baseline}
+footer{max-width:1180px;margin:0 auto;padding:24px 16px 48px;color:var(--muted);font-size:13px}
+main{min-width:0}
+.h1sub{display:block;font-size:.62em;color:var(--accent);margin-top:6px}
+.note{background:var(--key-bg);border-left:4px solid var(--key);border-radius:8px;padding:12px 16px;margin:0 0 16px}
+.sec2{font-size:20px;margin:28px 0 12px}
+table.cmp td:first-child{font-weight:700;white-space:nowrap}
+.tab.sum{border-style:dashed}
+.hq{background:#fff4d6;color:#3a2a00;border:2px solid #e0a000;border-radius:12px;padding:14px 18px;margin:0 0 20px}
+.hero .hq{margin:20px 0 0;max-width:760px}
+.hq-t{font-size:18px;font-weight:700;margin:0 0 4px}.hq-p{margin:0;font-size:15px}
+.hq-d{border-top:1px solid #e9c66a;margin-top:10px;padding-top:8px}.hq-d summary{color:#8a5a00}
+.hq-s{margin:8px 0 0;padding-left:22px;font-size:15px}.hq-s li{margin:6px 0}
+.hq .k{display:inline-block;background:#fff;border:1px solid #d9b45a;border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hq{background:#3a2c0a;color:#ffe9b0;border-color:#c99300}
+:root:not([data-theme=light]) .hq-d{border-color:#6b5414}:root:not([data-theme=light]) .hq-d summary{color:#ffc94d}
+:root:not([data-theme=light]) .hq .k{background:#241b05;border-color:#8a6a1a}}
+.app{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:var(--key-bg);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:0 0 20px}
+.app p{margin:2px 0 6px;color:var(--muted);font-size:14px}.app code{background:transparent;padding:0}
+.app .play{font-size:15px;padding:10px 18px}
+.hero.one{max-width:900px;padding-top:32px}.series{font-weight:700;color:var(--accent);margin:0 0 8px}
+.tabs{position:static;display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;max-height:none}
+.tab{border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--ink);background:var(--card);font-weight:500}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{margin-top:16px}.cmp td:first-child{font-weight:700;white-space:nowrap}
+main.single{max-width:900px;margin:0 auto;padding:0 16px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.wrap>nav{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.video{padding:18px}}
+</style></head><body><div class="sitebar"><a href="../index.html">← 바이브코딩의 첫걸음 · 강연 보충자료</a><a href="index.html">화면 녹화 사례 모음</a></div>
+<header class="hero one"><p class="series">AI와 일하는 방법</p>
+<nav class="tabs"><a class="tab" href="solo-workspace-move.html">지식 도서관 작업장</a><a class="tab" href="solo-my-agents.html">Skyview 연동 작업장</a><a class="tab" href="solo-two-pcs-notion.html">두 PC·노션 게시판</a><a class="tab" href="solo-html-agent.html">HTML 수정 Agent</a><a class="tab" href="autocut-44h.html">44시간 녹화를 4시간으로</a><a class="tab on" href="solo-claude-desktop.html">Claude 탭과 Code 탭</a></nav><h1>Claude Desktop App<span class="h1sub">[Claude / Code]</span></h1><p>컴퓨터 이사, 에이전트 팀, 방식 비교처럼 AI와 일하는 방법을 실험합니다.</p>
+<div class="legend"><span class="tag me">내 요구</span><span class="tag ai">AI가 한 일</span><span class="tag word">알아 두면 좋은 말</span><span class="tag key">핵심</span></div>
+</header>
+<main class="single"><article class="video" id="solo4">
+
+<div class="hq"><p class="hq-t">⚠ 영상을 열면 먼저 <b>화질을 1080p</b>로 바꿔 주세요</p><p class="hq-p">화면을 녹화한 영상이라 YouTube가 자동으로 고르는 화질(720p 이하)에서는 글씨가 뭉개져 읽을 수 없습니다. 1080p로 바꾸면 글씨가 또렷하게 보입니다.</p><details class="hq-d"><summary>화질 바꾸는 방법 (눌러서 보기)</summary><ol class="hq-s"><li><b>컴퓨터</b>: 영상을 재생하고 화면 오른쪽 아래 <span class="k">⚙ 설정</span> → <span class="k">화질</span> → <span class="k">1080p HD</span>를 누릅니다. 화질 옆에 "자동 (720p)"처럼 보이면 아직 바꾸지 않은 것입니다.</li><li><b>휴대폰 YouTube 앱</b>: 영상 화면을 한 번 누르고 위쪽 <span class="k">⚙</span> → <span class="k">화질</span> → <span class="k">고급</span> → <span class="k">1080p</span>를 고릅니다.</li><li>가능하면 <b>전체 화면</b>으로 보세요. 작은 창에서는 글씨가 더 작아집니다.</li></ol></details></div>
+<header class="vh">
+<div class="vt"><h3>Claude Desktop App</h3>
+<p class="sub">[Claude / Code]</p></div>
+<div class="meta"><span class=len>19:13</span><a class="play" href="https://www.youtube.com/watch?v=2YQjmkPUvUE" target="_blank" rel="noopener">▶ 영상 보기</a></div>
+</header>
+<p class="intro">같은 강의 페이지 만들기를 Claude 데스크톱 앱의 대화 방식과 Code 방식에 시켜 비교하고, "만드는 프로그램을 한 번 저장해 두면 토큰 없이 같은 결과를 반복할 수 있다"는 가설을 실험으로 확인한다.</p>
+<h4 class='sec'>한눈에 보는 역할 나누기</h4><div class="tbl"><table><thead><tr><th>단계</th><th>내가 한 일</th><th>AI가 한 일</th></tr></thead><tbody><tr><td>비교</td><td>같은 과제 주기, 두 결과 캡처</td><td>두 결과를 항목별 표로 비교, 시간 차이 계산</td></tr><tr><td>가설</td><td>"프로그램을 저장하면 어떨까" 질문</td><td>가설로 정리, 실험 방법과 두 방식용 프롬프트 작성</td></tr><tr><td>실험</td><td>프롬프트를 두 방식에 보내고 답 모으기</td><td>각자 실행 위치·도구 보고, 변환 프로그램 저장, 두 번 실행해 결과 동일 확인</td></tr><tr><td>판정</td><td>근거 붙여 넣기</td><td>종합 평가, 손익분기 계산, 다음 실험 설계</td></tr></tbody></table></div>
+<details open><summary>장면별 자세한 설명</summary><h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=2YQjmkPUvUE&t=0s" target="_blank" rel="noopener">0:00</a><span>같은 과제, 두 방식</span></h4>
+<p>원고 파일과 디자인 견본을 주고 견본 모양의 강의 페이지를 만들게 함.</p>
+<ul><li>대화 방식: 원고를 빠짐없이 옮김. Code 방식: 내 컴퓨터 폴더에서 바로 읽고 쓰며 휴대폰 화면까지 직접 확인.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=2YQjmkPUvUE&t=240s" target="_blank" rel="noopener">4:00</a><span>결국 둘 다 클라우드에서 생각하는데 왜 다를까 (핵심 장면 ①)</span></h4>
+<ul><li><span class="tag key">답</span> 생각(AI 모델)은 둘 다 클라우드. 실행은 대화 방식이 클라우드의 임시 작업 공간(리눅스), Code 방식이 내 Windows 컴퓨터.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>샌드박스</strong>는 클라우드에 잠깐 만들어지는 격리된 작업 공간. 작업이 끝나면 사라진다.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=2YQjmkPUvUE&t=324s" target="_blank" rel="noopener">5:24</a><span>프로그램을 저장해 두면? (핵심 장면 ②)</span></h4>
+<ul><li><span class="tag key">내 가설</span> 매번 AI에게 다시 만들게 하지 말고, 만드는 프로그램을 저장해 두고 돌리기만 하면 된다.</li><li><span class="tag key">실험 결과</span> 두 방식 모두 Python 변환 프로그램을 만들었고, 저장한 프로그램은 실행할 때 토큰 0, 두 번 돌려도 한 글자도 다르지 않음.</li><li><span class="tag word">알아 두면 좋은 말</span> <strong>토큰</strong>은 AI가 읽고 쓰는 글자 조각 단위. 사용량과 비용의 기준.</li></ul>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=2YQjmkPUvUE&t=816s" target="_blank" rel="noopener">13:36</a><span>반복 작업이면 프로그램을 키우자</span></h4>
+<p>같은 형식 작업이 두세 번만 반복돼도 프로그램 방식이 손익분기를 넘는다는 계산. 강의 10개로 확인할 실험 설계.</p>
+<h4 class="ch"><a class="ts" href="https://www.youtube.com/watch?v=2YQjmkPUvUE&t=1092s" target="_blank" rel="noopener">18:12</a><span>효율의 기준을 내 말로 정하기</span></h4>
+<p>처음 비용이 들어도 반복할수록 비용이 줄고 같은 결과가 나오는 것이 효율. 이 내용을 요구 사항 문서로 남김.</p></details>
+</article></main>
+<footer>시간 표시를 누르면 영상의 그 장면으로 이동합니다 (영상 주소가 등록된 경우).</footer>
+</body></html>
