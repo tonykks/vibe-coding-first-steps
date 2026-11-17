@@ -70,7 +70,7 @@
     <p>사진첩은 저절로 생기지 않습니다. 먼저 컴퓨터에 Git이 설치되어 있어야 하고(처음 한 번), 그다음 폴더에서 <code>git init</code>을 한 번 해야 생깁니다. 새 프로젝트를 시작할 때 AI에게 이렇게 덧붙이면 됩니다.</p>
     <div class="prompt"><div class="prompt-head"><span>새 프로젝트를 시작할 때 덧붙일 말</span></div>
 <pre>이 컴퓨터에 Git이 없으면 먼저 설치해 주고, 이 폴더를 git으로 관리해 줘. 큰 수정을 마칠 때마다 commit 해 줘.</pre></div>
-    <p class="takeaway">commit은 사진, Git은 내 PC의 사진첩, GitHub은 인터넷에 둔 사진첩입니다.</p>
+    <p class="takeaway">commit은 사진, Git은 내 PC의 사진첩, GitHub는 인터넷에 둔 사진첩입니다.</p>
 
     <div class="kicker">2 · commit</div>
     <h2 id="commit">AI가 왜 자꾸 commit 하자고 할까</h2>
@@ -111,7 +111,7 @@
       <li>1~2분 뒤 같은 화면 위쪽에 <code>https://아이디.github.io/저장소이름/</code> 주소가 나타납니다.</li>
     </ol>
     <p>그다음부터는 내 PC에서 고치고 commit, push만 하면 1~2분 뒤 사이트가 새것으로 바뀝니다.</p>
-    <p>그래서 GitHub이 중요합니다. 사진첩 보관, 다른 PC와 공유, 웹사이트 공개가 <b>한곳에서 무료로</b> 됩니다. 공개 저장소라면 비용이 없습니다.</p>
+    <p>그래서 GitHub가 중요합니다. 사진첩 보관, 다른 PC와 공유, 웹사이트 공개가 <b>한곳에서 무료로</b> 됩니다. 공개 저장소라면 비용이 없습니다.</p>
     <p class="takeaway">배포는 내 PC 안의 결과를 인터넷 주소로 내보내는 일이고, GitHub Pages는 그 가장 쉬운 길입니다.</p>
 
     <div class="kicker">5 · 다른 배포 사이트</div>
@@ -142,7 +142,7 @@
     </div>
     <p>조리(build)를 어디서 하느냐에 따라 길이 두 가지입니다.</p>
     <div class="tablewrap"><table>
-      <thead><tr><th></th><th>GitHub이 조리하는 길</th><th>내 PC에서 조리해 올리는 길</th></tr></thead>
+      <thead><tr><th></th><th>GitHub가 조리하는 길</th><th>내 PC에서 조리해 올리는 길</th></tr></thead>
       <tbody>
         <tr><td>하는 일</td><td>push하면 GitHub Actions가 build하고 배포</td><td>내 PC에서 build한 결과를 gh-pages라는 갈래(branch)에 올림</td></tr>
         <tr><td>GitHub에서 바꿀 곳</td><td>Settings → Pages → Source를 <b>GitHub Actions</b>로</td><td>Settings → Pages → Branch를 <b>gh-pages</b>로 → Save</td></tr>
@@ -158,7 +158,7 @@ GitHub Actions로 하고, 내가 GitHub에서 바꿀 곳도 알려 줘.</pre></d
 
     <div class="kicker">7 · Actions</div>
     <h2 id="actions">Actions: 정해진 때 저절로 돌아가는 일꾼</h2>
-    <p><b>GitHub Actions</b>는 GitHub 안의 컴퓨터를 잠깐 빌려 정해진 일을 시키는 기능입니다. 6절에서 GitHub이 대신 build해 준 것도 Actions였습니다. 내 PC가 꺼져 있어도 돌아갑니다.</p>
+    <p><b>GitHub Actions</b>는 GitHub 안의 컴퓨터를 잠깐 빌려 정해진 일을 시키는 기능입니다. 6절에서 GitHub가 대신 build해 준 것도 Actions였습니다. 내 PC가 꺼져 있어도 돌아갑니다.</p>
     <p>Actions가 돌리는 것은 html 파일이 아니라 <b>프로그램</b>입니다. 예를 들어 매일 아침 자료를 모아 현황 페이지를 새로 만드는 프로그램을 돌리면, 그 결과가 GitHub Pages에 올라가 사이트가 저절로 바뀝니다. 자동화와 배포가 여기서 만납니다.</p>
     <div class="tablewrap"><table>
       <thead><tr><th>언제 돌릴까</th><th>예</th></tr></thead>
@@ -188,7 +188,7 @@ GitHub Actions로 하고, 내가 GitHub에서 바꿀 곳도 알려 줘.</pre></d
     <p>2005년, 리눅스 개발자들은 BitKeeper라는 유료 버전 관리 프로그램을 무료로 빌려 쓰고 있었습니다. 그런데 한 개발자가 BitKeeper의 작동 방식을 뜯어보다가 회사와 다툼이 생겼고, 회사는 무료 사용을 거둬 갔습니다. 리눅스를 만든 리누스 토르발스는 "그럼 내가 만든다" 하고 약 열흘 만에 Git의 뼈대를 내놓았습니다.</p>
     <p>git은 영국 속어로 "멍청하고 고집 센 녀석"이라는 뜻입니다. 리누스는 "나는 자기중심적이라 프로젝트마다 내 이름을 붙인다. 처음엔 Linux, 이번엔 git"이라고 농담했습니다. 자기를 고집 센 녀석이라 부른 셈입니다. 첫 설명서에도 장난이 있습니다. 기분 좋을 때 읽으면 Global Information Tracker(세계 정보 추적기), 고장 났을 때 읽으면 욕설 섞인 말의 머리글자라고 적어 두었습니다.</p>
     <p>사실 Linux라는 이름도 리누스가 붙인 것이 아닙니다. 그는 'Freax'라는 이름을 원했는데, 파일을 올려 준 서버 관리자가 폴더 이름을 'linux'(Linus + Unix)로 붙였고 그 이름이 굳었습니다.</p>
-    <p>3년 뒤인 2008년, Git 사진첩을 인터넷에 맡기고 여럿이 함께 일하는 사이트가 문을 열었습니다. 이름은 GitHub, Git이 모이는 중심(hub)이라는 뜻입니다. 2018년 Microsoft가 GitHub을 사들였고, 지금은 Copilot 같은 AI 기능이 더해졌습니다. 같은 회사의 무료 코딩 프로그램 VS Code에도 Copilot이 들어 있어, GitHub과 연결해 Copilot AI를 쓸 수 있습니다.</p>
+    <p>3년 뒤인 2008년, Git 사진첩을 인터넷에 맡기고 여럿이 함께 일하는 사이트가 문을 열었습니다. 이름은 GitHub, Git이 모이는 중심(hub)이라는 뜻입니다. 2018년 Microsoft가 GitHub를 사들였고, 지금은 Copilot 같은 AI 기능이 더해졌습니다. 같은 회사의 무료 코딩 프로그램 VS Code에도 Copilot이 들어 있어, GitHub과 연결해 Copilot AI를 쓸 수 있습니다.</p>
 
     <div class="kicker">9 · 낱말</div>
     <h2 id="words">낱말 한눈에</h2>
