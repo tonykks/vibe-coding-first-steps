@@ -34,13 +34,13 @@
       <a class="part-link" href="#tidy">10 · 페이지 정리 규칙</a>
       <a class="part-link" href="#practice">11 · 실습 · 새 대화에서 기록 찾아가기</a>
       <a class="part-link" href="#compare">12 · ChatGPT와 나란히 보기</a>
-      <a class="part-link" href="#script">13 · 강연용 설명 문장</a>
+      <a class="part-link" href="#script">13 · 한 문단으로 줄이면</a>
       <a class="part-link" href="#sources">14 · Anthropic 공식 참고자료</a>
     </nav></aside>
     <main>
   <article class="bookwrap">
     <a class="back" href="index.html#s3-6">← 강연 화면으로 돌아가기</a>
-    <div class="kicker">바이브코딩 강연용 · 사용자 정의 분류</div>
+    <div class="kicker">강연 보충자료 · 사용자 정의 분류</div>
     <h1 id="scope">Claude: 웹과 앱에서 무엇을 공유하고,<br>새 창에서 어떻게 이어 가나?</h1>
     <p class="note">웹(claude.ai)과 앱(Claude Desktop)을 가로축으로, 대화하는 Claude(Claude 탭)와 코딩하는 Claude Code(Code 탭)를 세로축으로 구분해 2 × 2로 봅니다. 핵심 판단 기준은 ChatGPT 편과 같습니다. <strong>내 PC 폴더에 직접 접근할 수 있는가?</strong>, <strong>서로 대화와 작업 결과를 공유하는가?</strong>, 그리고 <strong>새 창에서 무엇을 읽고 이어 가는가?</strong>입니다.</p>
     <div class="callout def"><strong>표기 원칙:</strong> ‘웹·앱’, ‘Claude·Code’, ‘내 PC 폴더로 시작·Cloud로 시작’은 이 강연에서 쓰는 <strong>교육용 분류</strong>입니다. 괄호 안에 공식 문서의 이름을 적었습니다. 데스크톱 앱에는 Cowork라는 작업 화면도 있지만 이 자료에서는 다루지 않습니다. <strong>[관찰]</strong> 표시는 강연자가 실제로 써 보며 확인한 동작이고, 앱 버전이 바뀌면 달라질 수 있습니다.</div>
@@ -153,7 +153,7 @@
     <h2 id="continuity">07 · 세션 간 문맥 유지: Projects · 메모리 · CLAUDE.md · Notion · GitHub</h2>
     <p><strong>질문:</strong> 새 대화를 열어도 이전의 의도·결정·진행을 이어 갈 수 있을까? Claude에는 채팅 쪽과 Code 쪽에 각각 다른 장치가 있습니다.</p>
     <div class="callout def"><strong>구분 기준:</strong> ① 대화 기록 동기화 = 같은 대화를 다른 화면에서 보기, ② 자동으로 읽히는 기억 = 새 대화를 시작하면 저절로 들어오는 것, ③ 외부 기록 = 일부러 열어 읽어야 하는 문서. 셋은 서로 다른 기능입니다.</div>
-    <div class="matrix-scroll"><table class="info-table"><thead><tr><th>방법</th><th>어디에 남는가?</th><th>새 대화에서 활용</th><th>채팅 ↔ Code 자동 공유?</th><th>강연에서 전달할 한계</th></tr></thead><tbody>
+    <div class="matrix-scroll"><table class="info-table"><thead><tr><th>방법</th><th>어디에 남는가?</th><th>새 대화에서 활용</th><th>채팅 ↔ Code 자동 공유?</th><th>알아 둘 한계</th></tr></thead><tbody>
     <tr><td><strong>Projects</strong><br>(채팅)</td><td>프로젝트 지식 파일, 프로젝트 지침</td><td><strong>가능</strong>: 같은 프로젝트의 새 대화가 지식과 지침을 함께 씀</td><td><strong>아니요</strong></td><td>지침은 매번 읽히지만, 바뀐 결정을 스스로 고쳐 쓰지는 않음. 최신 상태는 따로 기록해야 함</td></tr>
     <tr><td><strong>메모리·과거 대화 검색</strong><br>(채팅)</td><td>계정(클라우드)</td><td><strong>가능</strong>: 켜 두면 관련 내용을 참조</td><td><strong>아니요</strong>: Code 탭의 자동 메모리와 연결되지 않음</td><td>결정 기록을 정확히 보관하는 버전 관리 저장소가 아님</td></tr>
     <tr><td><strong>CLAUDE.md</strong><br>(Code)</td><td>프로젝트 폴더 또는 사용자 폴더의 지침 파일</td><td><strong>자동</strong>: 세션을 시작할 때마다 읽힘</td><td><strong>아니요</strong>: 채팅은 읽지 않음</td><td>사람이 쓰는 규칙서. AGENTS.md도 읽거나 불러올 수 있음</td></tr>
@@ -172,7 +172,7 @@
     <div class="node">GitHub<br><small>코드와 문서 이력</small></div>
     </div>
     <p>자세한 화면과 하루의 흐름은 <a href="context-memory-notion.html">「AI의 기억 수첩」</a>에 실제 캡처와 함께 정리했습니다.</p>
-    <div class="callout"><strong>강연에서 단정하면 안 되는 문장:</strong> “Claude는 모든 대화를 Notion에 자동 저장하고, 새 대화마다 알아서 읽는다.” 저장과 읽기는 지침·메모리에 적어 둔 규칙대로 Claude가 그때그때 하는 일입니다. 반면 <strong>Projects, 채팅 메모리, CLAUDE.md, 자동 메모리, Notion 커넥터, GitHub 문서 협업</strong>은 각각 쓸 수 있는 기능으로 설명할 수 있습니다.</div>
+    <div class="callout"><strong>단정하면 안 되는 문장:</strong> “Claude는 모든 대화를 Notion에 자동 저장하고, 새 대화마다 알아서 읽는다.” 저장과 읽기는 지침·메모리에 적어 둔 규칙대로 Claude가 그때그때 하는 일입니다. 반면 <strong>Projects, 채팅 메모리, CLAUDE.md, 자동 메모리, Notion 커넥터, GitHub 문서 협업</strong>은 각각 쓸 수 있는 기능으로 설명할 수 있습니다.</div>
 
     <h2 id="notion">08 · Notion을 문맥 저장소로 설정하기 (강연자 실제 구성)</h2>
     <p>Context(문맥)는 다음 작업자가 이어서 판단하는 데 필요한 목표·결정·이유·미완료 사항입니다. ChatGPT 편과 같은 생각으로, <strong>‘언제 읽을지’는 지침과 메모리에</strong>, <strong>‘어디를 읽고 어떻게 적을지’는 Notion 시작 페이지에</strong> 적었습니다.</p>
@@ -204,7 +204,7 @@ M8 | 데스크톱 Code 탭 → 노트북 Claude 탭 | 결과 | 조사 표를 아
     <p class="subtle">ChatGPT 편에는 매일 오전 9시 점검 예약이 있습니다. Claude도 데스크톱 앱의 예약 작업으로 비슷하게 할 수 있지만, 강연자 환경에는 아직 설정하지 않았습니다.</p>
 
     <h2 id="practice">11 · 실습 · 새 대화에서 기록 찾아가기</h2>
-    <p>두 개의 대화로 결정 하나가 실제로 전달되는지 확인합니다. 강의용 실습 절차입니다.</p>
+    <p>두 개의 대화로 결정 하나가 실제로 전달되는지 확인합니다. 따라 해 보는 실습 절차입니다.</p>
     <h3>첫 번째 대화에서 저장</h3>
     <pre>‘한글 타자 수업’의 결정은 같은 글쇠 20회 반복, 다음 글쇠는 학습자가 선택하는 것입니다. 다음 작업은 관찰 문항 두 개 작성입니다. 오늘은 여기까지.</pre>
     <p>저장할지 물으면 ‘네, 저장해 주세요’라고 답합니다. 받은 링크를 열어 <strong>시작 페이지 아래 프로젝트 밑에</strong> 저장됐는지, 두 결정과 다음 작업이 맞는지 확인합니다.</p>
@@ -232,7 +232,7 @@ M8 | 데스크톱 Code 탭 → 노트북 Claude 탭 | 결과 | 조사 표를 아
     </div>
     <p class="subtle">두 서비스의 구조는 놀랄 만큼 비슷합니다. 대화 쪽과 코딩 쪽이 나뉘어 있고, 둘을 잇는 것은 자동 동기화가 아니라 <strong>사람이 정한 기록 장소</strong>입니다. <a href="chatgpt-web-app-context.html">ChatGPT 편 보기 →</a></p>
 
-    <h2 id="script">13 · 강연용 설명 문장</h2>
+    <h2 id="script">13 · 한 문단으로 줄이면</h2>
     <div class="callout script">“Claude도 ChatGPT와 같은 틀로 보겠습니다. 화면은 <strong>웹과 앱</strong>으로, 그 안에서 <strong>채팅과 Code 탭</strong>으로 나눕니다. 가장 중요한 차이는 AI가 <strong>내 PC 파일을 직접 열고 고치고 실행할 수 있는지</strong>입니다. 그것은 데스크톱 앱 Code 탭의 로컬 세션만 할 수 있습니다. 채팅은 같은 앱 안에 있어도 손발이 클라우드에 있어서, 연결한 폴더를 들여다보는 데서 그칩니다. <strong>대화 동기화는 또 별개</strong>입니다. 채팅 대화는 웹·앱·노트북·데스크톱 어디서나 이어지지만, 대화에 연결한 PC 폴더는 시작한 PC 것입니다. 그리고 채팅과 Code 탭은 같은 앱이어도 서로의 대화를 모릅니다. 그래서 저는 <strong>Notion 시작 페이지 하나</strong>를 정해 두고, 채팅도 Code 탭도 노트북도 데스크톱도 모두 거기를 읽고 거기에 적게 했습니다. Code 탭에는 <strong>자동 메모리와 CLAUDE.md</strong>가 있어 새 세션마다 규칙과 이정표가 저절로 들어오지만, 그건 이 PC 안의 파일입니다. 결국 <strong>AI가 알아서 기억하는 것이 아니라, 사람이 기억할 곳과 읽는 순서를 정해 주는 것</strong>입니다.”</div>
 
     <h2 id="sources">14 · Anthropic 공식 참고자료</h2>

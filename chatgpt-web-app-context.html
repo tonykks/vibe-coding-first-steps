@@ -34,13 +34,13 @@
       <a class="part-link" href="#tidy">10 · 페이지 길이와 매일 점검</a>
       <a class="part-link" href="#practice">11 · 실습 · 새 채팅에서 기록 찾아가기</a>
       <a class="part-link" href="#compare">12 · Claude와 나란히 보기</a>
-      <a class="part-link" href="#script">13 · 강연용 설명 문장</a>
+      <a class="part-link" href="#script">13 · 한 문단으로 줄이면</a>
       <a class="part-link" href="#sources">14 · 공식 참고자료</a>
     </nav></aside>
     <main>
   <article class="bookwrap">
     <a class="back" href="index.html#s3-6">← 강연 화면으로 돌아가기</a>
-    <div class="kicker">바이브코딩 강연용 · 사용자 정의 분류</div>
+    <div class="kicker">강연 보충자료 · 사용자 정의 분류</div>
     <h1 id="scope">ChatGPT: 웹과 앱에서 무엇을 공유하고,<br>새 창에서 어떻게 이어 가나?</h1>
     <p class="note">웹(Web/Cloud)과 앱(Desktop)을 가로축으로, ChatGPT와 Codex를 세로축으로 구분합니다. ChatGPT는 다시 Chat / Work 두 탭으로 나눕니다. 핵심 판단 기준은 <strong>내 PC 폴더에 직접 접근할 수 있는가?</strong>와 <strong>서로 대화 및 작업 결과를 공유하는가?</strong>, 그리고 <strong>새 창에서 무엇을 읽고 이어 가는가?</strong>입니다.</p>
     <div class="callout def"><strong>표기 원칙:</strong> ‘웹·앱’, ‘ChatGPT·Codex 모드’, ‘Chat·Work 탭’은 이 강연에서 일관되게 사용하는 <strong>교육용 분류</strong>입니다. 공식 인터페이스의 정확한 구성 명칭과 완전히 일치한다고 주장하지 않습니다. 괄호 안에는 확인된 공식 기능명을 넣었습니다.</div>
@@ -142,7 +142,7 @@
 
     <p><strong>질문:</strong> 새 채팅을 만들어도 이전 프로젝트의 의도·결정·진행 내용을 이어 갈 수 있을까요? ChatGPT Plus에는 <strong>Projects, Memory, 연결 앱(Notion 포함)</strong>이 있습니다. Codex의 <code>AGENTS.md</code>와 GitHub는 다른 방식으로 이 문제를 해결합니다.</p>
     <div class="callout def"><strong>구분 기준:</strong> ① 대화 기록 동기화 = 같은 대화를 다른 화면에서 보기, ② 문맥 참조 = 다른 채팅의 관련 내용을 응답에 활용, ③ 외부 지식 보관 = 요약·결정 문서를 별도 저장소에 저장해 다시 읽기. 셋은 서로 다른 기능입니다.</div>
-    <div class="matrix-scroll"><table class="info-table"><thead><tr><th>방법</th><th>어디에 남는가?</th><th>새 채팅에서 활용</th><th>ChatGPT ↔ Codex 자동 공유?</th><th>Plus 강연에서 전달할 한계</th></tr></thead><tbody>
+    <div class="matrix-scroll"><table class="info-table"><thead><tr><th>방법</th><th>어디에 남는가?</th><th>새 채팅에서 활용</th><th>ChatGPT ↔ Codex 자동 공유?</th><th>Plus에서 알아 둘 한계</th></tr></thead><tbody>
     <tr><td><strong>ChatGPT Projects</strong><br/>(프로젝트)</td><td>프로젝트의 채팅·첨부 파일·프로젝트 지침·저장한 응답</td><td><strong>가능</strong> — 동일 프로젝트 안의 관련 이전 대화·파일을 참조할 수 있음</td><td><strong>아니요</strong> — Codex의 독립된 대화 기록으로 자동 복제되는 기능은 아님</td><td>이전 대화의 모든 문장을 매번 정확하게 복원한다는 보장은 없음. <strong>Project-only memory</strong>에서는 프로젝트 외부 맥락을 분리하고 <strong>Work를 사용할 수 없음</strong></td></tr>
     <tr><td><strong>ChatGPT Memory</strong><br/>(메모리)</td><td>ChatGPT가 개인화에 활용하는 관련 요약·선호·정보</td><td><strong>가능</strong> — 활성화 및 접근 범위에 따라 관련 사실을 참조</td><td><strong>보장되지 않음</strong> — Codex용 공통 지침 파일을 대신하지 않음</td><td>전체 대화 전문이나 결정 기록을 정확히 저장하는 버전 관리 저장소가 아님</td></tr>
     <tr><td><strong>Notion 연결</strong><br/>(Notion app/plugin)</td><td>Notion의 승인된 프로젝트 페이지·문서</td><td><strong>명시적으로 가능</strong> — 연결·권한이 있으면 페이지를 검색하고 읽어 맥락으로 활용</td><td><strong>자동 공유 아님</strong> — Codex에도 같은 페이지 접근 수단이 별도로 있어야 함</td><td>Notion은 <strong>개별 자동 동기화(individual sync)를 지원하지 않음</strong>. 페이지 생성·수정은 연결 유형·권한·승인에 따라 가능 여부가 달라짐. 매 새 세션이 자동으로 특정 페이지부터 읽는다고 보장할 수 없음</td></tr>
@@ -166,7 +166,7 @@
     <div class="tile"><strong>예시 ③ Codex와 협업</strong><p>확정 요구사항을 GitHub의 <code>project-intent.md</code>로 관리하고, Codex는 저장소의 <code>AGENTS.md</code>를 통해 관련 문서를 읽습니다. ChatGPT와 Codex 대화 기록 자체는 별개입니다.</p>
     </div>
     </div>
-    <div class="callout"><strong>강연에서 단정하면 안 되는 문장:</strong> “ChatGPT는 모든 세션 대화를 Notion에 자동 저장하고 Codex가 새 세션마다 자동으로 읽습니다.” 현재 공식 자료는 이를 Plus의 기본 제공 기능이라고 확인하지 않습니다. 반면 <strong>Notion 연결·Projects·Memory·GitHub 문서 협업</strong>은 각각 이용 가능한 기능으로 설명할 수 있습니다.</div>
+    <div class="callout"><strong>단정하면 안 되는 문장:</strong> “ChatGPT는 모든 세션 대화를 Notion에 자동 저장하고 Codex가 새 세션마다 자동으로 읽습니다.” 현재 공식 자료는 이를 Plus의 기본 제공 기능이라고 확인하지 않습니다. 반면 <strong>Notion 연결·Projects·Memory·GitHub 문서 협업</strong>은 각각 이용 가능한 기능으로 설명할 수 있습니다.</div>
     <p class="subtle">참고: Plus의 Projects는 프로젝트당 파일 최대 25개(한 번에 업로드 10개), 프로젝트 개수는 제한 없음. 제공 기능은 계정·연결 앱·지역·권한에 따라 달라질 수 있습니다.</p>
     <h3>다른 창에서 이어 가는 법</h3>
     <div class="scroll"><table><thead><tr><th>다음에 필요한 것</th><th>어디에서 어떻게 찾나</th></tr></thead><tbody><tr><td>방금 주고받은 대화</td><td>최근 항목(Recents)에서 원래 대화를 다시 엽니다. Chat과 Work의 대화가 함께 표시될 수 있습니다.</td></tr><tr><td>새 창에서 이어갈 최신 결정</td><td>Notion에 저장한 주제 페이지의 ‘현재 상태’를 읽도록 합니다. 최근 목록에 이전 대화가 보인다는 사실만으로 새 창에서 그 본문 전체를 읽었다고 판단할 수는 없습니다.</td></tr><tr><td>실제 작업 파일</td><td>첨부 파일, 연결된 저장 위치 또는 허용한 로컬 폴더에서 결과물을 엽니다. 인계 기록에는 다시 접근할 수 있는 원본 위치를 남깁니다.</td></tr><tr><td>코드 구현이 필요한 경우</td><td>OpenAI의 코딩 작업 도구인 Codex에 요구사항 문서와 저장소를 지정할 수 있습니다. 클라우드에서 수정한 코드는 변경을 검토하고 승인된 브랜치에 반영한 뒤 PC에서 가져옵니다.</td></tr></tbody></table>
@@ -203,7 +203,7 @@
     <p>이번 설정에서는 매일 한국 시간 오전 9시에 이미 저장에 동의한 결정·다음 단계와 공식 설정 가이드의 새 버전을 확인하고 ChatGPT로 알려주도록 예약했습니다. 첫 실행 예정은 11월 8일입니다. 가이드 수정은 제안으로 받습니다. 당일 대화를 Notion에 남기는 일은 각 대화에서 저장에 동의할 때 이루어집니다.</p>
 
     <h2 id="practice">11 · 실습 · 새 채팅에서 기록 찾아가기</h2>
-    <p>두 개의 채팅을 이용해 결정 하나가 실제로 전달되는지 확인합니다. 아래는 강의용 실습이며, 이번 설정에서 별도로 재현을 마친 결과는 아닙니다.</p>
+    <p>두 개의 채팅을 이용해 결정 하나가 실제로 전달되는지 확인합니다. 아래는 따라 해 보는 실습이며, 이번 설정에서 별도로 재현을 마친 결과는 아닙니다.</p>
     <h3>첫 번째 채팅에서 저장</h3>
     <pre>‘한글 타자 수업’의 결정은 같은 글쇠 20회 반복, 다음 글쇠는 학습자가 선택하는 것입니다. 다음 작업은 관찰 문항 두 개 작성입니다. 오늘은 여기까지.</pre>
     <p>저장할지 물으면 ‘네, 저장해 주세요’라고 답합니다. 받은 링크를 열어 위치와 두 결정, 다음 작업이 맞는지 확인합니다.</p>
@@ -229,7 +229,7 @@
     </div>
     <p class="subtle">두 서비스의 구조는 놀랄 만큼 비슷합니다. 대화 쪽과 코딩 쪽이 나뉘어 있고, 둘을 잇는 것은 자동 동기화가 아니라 <strong>사람이 정한 기록 장소</strong>입니다. <a href="claude-web-app-context.html">Claude 편 보기 →</a></p>
 
-    <h2 id="script">13 · 강연용 설명 문장</h2>
+    <h2 id="script">13 · 한 문단으로 줄이면</h2>
     <div class="callout script">“저는 화면을 <strong>웹과 앱</strong>으로 구분하고, 그 안에서 <strong>ChatGPT와 Codex</strong>를 구분하겠습니다. ChatGPT는 다시 <strong>Chat과 Work</strong>로 나누겠습니다. 가장 중요한 차이는 AI가 <strong>내 PC 파일을 직접 열고 수정할 수 있는지</strong>입니다. 웹에서 작업할 때는 PC 폴더에 직접 접근하지 못하므로 파일을 첨부하거나 GitHub 같은 클라우드 저장소를 거칩니다. <strong>대화 동기화는 또 별개</strong>입니다. 웹과 앱의 Chat 대화는 이어지며 Cloud Work도 동기화됩니다. 반면 Codex의 대화 기록은 ChatGPT와 분리되어 있으므로, 두 Agent가 협업할 때는 문서와 GitHub를 통해 작업 내용을 명시적으로 전달해야 합니다. 반대로 데스크톱 앱의 Work 또는 Codex에서 로컬 작업을 선택하고 접근을 허용하면 내 PC의 폴더를 직접 다룰 수 있습니다. 또한 새로운 세션에서 맥락을 이어갈 때는 <strong>ChatGPT Projects와 Memory</strong>를 사용할 수 있고, Notion·Google Drive처럼 연결한 지식 저장소의 문서를 읽게 할 수도 있습니다. 다만 <strong>ChatGPT와 Codex가 서로의 모든 채팅을 자동 공유하거나 Notion을 매번 자동 갱신하는 기능으로 설명하면 안 됩니다.</strong> 중요한 결정과 구현 지침은 <strong>GitHub 문서와 AGENTS.md</strong>처럼 명시적으로 기록·관리해야 합니다.”</div>
     <h3>강연에서 사용할 이름과 공식 표현</h3>
     <div class="tablewrap"><table class="info-table"><thead><tr><th>강연에서 부를 이름</th><th>확인된 공식 표현</th><th>설명</th></tr></thead><tbody><tr><td>웹 / 앱</td><td>ChatGPT on the web / ChatGPT desktop app</td><td>이용 경로 기준. ‘웹=Cloud 실행’이 모든 기능에서 성립하는 것은 아님.</td></tr><tr><td>ChatGPT 모드 / Codex 모드</td><td>ChatGPT / Codex</td><td>강연용 상위 구분. 앱에서는 두 영역을 메뉴에서 전환.</td></tr><tr><td>Chat 탭 / Work 탭</td><td>Chat / Work (toggle)</td><td>강연 편의상 ‘탭’으로 명명. 공식 안내는 ‘전환 버튼(toggle)’이라고 설명.</td></tr><tr><td>웹 Codex</td><td>Codex Cloud</td><td>Cloud 코딩 작업을 웹에서도 시작·이어갈 수 있음.</td></tr><tr><td>앱 Codex 로컬</td><td>Codex / Codex Local</td><td>앱에서 로컬 폴더 기반으로 개발하는 경우. 앱 Codex 전체가 Local은 아님.</td></tr><tr><td>앱 Work 로컬</td><td>Work / Work Local</td><td>로컬 폴더·데스크톱 앱 접근을 허가한 작업.</td></tr></tbody></table>
